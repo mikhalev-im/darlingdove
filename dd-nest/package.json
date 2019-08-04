@@ -1,0 +1,83 @@
+{
+  "name": "dd-nest",
+  "version": "0.0.1",
+  "description": "api for darlingdove.ru",
+  "author": "c1one_38",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "nodemon -L",
+    "start:debug": "nodemon --config nodemon-debug.json",
+    "prestart:prod": "rimraf dist && tsc",
+    "start:prod": "node dist/main.js",
+    "start:hmr": "node dist/server",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "webpack": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^6.1.1",
+    "@nestjs/core": "^6.1.1",
+    "@nestjs/jwt": "^6.0.0",
+    "@nestjs/mongoose": "^6.1.2",
+    "@nestjs/passport": "^6.0.0",
+    "@nestjs/platform-fastify": "^6.1.1",
+    "@nestjs/swagger": "^3.0.2",
+    "@types/nodemailer": "^4.6.8",
+    "bcrypt": "^3.0.6",
+    "class-transformer": "^0.2.0",
+    "class-validator": "^0.9.1",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "fastify-swagger": "^2.3.2",
+    "handlebars": "^4.1.2",
+    "mongoose": "^5.5.4",
+    "nodemailer": "^5.1.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.1",
+    "typescript": "^3.4.5",
+    "yandex-money-sdk": "^0.1.7"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^6.1.1",
+    "@types/bcrypt": "^3.0.0",
+    "@types/express": "^4.16.1",
+    "@types/jest": "^24.0.12",
+    "@types/mongoose": "^5.3.27",
+    "@types/node": "^11.13.8",
+    "@types/supertest": "^2.0.7",
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.11",
+    "prettier": "^1.17.0",
+    "rimraf": "^2.6.3",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^5.4.4",
+    "ts-node": "^8.1.0",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.16.0",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

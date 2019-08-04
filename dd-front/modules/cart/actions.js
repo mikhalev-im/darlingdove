@@ -1,0 +1,11 @@
+import { createActions } from 'reduxsauce';
+
+export default createActions({
+  setCartId: ['cartId'],
+  setCart: ['cart'],
+  addToCart: ['productId', 'qty'],
+  removeFromCart: ['productId'],
+  resetCartItems: null,
+  updateCartItemsQty: null,
+  debouncedCartQtyUpdate: ['productId', 'qty']
+});

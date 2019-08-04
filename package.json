@@ -1,0 +1,11 @@
+{
+  "name": "darlingdove",
+  "version": "0.0.1",
+  "description": "engine for darlingdove.ru",
+  "author": "c1one_38",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "docker-compose up -d",
+    "start:prod": ""
+  }
+}

@@ -8,28 +8,25 @@ services:
     build:
       context: ./nginx
   mongo:
-    container_name: darlingdove_mongo
     image: mongo:4
     volumes:
       - dbdata:/data/db
   backend:
-    container_name: darlingdove_backend
     depends_on:
       - mongo
     build:
       context: ./dd-nest
     environment:
       - PORT=8000
-      - MONGO_CONNECTION=mongodb://darlingdove_mongo/dd
+      - MONGO_CONNECTION=mongodb://mongo/dd
   frontend:
-    container_name: darlingdove_frontend
     depends_on:
       - backend
     build:
       context: ./dd-front
     environment:
       - PORT=3000
-      - SERVER_BASE_URL=http://darlingdove_backend:8000/api
+      - SERVER_BASE_URL=http://backend:8000/api
 
 volumes:
   dbdata:

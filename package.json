@@ -7,7 +7,7 @@
   "scripts": {
     "build": "docker-compose build",
     "start:dev": "docker-compose up -d",
-    "start:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
+    "start:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --scale backend=2 --scale frontend=2",
     "stop": "docker-compose down"
   }
 }

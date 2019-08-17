@@ -5,7 +5,7 @@ import { ProductsModule } from './products/products.module';
 import { CartsModule } from './carts/carts.module';
 import { PagesModule } from './pages/pages.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { OrdersModule } from 'orders/orders.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [

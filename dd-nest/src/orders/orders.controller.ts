@@ -12,7 +12,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { ProductsService } from 'products/products.service';
+import { ProductsService } from '../products/products.service';
 import { YandexService } from './yandex.service';
 import {
   ApiUseTags,
@@ -22,15 +22,15 @@ import {
 } from '@nestjs/swagger';
 import { CartsService } from '../carts/carts.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'shared/decorators/user.decorator';
-import { User as UserInterface } from 'users/interfaces/user.interface';
+import { User } from '../shared/decorators/user.decorator';
+import { User as UserInterface } from '../users/interfaces/user.interface';
 import { CreateFromCartDto } from './dto/create-from-cart.dto';
 import { OrderStatusTypes } from './interfaces/order.interface';
 import {
   PaymentProcess,
   PaymentProcessStatus,
 } from './interfaces/yandex.interface';
-import { MailService } from 'mail/mail.service';
+import { MailService } from '../mail/mail.service';
 
 // Helper function to build payment success/failure redirect urls
 const getRedirectUrl = (

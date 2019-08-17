@@ -10,6 +10,8 @@ services:
   mongo:
     container_name: darlingdove_mongo
     image: mongo:4
+    volumes:
+      - dbdata:/data/db
   backend:
     container_name: darlingdove_backend
     depends_on:
@@ -28,3 +30,6 @@ services:
     environment:
       - PORT=3000
       - SERVER_BASE_URL=http://darlingdove_backend:8000/api
+
+volumes:
+  dbdata:

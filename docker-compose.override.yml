@@ -8,10 +8,12 @@ services:
     ports:
       - "27017:27017"
   backend:
+    command: ["npm", "run", "start:dev"]
     volumes:
       - ./dd-nest:/usr/src/app
       - /usr/src/app/node_modules/
   frontend:
+    command: ["npm", "run", "start:dev"]
     volumes:
       - ./dd-front:/usr/src/app
       - /usr/src/app/node_modules/

@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:10-stretch-slim
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -9,4 +9,4 @@ RUN npm install
 COPY . /usr/src/app
 
 EXPOSE 3000
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]

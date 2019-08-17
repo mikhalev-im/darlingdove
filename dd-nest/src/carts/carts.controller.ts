@@ -15,8 +15,8 @@ import {
 import { CartsService } from './carts.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
-import { DefaultValuesPipe } from 'shared/pipes/default-values.pipe';
-import { ProductsService } from 'products/products.service';
+import { DefaultValuesPipe } from '../shared/pipes/default-values.pipe';
+import { ProductsService } from '../products/products.service';
 import { BulkQtyUpdateDto } from './dto/bulk-qty-update.dto';
 
 @ApiUseTags('carts')

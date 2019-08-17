@@ -6,7 +6,7 @@
   "scripts": {
     "build": "next build",
     "start:dev": "node server.js",
-    "start:prod": "NODE_ENV=production node server.js",
+    "start:prod": "NODE_ENV=production next build && node server.js",
     "format": "prettier --write \"modules/**/*.js\"",
     "lint": "eslint \"modules/**/*.js\""
   },

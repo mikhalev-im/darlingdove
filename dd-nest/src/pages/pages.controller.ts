@@ -9,7 +9,7 @@ import {
 import { PagesService } from './pages.service';
 import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 import { PageBlockTypes } from './interfaces/page.interface';
-import { ProductsService } from 'products/products.service';
+import { ProductsService } from '../products/products.service';
 
 @ApiUseTags('pages')
 @Controller('pages')

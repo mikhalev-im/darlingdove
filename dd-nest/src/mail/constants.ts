@@ -1,4 +1,4 @@
-import { OrderStatusTypes } from 'orders/interfaces/order.interface';
+import { OrderStatusTypes } from '../orders/interfaces/order.interface';
 
 export const MAIL_FROM = process.env.MAIL_FROM;
 export const MAIL_TRANSPORT = process.env.MAIL_TRANSPORT;

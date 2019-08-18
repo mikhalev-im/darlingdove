@@ -138,7 +138,7 @@ class Category extends Component {
   }
 }
 
-Category.getInitialProps = async ({ query }) => {
+Category.getInitialProps = async ({ query, reduxStore }) => {
   const filters = buildProductFilters(query);
 
   const { count, data } = await api.getProducts(filters);

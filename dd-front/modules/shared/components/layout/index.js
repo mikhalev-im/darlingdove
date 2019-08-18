@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import LinearProgress from "@material-ui/core/LinearProgress";
 import { connect } from 'react-redux';
 
 import Header from './header';
 import Modal from './modal';
 import Notifications from './notifications';
+import Progress from './progress';
 
 import RootActions from '../../../root/actions';
 import NotificationsActions from '../../../notifications/actions';
@@ -15,7 +15,7 @@ import {
   getMessageData,
   isNotificationOpen
 } from '../../../notifications/selectors';
-import { getModal } from '../../../root/selectors';
+import { getModal, getIsLoading } from '../../../root/selectors';
 import { getCartItemsQty } from '../../../cart/selectors';
 
 const styles = theme => ({
@@ -39,12 +39,14 @@ class Layout extends PureComponent {
       processNotifications,
       closeNotification,
       showDebugData,
-      closeModal
+      closeModal,
+      isLoading
     } = this.props;
 
     return (
       <div className={classes.root}>
         <Header cartItemsQty={cartItemsQty} />
+        <Progress isLoading={isLoading} />
         <Notifications
           open={isNotificationOpen}
           showDebugData={showDebugData}
@@ -72,14 +74,16 @@ Layout.propTypes = {
   processNotifications: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   closeNotification: PropTypes.func.isRequired,
-  showDebugData: PropTypes.func.isRequired
+  showDebugData: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
 };
 
 const mapState = state => ({
   cartItemsQty: getCartItemsQty(state),
   isNotificationOpen: isNotificationOpen(state),
   notificationMessageData: getMessageData(state),
-  modal: getModal(state)
+  modal: getModal(state),
+  isLoading: getIsLoading(state)
 });
 
 const mapDispatch = {

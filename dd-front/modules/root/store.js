@@ -4,6 +4,9 @@ import createSagaMiddleware from 'redux-saga';
 import { fork, all } from 'redux-saga/effects';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import waitForActionMiddleware from './middlewares/waitFor';
+import bindEvents from './events';
+
 import cart from '../cart/reducer';
 import user from '../user/reducer';
 import root from '../root/reducer';
@@ -40,10 +43,14 @@ export function initializeStore(initialState = {}) {
   const store = createStore(
     reducer,
     Immutable(initialState),
-    composeWithDevTools(applyMiddleware(sagaMiddleware))
+    composeWithDevTools(
+      applyMiddleware(waitForActionMiddleware, sagaMiddleware)
+    )
   );
 
   sagaMiddleware.run(sagas);
+
+  bindEvents(store);
 
   return store;
 }

@@ -6,3 +6,8 @@ export const getModal = createSelector(
   getRoot,
   root => root.modal
 );
+
+export const getIsLoading = createSelector(
+  getRoot,
+  root => root.isLoading
+);

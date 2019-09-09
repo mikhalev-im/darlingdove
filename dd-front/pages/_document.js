@@ -60,14 +60,18 @@ class MyDocument extends Document {
 MyDocument.getInitialProps = ctx => {
   // Get the context of the page to collected side effects.
   const pageContext = getPageContext();
-  const page = ctx.renderPage(Component => props => (
-    <JssProvider
-      registry={pageContext.sheetsRegistry}
-      generateClassName={pageContext.generateClassName}
-    >
-      <Component pageContext={pageContext} {...props} />
-    </JssProvider>
-  ));
+  const page = ctx.renderPage(Component => {
+    const comp = props => (
+      <JssProvider
+        registry={pageContext.sheetsRegistry}
+        generateClassName={pageContext.generateClassName}
+      >
+        <Component pageContext={pageContext} {...props} />
+      </JssProvider>
+    );
+
+    return comp;
+  });
 
   return {
     ...page,

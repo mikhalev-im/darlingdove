@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Lightbox from 'react-images';
 import { connect } from 'react-redux';
 
-import api from '../shared/utils/api';
+import * as api from '../shared/utils/api';
 import Layout from '../shared/components/layout';
 import ProductList from '../shared/components/product-list';
 import RootActions from '../root/actions';

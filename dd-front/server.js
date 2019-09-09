@@ -1,9 +1,9 @@
-const Koa = require("koa");
-const next = require("next");
-const Router = require("koa-router");
+const Koa = require('koa');
+const next = require('next');
+const Router = require('koa-router');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -21,11 +21,11 @@ app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
 
-  router.get("/product/:id", mergeParams("/product"));
-  router.get("/order/:id", mergeParams("/order"));
-  router.get("/category/:category", mergeParams("/category"));
+  router.get('/product/:id', mergeParams('/product'));
+  router.get('/order/:id', mergeParams('/order'));
+  router.get('/category/:category', mergeParams('/category'));
 
-  router.get("*", async ctx => {
+  router.get('*', async ctx => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
   });

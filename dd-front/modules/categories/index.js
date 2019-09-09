@@ -7,63 +7,17 @@ import Pagination from 'material-ui-flat-pagination';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 
-import api from '../shared/utils/api';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
+import CategoryActions from './actions';
+
+import { BASE_URL, TITLE_MAPPING, PRODUCTS_PER_PAGE } from './constants';
+
 import Filters from './components/filters';
 import Layout from '../shared/components/layout';
 import ProductList from '../shared/components/product-list';
 import ProductType from './types/product';
-
-const TITLE_MAPPING = {
-  postcards: 'Открытки',
-  envelopes: 'Конверты'
-};
-
-/*
-const sortVariants = [
-  { label: 'Названию (А-Я)', value: 'name ASC' },
-  { label: 'Названию (Я-А)', value: 'name DESC' },
-  { label: 'Популярности (убывание)', value: 'ordersCount DESC' },
-  { label: 'Популярности (возрастание)', value: 'ordersCount ASC' },
-  { label: 'Новизне (сначала новые)', value: 'createdTime DESC' },
-  { label: 'Новизне (сначала старые)', value: 'createdTime ASC' }
-];
-*/
-
-const BASE_URL = '/category';
-const PRODUCTS_PER_PAGE = 50;
-
-const defaultFilters = {
-  orderBy: 'createdTime',
-  order: 'desc',
-  limit: PRODUCTS_PER_PAGE,
-  skip: 0,
-  inStock: true
-};
-
-const buildProductFilters = query => {
-  const filters = { ...defaultFilters };
-
-  if (query.category) filters.category = query.category;
-
-  if (query.tags) {
-    // normalize tags
-    query.tags = Array.isArray(query.tags) ? query.tags : [query.tags];
-
-    filters.tagsOptional = query.tags;
-  }
-
-  if (query.skip) filters.skip = query.skip;
-
-  if (query.sort) {
-    const [orderBy, order] = query.sort.split(' ');
-    filters.order = order.toLowerCase();
-    filters.orderBy = orderBy;
-  }
-
-  return filters;
-};
+import { getProductsData, getProductsCount, getTags } from './selectors';
 
 const styles = theme => ({
   title: {
@@ -139,12 +93,15 @@ class Category extends Component {
 }
 
 Category.getInitialProps = async ({ query, reduxStore }) => {
-  const filters = buildProductFilters(query);
+  // run saga to load tags and products
+  reduxStore.dispatch(CategoryActions.Creators.loadPage(query));
 
-  const { count, data } = await api.getProducts(filters);
-  const tags = await api.getTags(filters.category);
+  // wait until everything is loaded
+  await reduxStore.dispatch(
+    RootActions.Creators.waitFor(CategoryActions.Types.PAGE_LOADED)
+  );
 
-  return { products: data, tags, query, count };
+  return { query };
 };
 
 Category.propTypes = {
@@ -157,7 +114,12 @@ Category.propTypes = {
   addToCart: PropTypes.func.isRequired
 };
 
-const mapState = () => ({});
+const mapState = state => ({
+  products: getProductsData(state),
+  count: getProductsCount(state),
+  tags: getTags(state)
+});
+
 const mapDispatch = {
   redirect: RootActions.Creators.redirect,
   addToCart: CartActions.Creators.addToCart

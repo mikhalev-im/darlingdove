@@ -7,10 +7,8 @@ import {
   takeEvery,
   takeLatest
 } from 'redux-saga/effects';
-import * as Cookie from 'js-cookie';
 
-import api from '../shared/utils/api';
-import { COOKIE } from '../../constants';
+import * as api from '../shared/utils/api';
 import Actions from './actions';
 import NotificationsActions from '../notifications/actions';
 import { getCartId, getCartItems } from './selectors';
@@ -23,9 +21,7 @@ export function* addToCart({ productId, qty = 1 }) {
   // get cartId from store
   const cartId = yield select(getCartId);
   // make api request
-  const cart = yield call([api, 'addToCart'], productId, Number(qty), cartId);
-  // set cart id to cookie
-  yield call([Cookie, 'set'], COOKIE.CART_ID, cart._id);
+  const cart = yield call(api.addToCart, productId, Number(qty), cartId);
   // set cart id and items to store
   yield put(Actions.Creators.setCart(cart));
   // find item that was added and show success notification
@@ -44,7 +40,7 @@ export function* removeFromCart({ productId }) {
   // get cartId from store
   const cartId = yield select(getCartId);
   // make api request
-  const cart = yield call([api, 'removeProductFromCart'], cartId, productId);
+  const cart = yield call(api.removeProductFromCart, cartId, productId);
   // set cart id and items to store
   yield put(Actions.Creators.setCart(cart));
 }
@@ -62,9 +58,8 @@ export function* updateCartItemsQty() {
   // get cart id from store
   const cartId = yield select(getCartId);
   // make api request
-  const cart = yield call([api, 'cartBulkQtyUpdate'], cartId, data);
+  const cart = yield call(api.cartBulkQtyUpdate, cartId, data);
   // set cart id and items to store
-  console.log(cart);
   yield put(Actions.Creators.setCart(cart));
 }
 

@@ -1,7 +1,8 @@
+import React from 'react';
 import App, { Container } from 'next/app';
 import { Provider } from 'react-redux';
 
-import withReduxStore from '../utils/with-redux-store';
+import { initialize } from '../modules/root';
 
 /**
  * Server side:
@@ -20,20 +21,27 @@ import withReduxStore from '../utils/with-redux-store';
  */
 
 class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({ Component, ctx }) {
+    ctx.reduxStore = initialize({}, ctx);
+
     // prepare page props
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
 
-    return { pageProps };
+    return { pageProps, reduxState: ctx.reduxStore.getState() };
+  }
+
+  constructor(props) {
+    super();
+    this.reduxStore = initialize(props.reduxState);
   }
 
   render() {
-    const { Component, pageProps, reduxStore } = this.props;
+    const { Component, pageProps } = this.props;
     return (
       <Container>
-        <Provider store={reduxStore}>
+        <Provider store={this.reduxStore}>
           <Component {...pageProps} />
         </Provider>
       </Container>
@@ -41,4 +49,4 @@ class MyApp extends App {
   }
 }
 
-export default withReduxStore(MyApp);
+export default MyApp;

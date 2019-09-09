@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 import { withStyles } from '@material-ui/core/styles';
 
-import api from '../shared/utils/api';
+import * as api from '../shared/utils/api';
 import UserActions from '../user/actions';
 import RootActions from '../root/actions';
 import Layout from '../shared/components/layout';
@@ -63,7 +63,7 @@ class Profile extends Component {
     if (!user.jwt)
       return reduxStore.dispatch(RootActions.Creators.redirect('/login', res));
 
-    const orders = await api.getOrders(user.jwt);
+    const orders = await api.getOrders();
 
     return { user, orders };
   }

@@ -6,7 +6,7 @@ import {
   // select
 } from 'redux-saga/effects';
 
-import api from '../shared/utils/api';
+import * as api from '../shared/utils/api';
 import Actions from './actions';
 import { CHECKOUT_STEPS } from './constants';
 import { saveUserData } from '../user/sagas';
@@ -25,13 +25,13 @@ export function* saveUserAndChangeStep({ data }) {
 export function* createOrderAndPay({ comment }) {
   // const cartId = yield select(getCartId);
   // const token = yield select(getToken);
-  // const order = yield call([api, "createOrder"], token, cartId);
+  // const order = yield call(api.createOrder, cartId);
   // console.log(order);
   // TODO: redirect to pay
   // yield call(redirect, { redirectTo: "/profile" });
 
   // yield put(CartActions.Creators.resetCartItems());
-  yield call([api, 'payForOrder'], comment);
+  yield call(api.payForOrder, comment);
 }
 
 export default function* checkoutSagas() {

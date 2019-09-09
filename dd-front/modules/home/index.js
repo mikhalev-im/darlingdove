@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import api from '../shared/utils/api';
+import * as api from '../shared/utils/api';
 import Layout from '../shared/components/layout';
 import renderBlock from '../shared/components/page-blocks';
 

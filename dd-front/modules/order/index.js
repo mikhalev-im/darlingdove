@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 
-import api from '../shared/utils/api';
+import * as api from '../shared/utils/api';
 import RootActions from '../root/actions';
 import { getUser } from '../user/selectors';
 import Layout from '../shared/components/layout';
@@ -25,7 +25,7 @@ class Order extends Component {
     if (!user.jwt)
       return reduxStore.dispatch(RootActions.Creators.redirect('/login', res));
 
-    const order = await api.getOrder(user.jwt, id).catch(err => {
+    const order = await api.getOrder(id).catch(err => {
       if (err.statusCode === 404) return;
       throw err;
     });

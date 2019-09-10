@@ -9,12 +9,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Lightbox from 'react-images';
 import { connect } from 'react-redux';
 
-import * as api from '../shared/utils/api';
 import Layout from '../shared/components/layout';
 import ProductList from '../shared/components/product-list';
+import ProductActions from './actions';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
 import ProductType from './types/product';
+import { getProduct, getRelatedProducts } from './selectors';
 
 const CATEGORY_BASE_URL = '/category';
 
@@ -40,21 +41,21 @@ const styles = theme => ({
 });
 
 class Product extends Component {
-  static async getInitialProps({ query: { id } }) {
-    const product = await api.getProduct(id);
-    const relatedProducts = await api.getRandomProducts(4);
+  static async getInitialProps({ reduxStore, query: { id } }) {
+    // run saga to load product page
+    reduxStore.dispatch(ProductActions.Creators.loadProductPage(id));
+    // wait until everything is loaded
+    await reduxStore.dispatch(
+      RootActions.Creators.waitFor(ProductActions.Types.PRODUCT_PAGE_LOADED)
+    );
 
-    return { product, relatedProducts };
+    return {};
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      qty: 1,
-      lightboxIsOpen: false
-    };
-  }
+  state = {
+    qty: 1,
+    lightboxIsOpen: false
+  };
 
   onTagClick = tag => {
     const { product, redirect } = this.props;
@@ -79,6 +80,9 @@ class Product extends Component {
   render() {
     const { lightboxIsOpen } = this.state;
     const { classes, product, relatedProducts } = this.props;
+
+    // console.log('RENDER');
+    // console.log(product);
 
     return (
       <Layout>
@@ -164,7 +168,10 @@ Product.propTypes = {
   relatedProducts: PropTypes.arrayOf(ProductType)
 };
 
-const mapState = () => ({});
+const mapState = state => ({
+  product: getProduct(state),
+  relatedProducts: getRelatedProducts(state)
+});
 const mapDispatch = {
   redirect: RootActions.Creators.redirect,
   addToCart: CartActions.Creators.addToCart

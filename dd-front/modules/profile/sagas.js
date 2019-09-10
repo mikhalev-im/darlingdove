@@ -21,6 +21,6 @@ export function* loadProfile({ res }) {
   yield put(Actions.Creators.profileLoaded());
 }
 
-export default function* categorySagas() {
+export default function* profileSagas() {
   yield all([takeEvery(Actions.Types.LOAD_PROFILE, loadProfile)]);
 }

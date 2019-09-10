@@ -13,14 +13,14 @@ import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 import { withStyles } from '@material-ui/core/styles';
 
-import * as api from '../shared/utils/api';
 import UserActions from '../user/actions';
 import RootActions from '../root/actions';
+import ProfileActions from './actions';
 import Layout from '../shared/components/layout';
-import { getUser } from '../user/selectors';
 import PasswordModal from './components/password-change';
 import OrderType from '../order/types/order';
 import UserType from './types/user';
+import { getOrders } from './selectors';
 
 const MAP_STATUS = {
   notPaid: 'Ожидает оплаты',
@@ -58,14 +58,15 @@ const styles = theme => ({
 
 class Profile extends Component {
   static async getInitialProps({ res, reduxStore }) {
-    const user = getUser(reduxStore.getState());
+    // run saga to load profile
+    reduxStore.dispatch(ProfileActions.Creators.loadProfile(res));
 
-    if (!user.jwt)
-      return reduxStore.dispatch(RootActions.Creators.redirect('/login', res));
+    // wait until everything is loaded
+    await reduxStore.dispatch(
+      RootActions.Creators.waitFor(ProfileActions.Types.PROFILE_LOADED)
+    );
 
-    const orders = await api.getOrders();
-
-    return { user, orders };
+    return {};
   }
 
   state = {
@@ -202,7 +203,9 @@ Profile.propTypes = {
   changePassword: PropTypes.func.isRequired
 };
 
-const mapState = () => ({});
+const mapState = state => ({
+  orders: getOrders(state)
+});
 const mapDispatch = {
   logout: UserActions.Creators.logout,
   changePassword: UserActions.Creators.changePassword

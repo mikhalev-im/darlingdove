@@ -5,7 +5,7 @@ import Actions from './actions';
 
 import { buildProductFilters } from './helpers';
 
-export function* loadPage({ query }) {
+export function* loadCategoryPage({ query }) {
   // build and set filters
   const filters = yield call(buildProductFilters, query);
   yield put(Actions.Creators.setFilters(filters));
@@ -19,9 +19,9 @@ export function* loadPage({ query }) {
   yield put(Actions.Creators.setTags(tags));
 
   // emit page is loaded
-  yield put(Actions.Creators.pageLoaded());
+  yield put(Actions.Creators.categoryPageLoaded(query));
 }
 
 export default function* categorySagas() {
-  yield all([takeEvery(Actions.Types.LOAD_PAGE, loadPage)]);
+  yield all([takeEvery(Actions.Types.LOAD_CATEGORY_PAGE, loadCategoryPage)]);
 }

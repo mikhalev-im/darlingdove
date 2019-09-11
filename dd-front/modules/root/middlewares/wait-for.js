@@ -9,9 +9,11 @@ const waitForAction = () => next => {
 
     // resolve promises if we are waiting for this action
     if (callbacks[action.type]) {
+      // eslint-disable-next-line no-unused-vars
+      const { type, ...payload } = action;
       // let other middlewares to process this action
       const result = next(action);
-      callbacks[action.type].forEach(cb => cb());
+      callbacks[action.type].forEach(cb => cb(payload));
       delete callbacks[action.type];
       return result;
     }

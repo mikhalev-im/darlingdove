@@ -11,10 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import UserActions from '../user/actions';
 import RootActions from '../root/actions';
-import { getUser } from '../user/selectors';
+import LoginActions from './actions';
 import Layout from '../shared/components/layout';
 
-const DEFAULT_REDIRECT = '/profile';
 const LOGIN_INDEX = 0;
 const REGISTER_INDEX = 1;
 
@@ -41,16 +40,11 @@ const styles = theme => ({
 
 class Login extends Component {
   static async getInitialProps({ res, reduxStore, query }) {
-    const user = getUser(reduxStore.getState());
-    const redirectDestination = query.redirect || DEFAULT_REDIRECT;
-
-    if (user.jwt) {
-      return reduxStore.dispatch(
-        RootActions.Creators.redirect(redirectDestination, res)
-      );
-    }
-
-    return { user, redirectDestination };
+    const { LOGIN_PAGE_LOADED } = LoginActions.Types;
+    const action = RootActions.Creators.waitFor(LOGIN_PAGE_LOADED);
+    const promise = reduxStore.dispatch(action);
+    reduxStore.dispatch(LoginActions.Creators.loadLoginPage(query, res));
+    return promise;
   }
 
   constructor(props) {

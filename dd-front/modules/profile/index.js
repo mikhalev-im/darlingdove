@@ -58,15 +58,11 @@ const styles = theme => ({
 
 class Profile extends Component {
   static async getInitialProps({ res, reduxStore }) {
-    // run saga to load profile
+    const { PROFILE_LOADED } = ProfileActions.Types;
+    const action = RootActions.Creators.waitFor(PROFILE_LOADED);
+    const promise = reduxStore.dispatch(action);
     reduxStore.dispatch(ProfileActions.Creators.loadProfile(res));
-
-    // wait until everything is loaded
-    await reduxStore.dispatch(
-      RootActions.Creators.waitFor(ProfileActions.Types.PROFILE_LOADED)
-    );
-
-    return {};
+    return promise;
   }
 
   state = {

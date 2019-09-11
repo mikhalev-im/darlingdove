@@ -93,15 +93,11 @@ class Category extends Component {
 }
 
 Category.getInitialProps = async ({ query, reduxStore }) => {
-  // run saga to load tags and products
-  reduxStore.dispatch(CategoryActions.Creators.loadPage(query));
-
-  // wait until everything is loaded
-  await reduxStore.dispatch(
-    RootActions.Creators.waitFor(CategoryActions.Types.PAGE_LOADED)
-  );
-
-  return { query };
+  const { CATEGORY_PAGE_LOADED } = CategoryActions.Types;
+  const action = RootActions.Creators.waitFor(CATEGORY_PAGE_LOADED);
+  const promise = reduxStore.dispatch(action);
+  reduxStore.dispatch(CategoryActions.Creators.loadCategoryPage(query));
+  return promise;
 };
 
 Category.propTypes = {

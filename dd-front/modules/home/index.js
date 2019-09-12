@@ -1,22 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import * as api from '../shared/utils/api';
+import HomeActions from './actions';
+import RootActions from '../root/actions';
 import Layout from '../shared/components/layout';
 import renderBlock from '../shared/components/page-blocks';
 
-class Home extends Component {
-  static async getInitialProps() {
-    const { blocks } = await api.getHomePage();
-    return { blocks };
-  }
+const Home = ({ blocks }) => <Layout>{blocks.map(renderBlock)}</Layout>;
 
-  render() {
-    const { blocks } = this.props;
-
-    return <Layout>{blocks.map(renderBlock)}</Layout>;
-  }
-}
+Home.getInitialProps = async ({ reduxStore }) => {
+  const { HOME_PAGE_LOADED } = HomeActions.Types;
+  const action = RootActions.Creators.waitFor(HOME_PAGE_LOADED);
+  const promise = reduxStore.dispatch(action);
+  reduxStore.dispatch(HomeActions.Creators.loadHomePage());
+  return promise;
+};
 
 Home.propTypes = {
   blocks: PropTypes.array.isRequired

@@ -4,7 +4,7 @@ import Router from 'next/router';
 import Actions from './actions';
 import UserActions from '../user/actions';
 import CartActions from '../cart/actions';
-import { getCurrentUser, getCart } from '../shared/utils/api';
+import { getCurrentUser, getCart, configure } from '../shared/utils/api';
 import { parseCookie } from '../shared/utils/cookie';
 import { COOKIE_TOKEN, COOKIE_CART } from './constants';
 
@@ -31,8 +31,9 @@ export function* initialize({ ctx }) {
   // fetch user and put in store
   if (token) {
     try {
+      yield call(configure, token);
       const user = yield call(getCurrentUser);
-      put(
+      yield put(
         UserActions.Creators.setUser({
           jwt: token,
           ...user
@@ -48,7 +49,7 @@ export function* initialize({ ctx }) {
   if (cartId) {
     try {
       const cart = yield call(getCart, cartId);
-      put(CartActions.Creators.setCart(cart));
+      yield put(CartActions.Creators.setCart(cart));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);

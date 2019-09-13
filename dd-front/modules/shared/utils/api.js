@@ -13,6 +13,8 @@ const api = {
   token: null,
 
   async makeRequest(method, path, { query = {}, body } = {}) {
+    if (api.token) query.access_token = api.token;
+
     const url = `${api.baseUrl}${path}?${stringify(query)}`;
 
     const options = {
@@ -57,7 +59,9 @@ const api = {
   }
 };
 
-export const configure = () => {};
+export const configure = token => {
+  api.token = token;
+};
 
 export const login = async (email, password) => {
   const body = { email, password };

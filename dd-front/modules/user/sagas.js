@@ -1,14 +1,20 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
+import Cookie from 'js-cookie';
 
 import * as api from '../shared/utils/api';
 import Actions from './actions';
 import { redirect } from '../root/sagas';
 import { getUserId } from './selectors';
 import NotificationsActions from '../notifications/actions';
+import { COOKIE_TOKEN } from '../root/constants';
 
-// TODO: make routes constants
 const DEFAULT_LOGIN_REDIRECT = '/profile';
 const DEFAULT_LOGOUT_REDIRECT = '/';
+
+const updateToken = token => {
+  api.configure(token);
+  Cookie.set(COOKIE_TOKEN, token, { expires: 30 });
+};
 
 export function* saveUserData({ data }) {
   // get user id from store
@@ -26,6 +32,7 @@ export function* login({
 }) {
   const user = yield call(api.login, email, password);
   yield put(Actions.Creators.setUser(user));
+  yield call(updateToken, user.jwt);
   yield call(redirect, { redirectTo });
 }
 
@@ -38,11 +45,13 @@ export function* register({
 }) {
   const user = yield call(api.register, email, password);
   yield put(Actions.Creators.setUser(user));
+  yield call(updateToken, user.jwt);
   yield call(redirect, { redirectTo });
 }
 
 export function* logout() {
   yield put(Actions.Creators.resetUser());
+  yield call(updateToken, null);
   yield call(redirect, { redirectTo: DEFAULT_LOGOUT_REDIRECT });
 }
 

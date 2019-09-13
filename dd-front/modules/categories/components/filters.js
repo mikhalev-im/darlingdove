@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import {
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Checkbox,
+  Collapse
+} from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
@@ -58,7 +59,7 @@ class Filters extends PureComponent {
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={open}>
-            <List>
+            <List disablePadding>
               {tags.map(tag => (
                 <ListItem
                   dense

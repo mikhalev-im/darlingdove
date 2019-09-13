@@ -52,7 +52,7 @@ class Filters extends PureComponent {
 
     return (
       <Paper className={classes.root}>
-        <List>
+        <List disablePadding>
           <ListItem dense button onClick={this.toggleOpen}>
             <ListItemText primary={'Категории'} />
             {open ? <ExpandLess /> : <ExpandMore />}

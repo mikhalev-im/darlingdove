@@ -7,11 +7,13 @@ import {
   takeEvery,
   takeLatest
 } from 'redux-saga/effects';
+import Cookie from 'js-cookie';
 
 import * as api from '../shared/utils/api';
 import Actions from './actions';
 import NotificationsActions from '../notifications/actions';
 import { getCartId, getCartItems } from './selectors';
+import { COOKIE_CART } from '../root/constants';
 
 const CART_UPDATE_DEBOUNCE = 2000;
 
@@ -22,6 +24,9 @@ export function* addToCart({ productId, qty = 1 }) {
   const cartId = yield select(getCartId);
   // make api request
   const cart = yield call(api.addToCart, productId, Number(qty), cartId);
+
+  // save cart id as cookie
+  yield call([Cookie, 'set'], COOKIE_CART, cart._id, { expires: 30 });
   // set cart id and items to store
   yield put(Actions.Creators.setCart(cart));
   // find item that was added and show success notification

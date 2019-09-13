@@ -55,6 +55,8 @@ export function* initialize({ ctx }) {
       console.error(err);
     }
   }
+
+  yield put(Actions.Creators.initialized());
 }
 
 export default function* rootSaga() {

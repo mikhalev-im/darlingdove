@@ -12,7 +12,13 @@ export const initialize = (serverState, ctx) => {
     store = initializeStore(serverState);
     api.configure(getToken(store.getState()));
     // it is app.getInitialProps - parse cookie, etc.
-    if (ctx) store.dispatch(Actions.Creators.initialize(ctx));
+    if (ctx) {
+      const { INITIALIZED } = Actions.Types;
+      const action = Actions.Creators.waitFor(INITIALIZED);
+      const promise = store.dispatch(action);
+      store.dispatch(Actions.Creators.initialize(ctx));
+      return promise.then(() => store);
+    }
   } else if (window[__NEXT_REDUX_STORE__]) {
     // already initialized client
     store = window[__NEXT_REDUX_STORE__];

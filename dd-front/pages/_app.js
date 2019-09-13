@@ -22,8 +22,7 @@ import { initialize } from '../modules/root';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    // TODO: wait until init saga is finished?
-    ctx.reduxStore = initialize({}, ctx);
+    ctx.reduxStore = await initialize({}, ctx);
 
     // prepare page props
     const pageProps = Component.getInitialProps

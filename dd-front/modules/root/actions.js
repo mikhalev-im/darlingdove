@@ -7,5 +7,6 @@ export default createActions({
   setIsLoading: ['value'],
   redirect: ['redirectTo', 'res'],
   initialize: ['ctx'],
+  initialized: null,
   waitFor: actionType => ({ type: WAIT_FOR_TYPE, actionType })
 });

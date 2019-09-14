@@ -11,7 +11,7 @@ import Layout from '../shared/components/layout';
 import ShippingForm from './components/shipping-form';
 import OrderSummary from '../shared/components/order-summary';
 import RootActions from '../root/actions';
-import CheckoutActions from '../checkout/actions';
+import CheckoutActions from './actions';
 import { getStep } from './selectors';
 import { getUser } from '../user/selectors';
 import { getCartItems, getCartServices } from '../cart/selectors';
@@ -130,24 +130,11 @@ class Checkout extends Component {
 }
 
 Checkout.getInitialProps = async ({ res, reduxStore }) => {
-  const state = reduxStore.getState();
-
-  const user = getUser(state);
-  if (!user.jwt)
-    return reduxStore.dispatch(
-      RootActions.Creators.redirect('/login?redirect=/checkout', res)
-    );
-
-  const items = getCartItems(state);
-  if (!items.length)
-    return reduxStore.dispatch(RootActions.Creators.redirect('/cart', res));
-
-  // set step to address information
-  reduxStore.dispatch(
-    CheckoutActions.Creators.changeStep(CHECKOUT_STEPS.ADDRESS_STEP_INTEX)
-  );
-
-  return {};
+  const { CHECKOUT_PAGE_LOADED } = CheckoutActions.Types;
+  const action = RootActions.Creators.waitFor(CHECKOUT_PAGE_LOADED);
+  const promise = reduxStore.dispatch(action);
+  reduxStore.dispatch(CheckoutActions.Creators.loadCheckoutPage(res));
+  return promise;
 };
 
 Checkout.propTypes = {

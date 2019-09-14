@@ -3,5 +3,7 @@ import { createActions } from 'reduxsauce';
 export default createActions({
   changeStep: ['step'],
   createOrderAndPay: ['comment'],
-  saveUserAndChangeStep: ['data']
+  saveUserAndChangeStep: ['data'],
+  loadCheckoutPage: ['res'],
+  checkoutPageLoaded: null
 });

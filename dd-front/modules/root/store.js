@@ -10,6 +10,7 @@ import bindEvents from './events';
 import cart from '../cart/reducer';
 import user from '../user/reducer';
 import root from '../root/reducer';
+import order from '../order/reducer';
 import product from '../product/reducer';
 import profile from '../profile/reducer';
 import checkout from '../checkout/reducer';
@@ -21,6 +22,7 @@ import homeSagas from '../home/sagas';
 import cartSagas from '../cart/sagas';
 import userSagas from '../user/sagas';
 import loginSagas from '../login/sagas';
+import orderSagas from '../order/sagas';
 import prodcutSagas from '../product/sagas';
 import profileSagas from '../profile/sagas';
 import checkoutSagas from '../checkout/sagas';
@@ -31,6 +33,7 @@ const reducer = combineReducers({
   cart,
   user,
   root,
+  order,
   product,
   profile,
   category,
@@ -45,6 +48,7 @@ function* sagas() {
     fork(rootSagas),
     fork(homeSagas),
     fork(loginSagas),
+    fork(orderSagas),
     fork(prodcutSagas),
     fork(profileSagas),
     fork(categorySagas),

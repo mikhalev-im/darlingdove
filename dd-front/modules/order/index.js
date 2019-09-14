@@ -5,12 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 
-import * as api from '../shared/utils/api';
+import OrderActions from './actions';
 import RootActions from '../root/actions';
-import { getUser } from '../user/selectors';
 import Layout from '../shared/components/layout';
 import OrderSummary from '../shared/components/order-summary';
 import OrderType from './types/order';
+import { getOrder } from './selectors';
 
 const styles = () => ({
   link: {
@@ -19,18 +19,12 @@ const styles = () => ({
 });
 
 class Order extends Component {
-  static async getInitialProps({ res, reduxStore, query: { id } }) {
-    const user = getUser(reduxStore.getState());
-
-    if (!user.jwt)
-      return reduxStore.dispatch(RootActions.Creators.redirect('/login', res));
-
-    const order = await api.getOrder(id).catch(err => {
-      if (err.statusCode === 404) return;
-      throw err;
-    });
-
-    return { order };
+  static async getInitialProps({ res, query, reduxStore }) {
+    const { ORDER_PAGE_LOADED } = OrderActions.Types;
+    const action = RootActions.Creators.waitFor(ORDER_PAGE_LOADED);
+    const promise = reduxStore.dispatch(action);
+    reduxStore.dispatch(OrderActions.Creators.loadOrderPage(query, res));
+    return promise;
   }
 
   onPayClick = () => {};
@@ -78,7 +72,9 @@ Order.propTypes = {
   redirect: PropTypes.func
 };
 
-const mapState = () => ({});
+const mapState = state => ({
+  order: getOrder(state)
+});
 const mapDispatch = {
   redirect: RootActions.Creators.redirect
 };

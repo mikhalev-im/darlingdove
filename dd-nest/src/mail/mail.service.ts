@@ -65,4 +65,12 @@ export class MailService {
       html: this.templates.order(data),
     });
   }
+
+  async sendRegisterMail(user: User) {
+    await this.sendMail({
+      to: `${user.email}`,
+      subject: `DarlingDove - Благодарим за регистрацию`,
+      html: this.templates.register(),
+    });
+  }
 }

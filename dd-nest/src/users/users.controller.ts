@@ -28,6 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../shared/decorators/user.decorator';
+import { MailService } from '../mail/mail.service';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -36,6 +37,7 @@ export class UsersController {
     private readonly usersService: UsersService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
+    @Inject(MailService) private readonly mailService: MailService,
   ) {}
 
   @Post('register')
@@ -52,6 +54,9 @@ export class UsersController {
     const jwt: string = await this.authService.getJWT({
       email: userData.email,
     });
+
+    // send email to user
+    await this.mailService.sendRegisterMail(user);
 
     return { ...user.toObject(), jwt };
   }

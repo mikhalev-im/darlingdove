@@ -23,10 +23,7 @@ const isClassValidatorError = (exceptionResponse: any) => {
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-
-    const res: ErrorResponse = {
+    const response: ErrorResponse = {
       statusCode: exception.getStatus(),
     };
 
@@ -34,23 +31,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     switch (typeof errResponse) {
       case 'string':
-        res.message = errResponse;
+        response.message = errResponse;
         break;
       case 'object':
         if (isClassValidatorError(errResponse)) {
-          res.message = 'Validation error';
-          res.code = 'ValidationError';
-          res.data = errResponse.message;
+          response.message = 'Validation error';
+          response.code = 'ValidationError';
+          response.data = errResponse.message;
         } else {
           // manual error data
-          Object.assign(res, errResponse);
+          Object.assign(response, errResponse);
         }
         break;
     }
 
-    response
-      .status(res.statusCode)
+    host
+      .switchToHttp()
+      .getResponse()
+      .status(response.statusCode)
       .type('application/json')
-      .send(res);
+      .send(response);
   }
 }

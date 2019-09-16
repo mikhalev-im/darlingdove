@@ -6,7 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as cors from 'cors';
+import { HttpExceptionFilter } from 'shared/exception.filter';
 
 declare const module: any;
 
@@ -16,14 +16,13 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   app.setGlobalPrefix('/api');
-
-  // TODO: decide if this is needed
-  app.use(cors());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const options = new DocumentBuilder()
     .setTitle('DarlingDove API')
     .setDescription('DarlingDove API description')
     .setVersion('1.0')
+    .setBasePath('/api')
     .addBearerAuth('access_token', 'query')
     .build();
   const document = SwaggerModule.createDocument(app, options);

@@ -31,7 +31,6 @@
     "bcrypt": "^3.0.6",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
-    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "fastify-swagger": "^2.3.2",
     "handlebars": "^4.1.2",

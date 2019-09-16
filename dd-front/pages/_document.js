@@ -5,6 +5,15 @@ import flush from 'styled-jsx/server';
 
 import getPageContext from '../utils/get-page-context';
 
+const SCHEMA_ORG_ORGANIZATION = {
+  '@context': 'http://schema.org',
+  '@type': 'Organization',
+  name: 'DarlingDove',
+  url: 'http://darlingdove.ru',
+  email: 'info@darlingdove.ru',
+  logo: 'https://darlingdove.ru/image/catalog/cartoon.png'
+};
+
 class MyDocument extends Document {
   render() {
     const { pageContext } = this.props;
@@ -29,6 +38,12 @@ class MyDocument extends Document {
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(SCHEMA_ORG_ORGANIZATION)
+            }}
           />
         </Head>
         <body>

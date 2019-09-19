@@ -18,6 +18,8 @@ import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 import { DefaultValuesPipe } from '../shared/pipes/default-values.pipe';
 import { ProductsService } from '../products/products.service';
 import { BulkQtyUpdateDto } from './dto/bulk-qty-update.dto';
+import { MongoIdParams } from 'shared/dto/mongo-id.dto';
+import { RemoveFromCartParams } from './dto/remove-from-cart.dto';
 
 @ApiUseTags('carts')
 @Controller('carts')
@@ -27,10 +29,11 @@ export class CartsController {
     private readonly cartsService: CartsService,
   ) {}
 
-  @Get(':cartId')
+  @Get(':id')
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({ description: 'Returns cart object' })
-  async getById(@Param('cartId') cartId: string) {
-    const cart = await this.cartsService.findById(cartId);
+  async getById(@Param() params: MongoIdParams) {
+    const cart = await this.cartsService.findById(params.id);
 
     if (!cart) throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
 
@@ -81,17 +84,15 @@ export class CartsController {
   }
 
   @Delete('/:cartId/:productId')
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({ description: 'Returns updated cart object' })
-  async removeFromCart(
-    @Param('cartId') cartId: string,
-    @Param('productId') productId: string,
-  ) {
-    const cart = await this.cartsService.findById(cartId);
+  async removeFromCart(@Param() params: RemoveFromCartParams) {
+    const cart = await this.cartsService.findById(params.cartId);
 
     if (!cart) throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
 
     cart.items = cart.items.filter(
-      item => item.product.toString() !== productId,
+      item => item.product.toString() !== params.productId,
     );
 
     cart.updatedTime = new Date();
@@ -102,13 +103,14 @@ export class CartsController {
     return cart.toObject();
   }
 
-  @Patch('/:cartId')
+  @Patch('/:id')
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({ description: 'Returns updated cart object' })
   async bulkQtyUpdate(
-    @Param('cartId') cartId: string,
+    @Param() params: MongoIdParams,
     @Body() data: BulkQtyUpdateDto,
   ) {
-    const cart = await this.cartsService.findById(cartId);
+    const cart = await this.cartsService.findById(params.id);
 
     if (!cart) throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
 

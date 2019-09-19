@@ -16,6 +16,7 @@ import { ParseBoolValuesPipe } from '../shared/pipes/parse-bool-values.pipe';
 import { DefaultValuesPipe } from '../shared/pipes/default-values.pipe';
 import { ApiUseTags, ApiOkResponse, ApiImplicitQuery } from '@nestjs/swagger';
 import { GetProductsDto } from './dto/get-products.dto';
+import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 
 @ApiUseTags('products')
 @Controller('products')
@@ -44,10 +45,11 @@ export class ProductsController {
     return this.productsService.getTags(category);
   }
 
-  @Get(':productId')
+  @Get(':id')
   @ApiOkResponse({ description: 'Returns product object' })
-  async getById(@Param('productId') productId: string) {
-    const product = await this.productsService.findById(productId);
+  @UsePipes(new ValidationPipe())
+  async getById(@Param() params: MongoIdParams) {
+    const product = await this.productsService.findById(params.id);
 
     if (!product)
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);

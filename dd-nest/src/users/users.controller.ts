@@ -29,6 +29,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../shared/decorators/user.decorator';
 import { MailService } from '../mail/mail.service';
+import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -97,7 +98,7 @@ export class UsersController {
     return { ...user.toObject(), jwt };
   }
 
-  @Post(':userId/password')
+  @Post(':id/password')
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Password changed' })
   @UseGuards(AuthGuard())
@@ -105,10 +106,10 @@ export class UsersController {
   async changePassword(
     @User() user: UserInterface,
     @Body() data: PasswordChangeDto,
-    @Param('userId') userId: string,
+    @Param() params: MongoIdParams,
   ) {
     // user can update only his own profile for now
-    if (user._id.toString() !== userId) {
+    if (user._id.toString() !== params.id) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
 
@@ -140,7 +141,7 @@ export class UsersController {
     return user.toObject();
   }
 
-  @Patch(':userId')
+  @Patch(':id')
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Returns updated user object' })
   @UsePipes(new ValidationPipe())
@@ -148,10 +149,10 @@ export class UsersController {
   async updateUserData(
     @User() user: UserInterface,
     @Body() userData: PatchUserDto,
-    @Param('userId') userId: string,
+    @Param() params: MongoIdParams,
   ) {
     // user can update only his own profile for now
-    if (user._id.toString() !== userId) {
+    if (user._id.toString() !== params.id) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
 

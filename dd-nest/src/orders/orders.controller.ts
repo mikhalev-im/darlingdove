@@ -10,6 +10,8 @@ import {
   Post,
   Body,
   Res,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ProductsService } from '../products/products.service';
@@ -31,6 +33,7 @@ import {
   PaymentProcessStatus,
 } from './interfaces/yandex.interface';
 import { MailService } from '../mail/mail.service';
+import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 
 // Helper function to build payment success/failure redirect urls
 const getRedirectUrl = (
@@ -55,19 +58,17 @@ export class OrdersController {
     private readonly yandexService: YandexService,
   ) {}
 
-  @Get(':orderId')
+  @Get(':id')
   @ApiBearerAuth()
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({ description: 'Returns order object' })
   @UseGuards(AuthGuard())
-  async getById(
-    @Param('orderId') orderId: string,
-    @User() user: UserInterface,
-  ) {
+  async getById(@Param() params: MongoIdParams, @User() user: UserInterface) {
     // check if it is valid mongo id
-    if (!/^[a-f\d]{24}$/i.test(orderId))
+    if (!/^[a-f\d]{24}$/i.test(params.id))
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
 
-    const order = await this.ordersService.findById(orderId);
+    const order = await this.ordersService.findById(params.id);
 
     if (!order || order.user._id.toString() !== user._id.toString())
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
@@ -88,6 +89,7 @@ export class OrdersController {
 
   @Post('/createFromCart')
   @ApiBearerAuth()
+  @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ description: 'Retruns created order' })
   @UseGuards(AuthGuard())
   async createFromCart(
@@ -165,17 +167,18 @@ export class OrdersController {
     return order.toObject();
   }
 
-  @Post('/:orderId/pay')
+  @Post('/:id/pay')
   @ApiBearerAuth()
+  @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ description: 'Process order payment' })
   @UseGuards(AuthGuard())
   async pay(
-    @Param('orderId') orderId: string,
+    @Param() params: MongoIdParams,
     @User() user: UserInterface,
     @Res() res,
   ) {
     // find order by id and check user id
-    const order = await this.ordersService.findById(orderId);
+    const order = await this.ordersService.findById(params.id);
     if (!order || order.user._id !== user._id) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
@@ -229,6 +232,7 @@ export class OrdersController {
     res.redirect(url);
   }
 
+  // TODO
   @Get('/:orderId/payment/:requestId')
   @ApiBearerAuth()
   @ApiCreatedResponse({ description: 'Checks order payment by request id' })

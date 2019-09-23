@@ -13,7 +13,13 @@ const styles = {
 
 const ProductList = ({ classes, products = [], addToCart }) => {
   return (
-    <Grid container spacing={16} className={classes.root} justify="center">
+    <Grid
+      container
+      spacing={16}
+      className={classes.root}
+      justify="center"
+      wrap="wrap"
+    >
       {products.map(product => (
         <Grid item key={product._id}>
           <Product {...product} addToCart={addToCart} />

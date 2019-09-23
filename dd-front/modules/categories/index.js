@@ -20,11 +20,22 @@ import ProductType from './types/product';
 import { getProductsData, getProductsCount, getTags } from './selectors';
 
 const styles = theme => ({
-  title: {
-    paddingLeft: theme.spacing.padding
+  container: {
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap'
+    }
   },
   filters: {
-    flexGrow: 1
+    minWidth: 250,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      marginBottom: theme.spacing.padding
+    }
+  },
+  content: {
+    flexGrow: 1,
+    paddingLeft: theme.spacing.padding
   }
 });
 
@@ -56,15 +67,15 @@ class Category extends Component {
 
     return (
       <Layout>
-        <Grid container>
-          <Grid item sm={2} className={classes.filters}>
+        <Grid container className={classes.container}>
+          <Grid item className={classes.filters}>
             <Filters
               tags={tags}
               tagsValue={tagsValue}
               onChange={this.onTagChange}
             />
           </Grid>
-          <Grid item sm={10}>
+          <Grid item className={classes.content}>
             <Typography
               align="left"
               variant="h2"

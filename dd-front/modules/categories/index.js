@@ -30,12 +30,12 @@ const styles = theme => ({
     minWidth: 250,
     [theme.breakpoints.down('sm')]: {
       width: '100%',
-      marginBottom: theme.spacing.padding
+      marginBottom: theme.padding
     }
   },
   content: {
     flexGrow: 1,
-    paddingLeft: theme.spacing.padding
+    paddingLeft: theme.padding
   }
 });
 

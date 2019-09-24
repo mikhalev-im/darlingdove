@@ -1,7 +1,10 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
+import theme from '../modules/shared/utils/theme';
 import { initialize } from '../modules/root';
 
 /**
@@ -37,13 +40,24 @@ class MyApp extends App {
     this.reduxStore = initialize(props.reduxState);
   }
 
+  componentDidMount() {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
+  }
+
   render() {
     const { Component, pageProps } = this.props;
     return (
       <Container>
-        <Provider store={this.reduxStore}>
-          <Component {...pageProps} />
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Provider store={this.reduxStore}>
+            <Component {...pageProps} />
+          </Provider>
+        </ThemeProvider>
       </Container>
     );
   }

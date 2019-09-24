@@ -7,9 +7,11 @@ import {
   ListItem,
   ListItemText,
   Checkbox,
-  Collapse
+  Collapse,
+  ListItemSecondaryAction,
+  IconButton
 } from '@material-ui/core';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import { ExpandLess, ExpandMore, Close } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
@@ -25,7 +27,7 @@ const styles = theme => ({
     paddingBottom: 0
   },
   checkbox: {
-    padding: theme.spacing.padding / 3
+    padding: theme.padding / 3
   }
 });
 
@@ -56,7 +58,12 @@ class Filters extends PureComponent {
         <List disablePadding>
           <ListItem dense button onClick={this.toggleOpen}>
             <ListItemText primary={'Категории'} />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            <ListItemSecondaryAction>
+              <IconButton size="small">
+                <Close fontSize="inherit" />
+              </IconButton>
+              {open ? <ExpandLess /> : <ExpandMore />}
+            </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={open}>
             <List disablePadding>

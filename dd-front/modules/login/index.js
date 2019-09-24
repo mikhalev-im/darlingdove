@@ -19,22 +19,22 @@ const REGISTER_INDEX = 1;
 
 const styles = theme => ({
   headline: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   },
   paper: {
     margin: '0 auto',
     maxWidth: 400
   },
   loginForm: {
-    paddingLeft: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit * 3
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    paddingBottom: theme.spacing(3)
   },
   field: {
     width: '100%'
   },
   button: {
-    marginTop: theme.spacing.unit * 4
+    marginTop: theme.spacing(4)
   }
 });
 

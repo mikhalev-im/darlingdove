@@ -26,10 +26,10 @@ const MAX_WIDTH_MULTIPLIER = 125;
 
 const styles = theme => ({
   stepper: {
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER,
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER),
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: theme.spacing.padding
+    marginBottom: theme.padding
   }
 });
 

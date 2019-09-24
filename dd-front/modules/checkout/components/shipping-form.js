@@ -20,19 +20,19 @@ const MAX_WIDTH_MULTIPLIER = 125;
 
 const styles = theme => ({
   wrapper: {
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER,
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER),
     marginLeft: 'auto',
     marginRight: 'auto'
   },
   paper: {
     overflowX: 'auto',
-    padding: theme.spacing.padding
+    padding: theme.padding
   },
   grid: {
-    padding: theme.spacing.padding
+    padding: theme.padding
   },
   button: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing(1)
   },
   buttons: {
     display: 'flex',
@@ -59,7 +59,7 @@ class ShippingForm extends React.PureComponent {
           <Typography align="left" variant="h6">
             Информация о доставке
           </Typography>
-          <Grid className={classes.grid} container spacing={24}>
+          <Grid className={classes.grid} container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
                 required

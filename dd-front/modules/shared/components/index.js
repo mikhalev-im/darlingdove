@@ -33,13 +33,13 @@ const INPUT_PROPS = { style: { textAlign: 'center' }, min: 1 };
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER,
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER),
     margin: '0 auto'
   },
   table: {
-    minWidth: theme.spacing.unit * MIN_WIDTH_MULTIPLIES
+    minWidth: theme.spacing(MIN_WIDTH_MULTIPLIES)
   },
   link: {
     textDecoration: 'none'
@@ -60,7 +60,7 @@ const styles = theme => ({
     marginRight: 'auto',
     display: 'flex',
     justifyContent: 'flex-end',
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER)
   },
   input: {
     width: INPUT_WIDTH

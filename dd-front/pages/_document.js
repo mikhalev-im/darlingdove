@@ -1,9 +1,7 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import JssProvider from 'react-jss/lib/JssProvider';
-import flush from 'styled-jsx/server';
-
-import getPageContext from '../utils/get-page-context';
+import { ServerStyleSheets } from '@material-ui/styles';
+import theme from '../modules/shared/utils/theme';
 
 const SCHEMA_ORG_ORGANIZATION = {
   '@context': 'http://schema.org',
@@ -16,8 +14,6 @@ const SCHEMA_ORG_ORGANIZATION = {
 
 class MyDocument extends Document {
   render() {
-    const { pageContext } = this.props;
-
     return (
       <html lang="en" dir="ltr">
         <Head>
@@ -31,13 +27,10 @@ class MyDocument extends Document {
             }
           />
           {/* PWA primary color */}
-          <meta
-            name="theme-color"
-            content={pageContext.theme.palette.primary.main}
-          />
+          <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <script
             type="application/ld+json"
@@ -58,50 +51,46 @@ class MyDocument extends Document {
 // Resolution order
 //
 // On the server:
-// 1. page.getInitialProps
-// 2. document.getInitialProps
-// 3. page.render
-// 4. document.render
+// 1. app.getInitialProps
+// 2. page.getInitialProps
+// 3. document.getInitialProps
+// 4. app.render
+// 5. page.render
+// 6. document.render
 //
 // On the server with error:
-// 2. document.getInitialProps
+// 1. document.getInitialProps
+// 2. app.render
 // 3. page.render
 // 4. document.render
 //
 // On the client
-// 1. page.getInitialProps
-// 3. page.render
+// 1. app.getInitialProps
+// 2. page.getInitialProps
+// 3. app.render
+// 4. page.render
 
-MyDocument.getInitialProps = ctx => {
-  // Get the context of the page to collected side effects.
-  const pageContext = getPageContext();
-  const page = ctx.renderPage(Component => {
-    const comp = props => (
-      <JssProvider
-        registry={pageContext.sheetsRegistry}
-        generateClassName={pageContext.generateClassName}
-      >
-        <Component pageContext={pageContext} {...props} />
-      </JssProvider>
-    );
+MyDocument.getInitialProps = async ctx => {
+  // Render app and page and get the context of the page with collected side effects.
+  const sheets = new ServerStyleSheets();
+  const originalRenderPage = ctx.renderPage;
 
-    return comp;
-  });
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: App => props => sheets.collect(<App {...props} />)
+    });
+
+  const initialProps = await Document.getInitialProps(ctx);
 
   return {
-    ...page,
-    pageContext,
-    styles: (
-      <React.Fragment>
-        <style
-          id="jss-server-side"
-          dangerouslySetInnerHTML={{
-            __html: pageContext.sheetsRegistry.toString()
-          }}
-        />
-        {flush() || null}
+    ...initialProps,
+    // Styles fragment is rendered after the app and page rendering finish.
+    styles: [
+      <React.Fragment key="styles">
+        {initialProps.styles}
+        {sheets.getStyleElement()}
       </React.Fragment>
-    )
+    ]
   };
 };
 

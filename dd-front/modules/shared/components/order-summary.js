@@ -24,13 +24,13 @@ const MIN_WIDTH_MULTIPLIER = 87.5;
 
 const styles = theme => ({
   wrapper: {
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER,
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER),
     marginLeft: 'auto',
     marginRight: 'auto'
   },
   paper: {
     overflowX: 'auto',
-    padding: theme.spacing.padding
+    padding: theme.padding
   },
   item: {
     paddingTop: 0,
@@ -43,17 +43,17 @@ const styles = theme => ({
     fontWeight: '500'
   },
   shipping: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3)
   },
   title: {
-    paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit
+    paddingLeft: theme.spacing(3),
+    paddingBottom: theme.spacing(1)
   },
   table: {
-    minWidth: theme.spacing.unit * MIN_WIDTH_MULTIPLIER
+    minWidth: theme.spacing(MIN_WIDTH_MULTIPLIER)
   },
   button: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing(1)
   },
   buttons: {
     display: 'flex',
@@ -77,7 +77,7 @@ const OrderSummary = ({
         <Typography align="left" variant="h6">
           Ваш заказ
         </Typography>
-        <Grid container className={classes.shipping} spacing={16}>
+        <Grid container className={classes.shipping} spacing={2}>
           <Grid item>
             <Typography align="left" gutterBottom>
               <b>Статус:</b> Не оплачено

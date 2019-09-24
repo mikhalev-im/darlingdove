@@ -43,7 +43,7 @@ class Product extends React.PureComponent {
           href={`/product?id=${_id}`}
           hrefAs={`/product/${_id}`}
         />
-        <CardActions disableActionSpacing className={classes.actionsBar}>
+        <CardActions disableSpacing className={classes.actionsBar}>
           <Typography>{priceStr}</Typography>
           <Typography>{name}</Typography>
           <Fab

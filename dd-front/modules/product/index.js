@@ -24,15 +24,15 @@ const styles = theme => ({
     textAlign: 'left'
   },
   chip: {
-    margin: theme.spacing.unit / 2
+    margin: theme.spacing(0.5)
   },
   qtyWrapper: {
     display: 'flex',
     alignItems: 'flex-end'
   },
   buyBtn: {
-    marginBottom: theme.spacing.unit,
-    marginLeft: theme.spacing.unit
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   img: {
     width: '100%',
@@ -83,7 +83,7 @@ class Product extends Component {
 
     return (
       <Layout>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           <Grid item sm={6}>
             <Grid container justify="flex-end">
               <Grid item>

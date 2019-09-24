@@ -15,7 +15,7 @@ const ProductList = ({ classes, products = [], addToCart }) => {
   return (
     <Grid
       container
-      spacing={16}
+      spacing={2}
       className={classes.root}
       justify="center"
       wrap="wrap"

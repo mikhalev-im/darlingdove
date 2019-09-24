@@ -23,7 +23,7 @@ const styles = theme => ({
     textAlign: 'center'
   },
   container: {
-    padding: theme.spacing.padding
+    padding: theme.padding
   }
 });
 

@@ -24,11 +24,11 @@ const styles = theme => ({
     width: '100%',
     margin: '0 auto',
     overflowX: 'auto',
-    marginTop: theme.spacing.unit * 3,
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER
+    marginTop: theme.spacing(3),
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER)
   },
   table: {
-    minWidth: theme.spacing.unit * MIN_WIDTH_MULTIPLIER
+    minWidth: theme.spacing(MIN_WIDTH_MULTIPLIER)
   }
 });
 const CartTable = ({ items, services, classes, onQtyChange, onItemDelete }) => {

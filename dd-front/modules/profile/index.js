@@ -39,20 +39,20 @@ const styles = theme => ({
     marginRight: 'auto',
     display: 'flex',
     justifyContent: 'flex-end',
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER)
   },
   button: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing(1)
   },
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER,
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER),
     margin: '0 auto'
   },
   table: {
-    minWidth: theme.spacing.unit * MIN_WIDTH_MULTIPLIER
+    minWidth: theme.spacing(MIN_WIDTH_MULTIPLIER)
   }
 });
 

@@ -22,7 +22,7 @@ const styles = theme => ({
     marginRight: 'auto',
     display: 'flex',
     justifyContent: 'flex-end',
-    maxWidth: theme.spacing.unit * MAX_WIDTH_MULTIPLIER
+    maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER)
   }
 });
 

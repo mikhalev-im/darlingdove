@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   img: { maxWidth: '100%' },
-  fullScreen: { margin: -theme.spacing.padding }
+  fullScreen: { margin: -theme.padding }
 });
 
 const BannerBlock = ({ classes, src, fullScreen }) => {

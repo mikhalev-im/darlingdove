@@ -44,6 +44,13 @@ class Filters extends PureComponent {
     onChange(value);
   };
 
+  reset = () => {
+    const { tagsValue, onChange } = this.props;
+
+    if (!tagsValue || !tagsValue.length) return;
+    onChange([]);
+  };
+
   toggleOpen = () => {
     const { open } = this.state;
     this.setState({ open: !open });
@@ -57,12 +64,12 @@ class Filters extends PureComponent {
       <Paper className={classes.root}>
         <List disablePadding>
           <ListItem dense button onClick={this.toggleOpen}>
+            {open ? <ExpandLess /> : <ExpandMore />}
             <ListItemText primary={'Категории'} />
             <ListItemSecondaryAction>
-              <IconButton size="small">
+              <IconButton size="small" onClick={this.reset}>
                 <Close fontSize="inherit" />
               </IconButton>
-              {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={open}>

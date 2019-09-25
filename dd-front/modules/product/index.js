@@ -78,9 +78,6 @@ class Product extends Component {
     const { lightboxIsOpen } = this.state;
     const { classes, product, relatedProducts } = this.props;
 
-    // console.log('RENDER');
-    // console.log(product);
-
     return (
       <Layout>
         <Grid container spacing={3}>
@@ -104,7 +101,7 @@ class Product extends Component {
             <Typography variant="h6" gutterBottom>
               {product.name}
             </Typography>
-            <Typography variant="body2">Артикул: card-01</Typography>
+            <Typography variant="body2">{`Артикул: ${product.sku}`}</Typography>
             <Typography variant="body2">{`Наличие: ${product.qty}`}</Typography>
             <Typography variant="h6">{`${product.price} руб`}</Typography>
             <div className={classes.qtyWrapper}>

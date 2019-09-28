@@ -1,5 +1,5 @@
 import React from 'react';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -51,14 +51,12 @@ class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <Container>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Provider store={this.reduxStore}>
-            <Component {...pageProps} />
-          </Provider>
-        </ThemeProvider>
-      </Container>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Provider store={this.reduxStore}>
+          <Component {...pageProps} />
+        </Provider>
+      </ThemeProvider>
     );
   }
 }

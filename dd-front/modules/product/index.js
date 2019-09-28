@@ -80,11 +80,17 @@ class Product extends Component {
 
     return (
       <Layout>
-        <Grid container spacing={3}>
+        <Grid
+          container
+          spacing={3}
+          itemScope
+          itemType="http://schema.org/Offer"
+        >
           <Grid item sm={6}>
             <Grid container justify="flex-end">
               <Grid item>
                 <img
+                  itemProp="image"
                   onClick={this.openLightBox}
                   className={classes.img}
                   src={product.images[0]}
@@ -98,12 +104,14 @@ class Product extends Component {
             </Grid>
           </Grid>
           <Grid item sm={6} className={classes.infoWrapper}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom itemProp="name">
               {product.name}
             </Typography>
             <Typography variant="body2">{`Артикул: ${product.sku}`}</Typography>
             <Typography variant="body2">{`Наличие: ${product.qty}`}</Typography>
-            <Typography variant="h6">{`${product.price} руб`}</Typography>
+            <Typography variant="h6" itemProp="price">{`${
+              product.price
+            } руб`}</Typography>
             <div className={classes.qtyWrapper}>
               <TextField
                 id="number"

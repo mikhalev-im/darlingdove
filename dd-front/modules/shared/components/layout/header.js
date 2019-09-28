@@ -16,7 +16,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const styles = {
+const styles = theme => ({
   toolbar: {
     justifyContent: 'space-between'
   },
@@ -31,8 +31,12 @@ const styles = {
   link: {
     textDecoration: 'none',
     color: '#fff'
+  },
+  sideMenuLink: {
+    textDecoration: 'none',
+    color: theme.palette.common.black
   }
-};
+});
 
 const menu = [
   {
@@ -81,7 +85,10 @@ class Header extends Component {
                 <List>
                   {menu.map(({ title, href, hrefAs }) => (
                     <Link href={href} as={hrefAs} key={title}>
-                      <a onClick={this.toggleMenu} className={classes.link}>
+                      <a
+                        onClick={this.toggleMenu}
+                        className={classes.sideMenuLink}
+                      >
                         <ListItem button>
                           <ListItemText primary={title} />
                         </ListItem>

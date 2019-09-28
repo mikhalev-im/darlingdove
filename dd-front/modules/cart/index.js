@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import RootActions from '../root/actions';
 import Layout from '../shared/components/layout';
 import { getCartItems, getCartServices } from './selectors';
 import NotificationsActions from '../notifications/actions';
+import PromoModal from './components/promo';
 
 const MAX_WIDTH_MULTIPLIER = 125;
 
@@ -23,6 +24,9 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     maxWidth: theme.spacing(MAX_WIDTH_MULTIPLIER)
+  },
+  button: {
+    marginLeft: theme.spacing(1)
   }
 });
 
@@ -35,6 +39,8 @@ const Cart = ({
   onProductDelete,
   addNotification
 }) => {
+  const [isPromoOpen, setPromoOpen] = useState(false);
+
   if (!items.length) {
     return (
       <Layout>
@@ -64,8 +70,21 @@ const Cart = ({
         onQtyChange={onQtyChange}
         onItemDelete={onProductDelete}
       />
+      <PromoModal
+        open={isPromoOpen}
+        onClose={() => setPromoOpen(false)}
+        onSubmit={() => setPromoOpen(false)}
+      />
       <p className={classes.buttons}>
-        <Button onClick={onSubmit} color={'primary'} variant={'contained'}>
+        <Button variant={'contained'} onClick={() => setPromoOpen(true)}>
+          Ввести промокод
+        </Button>
+        <Button
+          onClick={onSubmit}
+          className={classes.button}
+          color={'primary'}
+          variant={'contained'}
+        >
           Оформить заказ
         </Button>
       </p>

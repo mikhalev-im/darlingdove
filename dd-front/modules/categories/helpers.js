@@ -19,11 +19,8 @@ export const buildProductFilters = query => {
 
   if (query.skip) filters.skip = query.skip;
 
-  if (query.sort) {
-    const [orderBy, order] = query.sort.split(' ');
-    filters.order = order.toLowerCase();
-    filters.orderBy = orderBy;
-  }
+  if (query.order) filters.order = query.order;
+  if (query.orderBy) filters.orderBy = query.orderBy;
 
   return filters;
 };

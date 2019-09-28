@@ -56,7 +56,7 @@ class PasswordChange extends Component {
     const { open, classes, onClose } = this.props;
 
     return (
-      <Dialog open={open} maxWidth={'xs'} fullWidth onClose={this.onClose}>
+      <Dialog open={open} maxWidth="xs" fullWidth onClose={this.onClose}>
         <DialogTitle id="simple-dialog-title">Сменить пароль</DialogTitle>
         <DialogContent>
           <Grid>

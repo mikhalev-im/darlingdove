@@ -10,7 +10,6 @@ import Empty from './components/empty';
 import CartTable from './components/table';
 import CartActions from './actions';
 import RootActions from '../root/actions';
-import Layout from '../shared/components/layout';
 import { getCartItems, getCartServices } from './selectors';
 import NotificationsActions from '../notifications/actions';
 import PromoModal from './components/promo';
@@ -42,11 +41,7 @@ const Cart = ({
   const [isPromoOpen, setPromoOpen] = useState(false);
 
   if (!items.length) {
-    return (
-      <Layout>
-        <Empty />
-      </Layout>
-    );
+    return <Empty />;
   }
 
   const onSubmit = () => {
@@ -63,7 +58,7 @@ const Cart = ({
   };
 
   return (
-    <Layout>
+    <>
       <CartTable
         items={items}
         services={services}
@@ -88,7 +83,7 @@ const Cart = ({
           Оформить заказ
         </Button>
       </p>
-    </Layout>
+    </>
   );
 };
 

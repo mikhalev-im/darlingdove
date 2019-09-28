@@ -12,7 +12,6 @@ import { withStyles } from '@material-ui/core/styles';
 import UserActions from '../user/actions';
 import RootActions from '../root/actions';
 import LoginActions from './actions';
-import Layout from '../shared/components/layout';
 
 const LOGIN_INDEX = 0;
 const REGISTER_INDEX = 1;
@@ -96,7 +95,7 @@ class Login extends Component {
     const { classes } = this.props;
 
     return (
-      <Layout>
+      <>
         <Typography className={classes.headline} variant="h5" component="h3">
           Вход в систему
         </Typography>
@@ -160,7 +159,7 @@ class Login extends Component {
             </Button>
           </form>
         </Paper>
-      </Layout>
+      </>
     );
   }
 }

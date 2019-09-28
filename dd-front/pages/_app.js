@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import theme from '../modules/shared/utils/theme';
 import { initialize } from '../modules/root';
+import Layout from '../modules/shared/components/layout';
 
 /**
  * Server side:
@@ -54,7 +55,9 @@ class MyApp extends App {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Provider store={this.reduxStore}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </Provider>
       </ThemeProvider>
     );

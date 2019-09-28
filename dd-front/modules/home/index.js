@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 
 import HomeActions from './actions';
 import RootActions from '../root/actions';
-import Layout from '../shared/components/layout';
 import renderBlock from '../shared/components/page-blocks';
 
-const Home = ({ blocks }) => <Layout>{blocks.map(renderBlock)}</Layout>;
+const Home = ({ blocks }) => <>{blocks.map(renderBlock)}</>;
 
 Home.getInitialProps = async ({ reduxStore }) => {
   const { HOME_PAGE_LOADED } = HomeActions.Types;

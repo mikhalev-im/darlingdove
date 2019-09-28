@@ -9,7 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Lightbox from 'react-images';
 import { connect } from 'react-redux';
 
-import Layout from '../shared/components/layout';
 import ProductList from '../shared/components/product-list';
 import ProductActions from './actions';
 import RootActions from '../root/actions';
@@ -79,7 +78,7 @@ class Product extends Component {
     const { classes, product, relatedProducts } = this.props;
 
     return (
-      <Layout>
+      <>
         <Grid
           container
           spacing={3}
@@ -157,7 +156,7 @@ class Product extends Component {
             />
           </Grid>
         </Grid>
-      </Layout>
+      </>
     );
   }
 }

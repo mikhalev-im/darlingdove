@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import OrderActions from './actions';
 import RootActions from '../root/actions';
-import Layout from '../shared/components/layout';
 import OrderSummary from '../shared/components/order-summary';
 import OrderType from './types/order';
 import { getOrder } from './selectors';
@@ -59,9 +58,7 @@ class Order extends Component {
 
   render() {
     return (
-      <Layout>
-        {this.props.order ? this.renderSummary() : this.renderNotFound()}
-      </Layout>
+      <>{this.props.order ? this.renderSummary() : this.renderNotFound()}</>
     );
   }
 }

@@ -16,7 +16,6 @@ import { withStyles } from '@material-ui/core/styles';
 import UserActions from '../user/actions';
 import RootActions from '../root/actions';
 import ProfileActions from './actions';
-import Layout from '../shared/components/layout';
 import PasswordModal from './components/password-change';
 import OrderType from '../order/types/order';
 import UserType from './types/user';
@@ -168,7 +167,7 @@ class Profile extends Component {
     const { classes } = this.props;
     const { passwordChangeOpen } = this.state;
     return (
-      <Layout>
+      <>
         <Paper className={classes.root}>
           <Toolbar>
             <Typography variant="h6" id="tableTitle">
@@ -186,7 +185,7 @@ class Profile extends Component {
           onClose={this.passwordChangeToggle}
           onSubmit={this.onPasswordChange}
         />
-      </Layout>
+      </>
     );
   }
 }

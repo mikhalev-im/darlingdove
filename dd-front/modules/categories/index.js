@@ -19,7 +19,6 @@ import {
 } from './constants';
 
 import Filters from './components/filters';
-import Layout from '../shared/components/layout';
 import ProductList from '../shared/components/product-list';
 import ProductType from './types/product';
 import { getProductsData, getProductsCount, getTags } from './selectors';
@@ -101,7 +100,7 @@ class Category extends Component {
     const title = TITLE_MAPPING[query.category.toLowerCase()];
 
     return (
-      <Layout>
+      <>
         <Grid container className={classes.container}>
           <Grid item className={classes.filters}>
             <Sorting
@@ -139,7 +138,7 @@ class Category extends Component {
             />
           </Grid>
         </Grid>
-      </Layout>
+      </>
     );
   }
 }

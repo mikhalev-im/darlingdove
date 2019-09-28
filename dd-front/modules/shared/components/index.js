@@ -19,7 +19,6 @@ import Link from 'next/link';
 
 import CartActions from './actions';
 import RootActions from '../root/actions';
-import Layout from '../shared/components/layout';
 import { getCartItems, getCartId } from './selectors';
 import CartItemType from '../../cart/types/item';
 
@@ -84,7 +83,7 @@ class Cart extends Component {
 
     if (!cartItems.length) {
       return (
-        <Layout>
+        <>
           <div>
             <Typography variant="h5" id="tableTitle">
               Корзина пуста
@@ -97,12 +96,12 @@ class Cart extends Component {
               </a>
             </Link>
           </div>
-        </Layout>
+        </>
       );
     }
 
     return (
-      <Layout>
+      <>
         <Paper className={classes.root}>
           <Toolbar>
             <Typography variant="h6" id="tableTitle">
@@ -177,7 +176,7 @@ class Cart extends Component {
             Оформить заказ
           </Button>
         </p>
-      </Layout>
+      </>
     );
   }
 }

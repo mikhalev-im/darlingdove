@@ -7,7 +7,6 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { withStyles } from '@material-ui/core/styles';
 
 import { CHECKOUT_STEPS } from './constants';
-import Layout from '../shared/components/layout';
 import ShippingForm from './components/shipping-form';
 import OrderSummary from '../shared/components/order-summary';
 import RootActions from '../root/actions';
@@ -111,7 +110,7 @@ class Checkout extends Component {
     const { classes, activeStep } = this.props;
 
     return (
-      <Layout>
+      <>
         <Stepper activeStep={activeStep} className={classes.stepper}>
           {STEPS.map(label => {
             return (
@@ -124,7 +123,7 @@ class Checkout extends Component {
         {activeStep === CHECKOUT_STEPS.ADDRESS_STEP_INTEX
           ? this.renderShippingForm()
           : this.renderOrderSummary()}
-      </Layout>
+      </>
     );
   }
 }

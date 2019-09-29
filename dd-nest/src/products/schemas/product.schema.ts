@@ -43,4 +43,8 @@ export const ProductSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
 });

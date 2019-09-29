@@ -83,7 +83,7 @@ class Product extends Component {
           container
           spacing={3}
           itemScope
-          itemType="http://schema.org/Offer"
+          itemType="http://schema.org/Product"
         >
           <Grid item sm={6}>
             <Grid container justify="flex-end">
@@ -106,11 +106,24 @@ class Product extends Component {
             <Typography variant="h6" gutterBottom itemProp="name">
               {product.name}
             </Typography>
-            <Typography variant="body2">{`Артикул: ${product.sku}`}</Typography>
             <Typography variant="body2">{`Наличие: ${product.qty}`}</Typography>
-            <Typography variant="h6" itemProp="price">{`${
-              product.price
-            } руб`}</Typography>
+            <Typography variant="body2">
+              Артикул: <span itemProp="sku">{product.sku}</span>
+            </Typography>
+            <Typography variant="body2" itemProp="description">
+              {product.description}
+            </Typography>
+            <Typography
+              variant="h6"
+              itemProp="offers"
+              itemScope
+              itemType="http://schema.org/Offer"
+            >
+              <span itemProp="price">{product.price}</span>{' '}
+              <span itemProp="priceCurrency" content="RUB">
+                руб
+              </span>
+            </Typography>
             <div className={classes.qtyWrapper}>
               <TextField
                 id="number"

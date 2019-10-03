@@ -7,4 +7,5 @@ export interface ProductMatch {
     $gt?: number;
   };
   category?: string;
+  sku?: string;
 }

@@ -31,7 +31,7 @@ class Product extends React.PureComponent {
   };
 
   render() {
-    const { classes, price, name, _id, images } = this.props;
+    const { classes, price, name, images, sku } = this.props;
     const priceStr = `${price} руб`;
     const coverImg = images[0];
 
@@ -40,8 +40,8 @@ class Product extends React.PureComponent {
         <ProductCard
           img={coverImg}
           title={priceStr}
-          href={`/product?id=${_id}`}
-          hrefAs={`/product/${_id}`}
+          href={`/product?sku=${sku}`}
+          hrefAs={`/product/${sku}`}
         />
         <CardActions disableSpacing className={classes.actionsBar}>
           <Typography>{priceStr}</Typography>
@@ -62,6 +62,7 @@ class Product extends React.PureComponent {
 
 Product.propTypes = {
   classes: PropTypes.any,
+  sku: PropTypes.string.isRequired,
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,

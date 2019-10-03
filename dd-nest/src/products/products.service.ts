@@ -26,6 +26,10 @@ export class ProductsService {
   buildMatch(filters: GetProductsDto): ProductMatch {
     const match: ProductMatch = {};
 
+    if (filters.sku) {
+      match.sku = filters.sku;
+    }
+
     if (filters.category) {
       match.category = filters.category;
     }
@@ -75,5 +79,14 @@ export class ProductsService {
 
   async getTags(category?: string): Promise<string[]> {
     return this.productModel.distinct('tags', { category });
+  }
+
+  async getCategories(): Promise<string[]> {
+    return this.productModel.distinct('category');
+  }
+
+  async getIterableProducts(filters: GetProductsDto) {
+    const match = this.buildMatch(filters);
+    return this.productModel.find(match);
   }
 }

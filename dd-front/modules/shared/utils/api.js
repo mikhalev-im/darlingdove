@@ -94,6 +94,11 @@ export const getProduct = async productId => {
   return api.get(`/products/${productId}`);
 };
 
+export const getProductBySku = async sku => {
+  const { data } = await api.get('/products', { query: { sku } });
+  return data[0];
+};
+
 export const getRandomProducts = async (count = 4) => {
   const query = { count };
   return api.get('/products/random', { query });

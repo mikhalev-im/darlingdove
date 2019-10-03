@@ -43,7 +43,7 @@ const ItemRow = ({ item, classes, onChange, onDelete }) => {
   return (
     <TableRow key={product._id}>
       <TableCell className={classes.imageCell}>
-        <Link href={`/product/${product._id}`}>
+        <Link href={`/product/${product.sku}`}>
           <a className={classes.link}>
             <CardMedia image={image} className={classes.image} />
           </a>

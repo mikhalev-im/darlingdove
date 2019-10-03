@@ -1,11 +1,11 @@
 import { all, takeEvery, call, put } from 'redux-saga/effects';
 
-import { getProduct, getRandomProducts } from '../shared/utils/api';
+import { getProductBySku, getRandomProducts } from '../shared/utils/api';
 import Actions from './actions';
 
-export function* loadProductPage({ id }) {
+export function* loadProductPage({ sku, ...rest }) {
   // load and set product
-  const product = yield call(getProduct, id);
+  const product = yield call(getProductBySku, sku);
   yield put(Actions.Creators.setProduct(product));
 
   // load and set related products

@@ -40,11 +40,11 @@ const styles = theme => ({
 });
 
 class Product extends Component {
-  static async getInitialProps({ reduxStore, query: { id } }) {
+  static async getInitialProps({ reduxStore, query: { sku } }) {
     const { PRODUCT_PAGE_LOADED } = ProductActions.Types;
     const action = RootActions.Creators.waitFor(PRODUCT_PAGE_LOADED);
     const promise = reduxStore.dispatch(action);
-    reduxStore.dispatch(ProductActions.Creators.loadProductPage(id));
+    reduxStore.dispatch(ProductActions.Creators.loadProductPage(sku));
     return promise;
   }
 

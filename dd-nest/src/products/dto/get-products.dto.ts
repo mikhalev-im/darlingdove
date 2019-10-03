@@ -14,41 +14,46 @@ export class GetProductsDto {
   @IsOptional()
   @IsString()
   @ApiModelPropertyOptional()
-  readonly category: string;
+  readonly category?: string;
 
   @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(500)
   @ApiModelPropertyOptional()
-  readonly limit: number;
+  readonly limit?: number;
 
   @IsOptional()
   @IsNumber()
   @ApiModelPropertyOptional()
-  readonly skip: number;
+  readonly skip?: number;
 
   @IsString()
   @IsOptional()
   @IsEnum(['createdTime', 'ordersCount', 'name'])
   @ApiModelPropertyOptional()
-  readonly orderBy: string;
+  readonly orderBy?: string;
 
   @IsString()
   @IsOptional()
   @IsEnum(['asc', 'desc'])
   @ApiModelPropertyOptional()
-  readonly order: string;
+  readonly order?: string;
 
   @IsOptional()
   @ApiModelPropertyOptional()
-  readonly tagsOptional: string | string[];
+  readonly tagsOptional?: string | string[];
 
   @IsOptional()
   @ApiModelPropertyOptional()
-  readonly tagsRequired: string | string[];
+  readonly tagsRequired?: string | string[];
 
   @IsBoolean()
+  @IsOptional()
   @ApiModelPropertyOptional()
-  readonly inStock: boolean;
+  readonly inStock?: boolean;
+
+  @IsString()
+  @IsOptional()
+  readonly sku?: string;
 }

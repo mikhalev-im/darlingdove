@@ -12,6 +12,8 @@ services:
     volumes:
       - ./dd-nest:/usr/src/app
       - /usr/src/app/node_modules/
+    environment:
+      - BASE_URL=http://darlingdove.test:8080
   frontend:
     command: ["npm", "run", "start:dev"]
     volumes:

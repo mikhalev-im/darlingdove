@@ -10,4 +10,8 @@ export class PagesService {
   async findBySlug(slug: string): Promise<Page> {
     return this.pageModel.findOne({ slug }).exec();
   }
+
+  async loadAll(): Promise<Page[]> {
+    return this.pageModel.find().exec();
+  }
 }

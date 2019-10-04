@@ -20,7 +20,12 @@ export class ProductsService {
   }
 
   async getRandom(count: number): Promise<Product[]> {
-    return this.productModel.aggregate([{ $sample: { size: count } }]).exec();
+    return this.productModel
+      .aggregate([
+        { $match: { qty: { $gt: 0 } } },
+        { $sample: { size: count } },
+      ])
+      .exec();
   }
 
   buildMatch(filters: GetProductsDto): ProductMatch {

@@ -7,6 +7,8 @@ services:
       - frontend
     build:
       context: ./nginx
+    volumes:
+      - static:/var/www/static
   mongo:
     image: mongo:4
     volumes:
@@ -16,8 +18,11 @@ services:
       - mongo
     build:
       context: ./dd-nest
+    volumes:
+      - static:/var/www/static
     environment:
       - PORT=8000
+      - STATIC_DIR=/var/www/static
       - MONGO_CONNECTION=mongodb://mongo/dd
   frontend:
     depends_on:
@@ -30,3 +35,4 @@ services:
 
 volumes:
   dbdata:
+  static:

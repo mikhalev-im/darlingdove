@@ -35,11 +35,13 @@
     "fastify-swagger": "^2.4.0",
     "handlebars": "^4.3.4",
     "mongoose": "^5.7.1",
+    "nest-schedule": "^0.6.3",
     "nodemailer": "^5.1.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3",
+    "sitemap": "^4.1.1",
     "typescript": "^3.6.3",
     "yandex-money-sdk": "^0.1.7"
   },

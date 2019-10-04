@@ -8,7 +8,7 @@ const SERVER_BASE_URL = serverRuntimeConfig.SERVER_BASE_URL;
 const CLIENT_BASE_URL = publicRuntimeConfig.CLIENT_BASE_URL;
 
 const api = {
-  baseUrl: SERVER_BASE_URL || CLIENT_BASE_URL,
+  baseUrl: `${SERVER_BASE_URL || CLIENT_BASE_URL}/api`,
 
   token: null,
 

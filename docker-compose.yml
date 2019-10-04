@@ -31,7 +31,7 @@ services:
       context: ./dd-front
     environment:
       - PORT=3000
-      - SERVER_BASE_URL=http://backend:8000/api
+      - SERVER_BASE_URL=http://backend:8000
 
 volumes:
   dbdata:

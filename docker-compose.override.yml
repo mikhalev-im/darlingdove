@@ -20,4 +20,4 @@ services:
       - ./dd-front:/usr/src/app
       - /usr/src/app/node_modules/
     environment:
-      - CLIENT_BASE_URL=http://darlingdove.test:8080/api
+      - CLIENT_BASE_URL=http://darlingdove.test:8080

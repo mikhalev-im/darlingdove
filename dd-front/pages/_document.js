@@ -1,15 +1,27 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
+import getConfig from 'next/config';
 import theme from '../modules/shared/utils/theme';
+
+const { publicRuntimeConfig } = getConfig();
 
 const SCHEMA_ORG_ORGANIZATION = {
   '@context': 'http://schema.org',
   '@type': 'Organization',
   name: 'DarlingDove',
-  url: 'http://darlingdove.ru',
+  url: publicRuntimeConfig.CLIENT_BASE_URL,
   email: 'info@darlingdove.ru',
   logo: 'https://darlingdove.ru/image/catalog/cartoon.png'
+};
+
+const META = {
+  baseUrl: publicRuntimeConfig.CLIENT_BASE_URL,
+  title: 'Интернет магазин почтовых открыток для посткроссинга DarlingDove',
+  keywords:
+    'Купить почтовые открытки карточки почта посткроссинг postcrossing интернет магазин',
+  description:
+    'Чудесный магазин почтовых открыток! Здесь вы можете купить качественные почтовые открытки для посткроссинга и сопутствующие товары!'
 };
 
 class MyDocument extends Document {
@@ -38,6 +50,14 @@ class MyDocument extends Document {
               __html: JSON.stringify(SCHEMA_ORG_ORGANIZATION)
             }}
           />
+          <title key="title">{META.title}</title>
+          <base href={META.baseUrl} />
+          <meta
+            key="description"
+            name="description"
+            content={META.description}
+          />
+          <meta key="keywords" name="keywords" content={META.keywords} />
         </Head>
         <body>
           <Main />

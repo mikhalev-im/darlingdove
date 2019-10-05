@@ -69,8 +69,8 @@ class Profile extends Component {
   };
 
   onLogout = () => {
-    const { logout, user } = this.props;
-    logout(user.jwt);
+    const { logout } = this.props;
+    logout();
   };
 
   passwordChangeToggle = () => {

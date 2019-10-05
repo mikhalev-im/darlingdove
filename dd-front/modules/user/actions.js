@@ -6,7 +6,7 @@ export default createActions({
   saveUserData: ['data'],
   logout: null,
   resetUser: null,
-  login: ['email', 'password'],
+  login: ['email', 'password', 'redirectTo'],
   register: ['email', 'password'],
   changePassword: ['passwordOld', 'passwordNew']
 });

@@ -10,7 +10,19 @@ export const DEFAULT_FILTERS = {
   inStock: true
 };
 
-export const TITLE_MAPPING = {
-  postcards: 'Открытки',
-  envelopes: 'Конверты'
+export const CATEGORY_META_MAPPING = {
+  postcards: {
+    header: 'Открытки',
+    meta: {
+      title: 'Открытки - DarlingDove',
+      description: 'Открытки для посткроссинга'
+    }
+  },
+  envelopes: {
+    header: 'Конверты',
+    meta: {
+      title: 'Конверты - DarlingDove',
+      description: 'Конверты для посткроссинга'
+    }
+  }
 };

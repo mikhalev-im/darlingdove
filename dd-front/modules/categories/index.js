@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import { stringify } from 'query-string';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +14,7 @@ import CategoryActions from './actions';
 
 import {
   BASE_URL,
-  TITLE_MAPPING,
+  CATEGORY_META_MAPPING,
   PRODUCTS_PER_PAGE,
   DEFAULT_FILTERS
 } from './constants';
@@ -97,10 +98,20 @@ class Category extends Component {
     const orderBy = query.orderBy || DEFAULT_FILTERS.orderBy;
     const order = query.order || DEFAULT_FILTERS.order;
     const selectedSort = `${orderBy} ${order}`;
-    const title = TITLE_MAPPING[query.category.toLowerCase()];
+    const { header, meta } = CATEGORY_META_MAPPING[
+      query.category.toLowerCase()
+    ];
 
     return (
       <>
+        <Head>
+          <title key="title">{meta.title}</title>
+          <meta
+            key="description"
+            name="description"
+            content={meta.description}
+          />
+        </Head>
         <Grid container className={classes.container}>
           <Grid item className={classes.filters}>
             <Sorting
@@ -122,7 +133,7 @@ class Category extends Component {
               gutterBottom
               className={classes.title}
             >
-              {title}
+              {header}
             </Typography>
             {!products.length && (
               <Typography variant="h6" gutterBottom>

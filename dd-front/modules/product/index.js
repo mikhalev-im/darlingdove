@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Head from 'next/head';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -79,6 +80,14 @@ class Product extends Component {
 
     return (
       <>
+        <Head>
+          <title key="title">{`${product.name} - DarlgingDove`}</title>
+          <meta
+            key="description"
+            name="description"
+            content={product.description}
+          />
+        </Head>
         <Grid
           container
           spacing={3}

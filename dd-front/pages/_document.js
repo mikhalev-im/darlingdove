@@ -15,15 +15,6 @@ const SCHEMA_ORG_ORGANIZATION = {
   logo: 'https://darlingdove.ru/image/catalog/cartoon.png'
 };
 
-const META = {
-  baseUrl: publicRuntimeConfig.CLIENT_BASE_URL,
-  title: 'Интернет магазин почтовых открыток для посткроссинга DarlingDove',
-  keywords:
-    'Купить почтовые открытки карточки почта посткроссинг postcrossing интернет магазин',
-  description:
-    'Чудесный магазин почтовых открыток! Здесь вы можете купить качественные почтовые открытки для посткроссинга и сопутствующие товары!'
-};
-
 class MyDocument extends Document {
   render() {
     return (
@@ -50,14 +41,7 @@ class MyDocument extends Document {
               __html: JSON.stringify(SCHEMA_ORG_ORGANIZATION)
             }}
           />
-          <title key="title">{META.title}</title>
-          <base href={META.baseUrl} />
-          <meta
-            key="description"
-            name="description"
-            content={META.description}
-          />
-          <meta key="keywords" name="keywords" content={META.keywords} />
+          <base href={publicRuntimeConfig.CLIENT_BASE_URL} />
         </Head>
         <body>
           <Main />

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import Head from 'next/head';
 
 import Header from './header';
 import Modal from './modal';
@@ -27,6 +28,14 @@ const styles = theme => ({
   }
 });
 
+const META = {
+  title: 'Интернет магазин почтовых открыток для посткроссинга DarlingDove',
+  keywords:
+    'Купить почтовые открытки карточки почта посткроссинг postcrossing интернет магазин',
+  description:
+    'Чудесный магазин почтовых открыток! Здесь вы можете купить качественные почтовые открытки для посткроссинга и сопутствующие товары!'
+};
+
 class Layout extends PureComponent {
   render() {
     const {
@@ -44,19 +53,30 @@ class Layout extends PureComponent {
     } = this.props;
 
     return (
-      <div className={classes.root}>
-        <Header cartItemsQty={cartItemsQty} />
-        <Progress isLoading={isLoading} />
-        <Notifications
-          open={isNotificationOpen}
-          showDebugData={showDebugData}
-          handleClose={closeNotification}
-          messageData={notificationMessageData}
-          processNotifications={processNotifications}
-        />
-        <Modal open={modal.open} data={modal.data} onClose={closeModal} />
-        <div className={classes.container}>{children}</div>
-      </div>
+      <>
+        <Head>
+          <title key="title">{META.title}</title>
+          <meta
+            key="description"
+            name="description"
+            content={META.description}
+          />
+          <meta key="keywords" name="keywords" content={META.keywords} />
+        </Head>
+        <div className={classes.root}>
+          <Header cartItemsQty={cartItemsQty} />
+          <Progress isLoading={isLoading} />
+          <Notifications
+            open={isNotificationOpen}
+            showDebugData={showDebugData}
+            handleClose={closeNotification}
+            messageData={notificationMessageData}
+            processNotifications={processNotifications}
+          />
+          <Modal open={modal.open} data={modal.data} onClose={closeModal} />
+          <div className={classes.container}>{children}</div>
+        </div>
+      </>
     );
   }
 }

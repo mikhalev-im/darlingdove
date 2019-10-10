@@ -23,4 +23,19 @@ export class OrdersService {
   async create(order: object): Promise<Order> {
     return this.orderModel.create(order);
   }
+
+  async countTotalPromocodeUsage(promocodeId: string): Promise<number> {
+    return this.orderModel
+      .find({ 'promocodes.promocode': promocodeId })
+      .count();
+  }
+
+  async countPromocodeUsageByUser(
+    promocodeId: string,
+    userId: string,
+  ): Promise<number> {
+    return this.orderModel
+      .find({ 'promocodes.promocode': promocodeId, 'user._id': userId })
+      .count();
+  }
 }

@@ -10,7 +10,7 @@ import Empty from './components/empty';
 import CartTable from './components/table';
 import CartActions from './actions';
 import RootActions from '../root/actions';
-import { getCartItems, getCartServices } from './selectors';
+import { getCartItems, getCartServices, getCartPromocodes } from './selectors';
 import NotificationsActions from '../notifications/actions';
 import PromoModal from './components/promo';
 
@@ -33,10 +33,12 @@ const Cart = ({
   classes,
   items,
   services,
+  promocodes,
   onMakeOrder,
   onQtyChange,
   onProductDelete,
-  addNotification
+  addNotification,
+  addPromocode
 }) => {
   const [isPromoOpen, setPromoOpen] = useState(false);
 
@@ -57,18 +59,24 @@ const Cart = ({
     onMakeOrder('/checkout');
   };
 
+  const onAddPromocode = code => {
+    setPromoOpen(false);
+    addPromocode(code);
+  };
+
   return (
     <>
       <CartTable
         items={items}
         services={services}
+        promocodes={promocodes}
         onQtyChange={onQtyChange}
         onItemDelete={onProductDelete}
       />
       <PromoModal
         open={isPromoOpen}
         onClose={() => setPromoOpen(false)}
-        onSubmit={() => setPromoOpen(false)}
+        onSubmit={onAddPromocode}
       />
       <p className={classes.buttons}>
         <Button variant={'contained'} onClick={() => setPromoOpen(true)}>
@@ -94,19 +102,22 @@ Cart.propTypes = {
   onMakeOrder: PropTypes.func.isRequired,
   onQtyChange: PropTypes.func.isRequired,
   onProductDelete: PropTypes.func.isRequired,
-  addNotification: PropTypes.func.isRequired
+  addNotification: PropTypes.func.isRequired,
+  addPromocode: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
   items: getCartItems(state),
-  services: getCartServices(state)
+  services: getCartServices(state),
+  promocodes: getCartPromocodes(state)
 });
 
 const mapDispatch = {
   onMakeOrder: RootActions.Creators.redirect,
   onProductDelete: CartActions.Creators.removeFromCart,
   onQtyChange: CartActions.Creators.debouncedCartQtyUpdate,
-  addNotification: NotificationsActions.Creators.addNotification
+  addNotification: NotificationsActions.Creators.addNotification,
+  addPromocode: CartActions.Creators.addPromocode
 };
 
 export default withStyles(styles)(

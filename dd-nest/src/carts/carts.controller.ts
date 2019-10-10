@@ -20,12 +20,16 @@ import { ProductsService } from '../products/products.service';
 import { BulkQtyUpdateDto } from './dto/bulk-qty-update.dto';
 import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 import { RemoveFromCartParams } from './dto/remove-from-cart.dto';
+import { PromocodesService } from 'promocodes/promocodes.service';
+import { AddPromocodeDto } from './dto/add-promocode.dto';
 
 @ApiUseTags('carts')
 @Controller('carts')
 export class CartsController {
   constructor(
     @Inject(ProductsService) private readonly productsService: ProductsService,
+    @Inject(PromocodesService)
+    private readonly promocodesService: PromocodesService,
     private readonly cartsService: CartsService,
   ) {}
 
@@ -126,6 +130,53 @@ export class CartsController {
 
     cart.updatedTime = new Date();
 
+    await cart.calcDelivery();
+    await cart.save();
+
+    return cart.toObject();
+  }
+
+  @Post('/:id/promocode')
+  @UsePipes(new ValidationPipe())
+  @ApiOkResponse({ description: 'Returns updated cart object' })
+  async addPromocode(
+    @Param() params: MongoIdParams,
+    @Body() body: AddPromocodeDto,
+  ) {
+    const cart = await this.cartsService.findById(params.id);
+    if (!cart) throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
+
+    const promocode = await this.promocodesService.findByCode(body.promocode);
+    if (!promocode)
+      throw new HttpException('Promocode does not exist', HttpStatus.NOT_FOUND);
+
+    // check if promocode already exists in cart
+    const [existingPromo] = cart.promocodes;
+    if (
+      existingPromo &&
+      existingPromo.promocode.toString() === promocode._id.toString()
+    )
+      return cart.toObject();
+
+    // validate promocode conditions
+    await this.promocodesService.validate(promocode).catch(err => {
+      throw new HttpException(
+        { message: 'Promocode validation error', code: err.code },
+        HttpStatus.BAD_REQUEST,
+      );
+    });
+
+    // add promocode to cart
+    cart.promocodes = [
+      {
+        promocode: promocode._id,
+        code: promocode.code,
+        discount: promocode.discount,
+        minSum: promocode.limitations.minSum,
+      },
+    ];
+
+    // calc delivery
     await cart.calcDelivery();
     await cart.save();
 

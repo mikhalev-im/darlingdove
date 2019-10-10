@@ -39,6 +39,19 @@ export function* addToCart({ productId, qty = 1 }) {
   );
 }
 
+export function* addPromocode({ code }) {
+  // get cartId from store
+  const cartId = yield select(getCartId);
+  try {
+    // make api request
+    const cart = yield call(api.addPromocode, cartId, code);
+    // update cart in store
+    yield put(Actions.Creators.setCart(cart));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // error handling
 // loading indicator
 export function* removeFromCart({ productId }) {
@@ -78,6 +91,7 @@ export function* debouncedCartQtyUpdate() {
 export default function* cartSagas() {
   yield all([
     takeEvery(Actions.Types.ADD_TO_CART, addToCart),
+    takeEvery(Actions.Types.ADD_PROMOCODE, addPromocode),
     takeEvery(Actions.Types.REMOVE_FROM_CART, removeFromCart),
     takeEvery(Actions.Types.UPDATE_CART_ITEMS_QTY, updateCartItemsQty),
     takeLatest(Actions.Types.DEBOUNCED_CART_QTY_UPDATE, debouncedCartQtyUpdate)

@@ -9,12 +9,14 @@ import { withStyles } from '@material-ui/core/styles';
 
 import ItemType from '../../types/item';
 import ServiceType from '../../types/service';
+import PromocodeType from '../../types/promocode';
 import { calcOrderSum } from '../../../shared/utils/cart';
 
 import Head from './head';
 import ItemRow from './item-row';
 import ServiceRow from './service-row';
 import Footer from './footer';
+import { getServiceTypeTranslation } from '../../../shared/utils/cart';
 
 const MIN_WIDTH_MULTIPLIER = 87.5;
 const MAX_WIDTH_MULTIPLIER = 125;
@@ -31,8 +33,15 @@ const styles = theme => ({
     minWidth: theme.spacing(MIN_WIDTH_MULTIPLIER)
   }
 });
-const CartTable = ({ items, services, classes, onQtyChange, onItemDelete }) => {
-  const sum = calcOrderSum(items, services);
+const CartTable = ({
+  items,
+  services,
+  promocodes,
+  classes,
+  onQtyChange,
+  onItemDelete
+}) => {
+  const sum = calcOrderSum(items, promocodes, services);
 
   return (
     <Paper className={classes.paper}>
@@ -50,8 +59,19 @@ const CartTable = ({ items, services, classes, onQtyChange, onItemDelete }) => {
               onDelete={onItemDelete}
             />
           ))}
+          {promocodes.map(promo => (
+            <ServiceRow
+              key={promo.promocode}
+              title={`Промокод ${promo.code}`}
+              value={-promo.discount.total}
+            />
+          ))}
           {services.map(service => (
-            <ServiceRow key={service.type} service={service} />
+            <ServiceRow
+              key={service.type}
+              title={getServiceTypeTranslation(service.type)}
+              value={service.price}
+            />
           ))}
         </TableBody>
         <Footer sum={sum} />
@@ -63,6 +83,7 @@ const CartTable = ({ items, services, classes, onQtyChange, onItemDelete }) => {
 CartTable.propTypes = {
   classes: PropTypes.any,
   services: PropTypes.arrayOf(ServiceType),
+  promocodes: PropTypes.arrayOf(PromocodeType),
   items: PropTypes.arrayOf(ItemType),
   onQtyChange: PropTypes.func.isRequired,
   onItemDelete: PropTypes.func.isRequired

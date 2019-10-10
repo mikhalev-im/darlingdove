@@ -125,6 +125,11 @@ export const addToCart = async (productId, qty = 1, cartId = null) => {
   return api.post('/carts/add', { body });
 };
 
+export const addPromocode = async (cartId, promocode) => {
+  const body = { promocode };
+  return api.post(`/carts/${cartId}/promocode`, { body });
+};
+
 export const getOrders = async () => {
   return api.get('/orders');
 };

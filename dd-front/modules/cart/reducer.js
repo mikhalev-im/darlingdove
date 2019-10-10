@@ -6,7 +6,8 @@ import Actions from './actions';
 export const INITIAL_STATE = Immutable({
   _id: null,
   items: [],
-  services: []
+  services: [],
+  promocodes: []
 });
 
 const setCartId = (state, { cartId }) => state.set('_id', cartId);
@@ -15,6 +16,7 @@ const setCart = (state, { cart }) =>
   state
     .set('items', cart.items)
     .set('services', cart.services)
+    .set('promocodes', cart.promocodes)
     .set('_id', cart._id || state._id);
 
 const changeQty = (state, { productId, qty }) =>

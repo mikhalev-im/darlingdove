@@ -1,7 +1,12 @@
 import * as mongoose from 'mongoose';
 
 import { FREE_DELIVERY_THRESHOLD, PAID_DELIVERY_PRICE } from '../constants';
-import { Service, ServiceTypes } from '../interfaces/cart.interface';
+import {
+  Service,
+  ServiceTypes,
+  CartPromocode,
+} from '../interfaces/cart.interface';
+import { DiscountType } from 'promocodes/interfaces/promocode.interface';
 
 export const CartSchema = new mongoose.Schema({
   items: [
@@ -31,6 +36,38 @@ export const CartSchema = new mongoose.Schema({
       },
     },
   ],
+  promocodes: [
+    {
+      promocode: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'Promocode',
+      },
+      code: {
+        type: String,
+        required: true,
+      },
+      discount: {
+        type: {
+          type: String,
+          required: true,
+          enum: [DiscountType.fixed, DiscountType.percent],
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+        total: {
+          type: Number,
+          required: true,
+        },
+      },
+      minSum: {
+        type: Number,
+        required: false,
+      },
+    },
+  ],
   updatedTime: {
     type: Date,
     required: false,
@@ -43,7 +80,7 @@ export const CartSchema = new mongoose.Schema({
 });
 
 CartSchema.method('calcDelivery', async function() {
-  // no delivery if no there are no items
+  // no delivery if there are no items
   if (!this.items.length) {
     this.services = [];
     return;
@@ -54,11 +91,29 @@ CartSchema.method('calcDelivery', async function() {
     await this.populate('items.product').execPopulate();
   }
 
-  // calc the sum
-  const sum = this.items.reduce((result: number, item) => {
+  // calc the sum of items
+  let sum = this.items.reduce((result: number, item) => {
     result += item.qty * item.product.price;
     return result;
   }, 0);
+
+  // apply promocodes
+  sum = this.promocodes.reduce((result: number, promo: CartPromocode) => {
+    // TODO: order of promocodes will matter, fix this
+    if (promo.minSum && result < promo.minSum) {
+      promo.discount.total = 0;
+      return result;
+    }
+
+    const discount =
+      promo.discount.type === DiscountType.fixed
+        ? promo.discount.amount
+        : Math.floor((result / 100) * promo.discount.amount);
+
+    promo.discount.total = result >= discount ? discount : result;
+
+    return result - discount;
+  }, sum);
 
   this.services = this.services || [];
 

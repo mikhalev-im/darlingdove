@@ -17,6 +17,11 @@ export const getCartServices = createSelector(
   cart => cart.services
 );
 
+export const getCartPromocodes = createSelector(
+  getCart,
+  cart => cart.promocodes
+);
+
 export const getCartItemsQty = createSelector(
   getCartItems,
   items => items.reduce((sum, item) => sum + item.qty, 0)

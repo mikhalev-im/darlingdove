@@ -63,13 +63,21 @@ const styles = theme => ({
 
 const OrderSummary = ({
   classes,
-  order: { user, items, services, trackingNumber, comment, createdTime },
+  order: {
+    user,
+    items,
+    services,
+    promocodes,
+    trackingNumber,
+    comment,
+    createdTime
+  },
   onPay,
   onBack
 }) => {
   const ref = useRef(null);
 
-  const total = calcOrderSum(items, services);
+  const total = calcOrderSum(items, promocodes, services);
 
   return (
     <div className={classes.wrapper}>
@@ -129,15 +137,26 @@ const OrderSummary = ({
                 </TableRow>
               );
             })}
+            {promocodes.map(promo => {
+              return (
+                <TableRow hover key={promo.promocode}>
+                  <TableCell colSpan={4} align={'right'}>
+                    {`Промокод ${promo.code}`}
+                  </TableCell>
+                  <TableCell align={'right'}>{`${-promo.discount
+                    .total} руб.`}</TableCell>
+                </TableRow>
+              );
+            })}
             {services.map(service => {
               return (
                 <TableRow hover key={service.type}>
                   <TableCell colSpan={4} align={'right'}>
                     {getServiceTypeTranslation(service.type)}
                   </TableCell>
-                  <TableCell align={'right'}>{`${
-                    service.price
-                  } руб.`}</TableCell>
+                  <TableCell
+                    align={'right'}
+                  >{`${service.price} руб.`}</TableCell>
                 </TableRow>
               );
             })}

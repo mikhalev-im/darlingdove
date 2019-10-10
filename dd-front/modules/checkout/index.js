@@ -13,10 +13,15 @@ import RootActions from '../root/actions';
 import CheckoutActions from './actions';
 import { getStep } from './selectors';
 import { getUser } from '../user/selectors';
-import { getCartItems, getCartServices } from '../cart/selectors';
+import {
+  getCartItems,
+  getCartServices,
+  getCartPromocodes
+} from '../cart/selectors';
 
 import ItemType from '../cart/types/item';
 import ServiceType from '../cart/types/service';
+import PromocodeType from '../cart/types/promocode';
 import UserType from '../profile/types/user';
 
 const STEPS = ['Адрес доставки', 'Подтверждение заказа'];
@@ -94,6 +99,7 @@ class Checkout extends Component {
       items,
       user: this.props.user,
       services: this.props.services,
+      promocodes: this.props.promocodes,
       status: 'notPaid'
     };
 
@@ -141,6 +147,7 @@ Checkout.propTypes = {
   user: UserType,
   items: PropTypes.arrayOf(ItemType).isRequired,
   services: PropTypes.arrayOf(ServiceType).isRequired,
+  promocodes: PropTypes.arrayOf(PromocodeType).isRequired,
   activeStep: PropTypes.number.isRequired,
   changeStep: PropTypes.func.isRequired,
   onPayClick: PropTypes.func.isRequired,
@@ -151,6 +158,7 @@ const mapState = state => ({
   user: getUser(state),
   items: getCartItems(state),
   services: getCartServices(state),
+  promocodes: getCartPromocodes(state),
   activeStep: getStep(state)
 });
 

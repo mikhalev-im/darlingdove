@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { PaymentProcessStatus } from './yandex.interface';
+import { CartPromocode, Service } from 'carts/interfaces/cart.interface';
 
 export enum OrderStatusTypes {
   NotPaid = 'notPaid',
@@ -32,7 +33,10 @@ interface PaymentRequest {
 
 export interface Order extends Document {
   readonly items: OrderItem[];
+  readonly services: Service[];
+  readonly promocodes: CartPromocode[];
   readonly user: User;
+  readonly total: number;
   status: OrderStatusTypes;
   comment: string;
   trackingNumber: string;

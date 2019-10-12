@@ -11,7 +11,12 @@ export const INITIAL_STATE = Immutable({
 });
 
 const setCartId = (state, { cartId }) => state.set('_id', cartId);
-const resetCartItems = state => state.set('items', []);
+const resetCartItems = state =>
+  state
+    .set('items', [])
+    .set('promocodes', [])
+    .set('services', []);
+
 const setCart = (state, { cart }) =>
   state
     .set('items', cart.items)

@@ -17,7 +17,7 @@ export function* loadOrderPage({ res, query }) {
   }
 
   // resolve waitFor promise
-  yield put(Actions.Creators.loginPageLoaded());
+  yield put(Actions.Creators.orderPageLoaded());
 }
 
 export default function* orderSagas() {

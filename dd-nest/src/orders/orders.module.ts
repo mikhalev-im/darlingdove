@@ -8,6 +8,7 @@ import { CartsModule } from '../carts/carts.module';
 import { ProductsModule } from '../products/products.module';
 import { AuthModule } from '../auth/auth.module';
 import { MailModule } from '../mail/mail.module';
+import { PromocodesModule } from 'promocodes/promocodes.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MailModule } from '../mail/mail.module';
     ProductsModule,
     MailModule,
     forwardRef(() => CartsModule),
+    forwardRef(() => PromocodesModule),
   ],
   controllers: [OrdersController],
   providers: [OrdersService, YandexService],

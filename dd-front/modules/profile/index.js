@@ -110,14 +110,7 @@ class Profile extends Component {
           </TableRow>
         )}
         {orders.map((order, index) => {
-          const { qty, sum } = order.items.reduce(
-            (acc, item) => {
-              acc.qty += item.qty;
-              acc.sum += item.qty * item.product.price;
-              return acc;
-            },
-            { qty: 0, sum: 0 }
-          );
+          const qty = order.items.reduce((acc, item) => acc + item.qty, 0);
 
           const date = new Date(order.createdTime);
           return (
@@ -127,7 +120,7 @@ class Profile extends Component {
               </TableCell>
               <TableCell align="right">{date.toLocaleString()}</TableCell>
               <TableCell align="right">{qty}</TableCell>
-              <TableCell align="right">{`${sum} руб.`}</TableCell>
+              <TableCell align="right">{`${order.total} руб.`}</TableCell>
               <TableCell>{MAP_STATUS[order.status]}</TableCell>
               <TableCell>
                 <Link

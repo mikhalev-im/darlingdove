@@ -138,9 +138,9 @@ export const getOrder = async orderId => {
   return api.get(`/orders/${orderId}`);
 };
 
-export const createOrder = async cartId => {
-  const body = { cartId };
-  return api.post('/orders/createFromCart', { body });
+export const createOrder = async (cartId, comment) => {
+  const body = { cartId, comment };
+  return api.post('/orders', { body });
 };
 
 export const removeProductFromCart = async (cartId = '', productId) => {

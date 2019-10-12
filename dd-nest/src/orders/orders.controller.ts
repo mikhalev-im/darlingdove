@@ -34,6 +34,9 @@ import {
 } from './interfaces/yandex.interface';
 import { MailService } from '../mail/mail.service';
 import { MongoIdParams } from 'shared/dto/mongo-id.dto';
+import { Product } from 'products/interfaces/product.interface';
+import { Promocode } from 'promocodes/interfaces/promocode.interface';
+import { PromocodesService } from 'promocodes/promocodes.service';
 
 // Helper function to build payment success/failure redirect urls
 const getRedirectUrl = (
@@ -54,6 +57,8 @@ export class OrdersController {
     @Inject(CartsService) private readonly cartsService: CartsService,
     @Inject(ProductsService) private readonly productsService: ProductsService,
     @Inject(MailService) private readonly mailService: MailService,
+    @Inject(PromocodesService)
+    private readonly promocodesService: PromocodesService,
     private readonly ordersService: OrdersService,
     private readonly yandexService: YandexService,
   ) {}
@@ -87,7 +92,7 @@ export class OrdersController {
     return orders.map(order => order.toObject());
   }
 
-  @Post('/createFromCart')
+  @Post('/')
   @ApiBearerAuth()
   @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ description: 'Retruns created order' })
@@ -103,15 +108,38 @@ export class OrdersController {
     if (!cart.items.length)
       throw new HttpException('Cart is empty', HttpStatus.BAD_REQUEST);
 
-    const productIds = cart.items.map(item => item.product);
-    const products = await this.productsService.findByIds(productIds);
+    // populate items
+    await cart
+      .populate('items.product')
+      .populate('promocodes.promocode')
+      .execPopulate();
+
+    // validate promocodes
+    const promocodes = cart.promocodes.map(async promo => {
+      const promocode = promo.promocode as Promocode;
+
+      if (!promocode) {
+        cart.promocodes = [];
+        await cart.calcDelivery();
+        await cart.save();
+        throw new HttpException(
+          'Promocode does not exits',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      await this.promocodesService.validate(promocode, user._id).catch(err => {
+        throw new HttpException(
+          { message: 'Promocode validation error', code: err.code },
+          HttpStatus.BAD_REQUEST,
+        );
+      });
+    });
 
     // subtract product qty
     // and validate that all products are enough in stock
     const items = cart.items.map(item => {
-      const product = products.find(({ _id }) => {
-        return _id.toString() === item.product.toString();
-      });
+      const product = item.product as Product;
 
       if (!product)
         throw new HttpException(
@@ -119,12 +147,14 @@ export class OrdersController {
           HttpStatus.NOT_FOUND,
         );
 
-      product.qty = product.qty - item.qty;
-      if (product.qty < 0)
+      const newQty = product.qty - item.qty;
+      if (newQty < 0)
         throw new HttpException(
           'Not enough product qty in stock',
           HttpStatus.BAD_REQUEST,
         );
+
+      product.qty = newQty;
 
       return {
         product: product._id,
@@ -133,13 +163,22 @@ export class OrdersController {
       };
     });
 
-    // save all products
-    await Promise.all(products.map(async product => product.save()));
+    // calc delivery
+    const total = await cart.calcDelivery();
+
+    // save all products if everything is valid;
+    await Promise.all(
+      cart.items.map(async item => {
+        const product = item.product as Product;
+        product.save();
+      }),
+    );
 
     // create order from cart
     const order = await this.ordersService.create({
       items,
       comment,
+      promocodes,
       user: {
         _id: user._id,
         firstName: user.firstName,
@@ -148,6 +187,7 @@ export class OrdersController {
         postalCode: user.postalCode,
         address: user.address,
       },
+      total,
       services: cart.services,
       status: OrderStatusTypes.NotPaid,
     });
@@ -155,6 +195,7 @@ export class OrdersController {
     // remove cart items
     cart.items = [];
     cart.services = [];
+    cart.promocodes = [];
     cart.updatedTime = new Date();
     await cart.save();
 

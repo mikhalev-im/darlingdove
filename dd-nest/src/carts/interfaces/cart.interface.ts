@@ -1,8 +1,9 @@
-import { Document } from 'mongoose';
-import { Discount } from 'promocodes/interfaces/promocode.interface';
+import { Document, Types } from 'mongoose';
+import { Discount, Promocode } from 'promocodes/interfaces/promocode.interface';
+import { Product } from 'products/interfaces/product.interface';
 
 export interface CartItem {
-  product: string;
+  product: Types.ObjectId | Product;
   qty: number;
 }
 
@@ -21,7 +22,7 @@ export interface CartDiscount extends Discount {
 }
 
 export interface CartPromocode {
-  promocode: string;
+  promocode: Types.ObjectId | Promocode;
   code: string;
   discount: CartDiscount;
   minSum?: number;
@@ -33,5 +34,5 @@ export interface Cart extends Document {
   promocodes: CartPromocode[];
   updatedTime: Date;
   readonly createdTime: Date;
-  calcDelivery(): Promise<void>;
+  calcDelivery(): Promise<number>;
 }

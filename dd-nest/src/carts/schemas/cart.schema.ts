@@ -125,10 +125,13 @@ CartSchema.method('calcDelivery', async function() {
       ),
   );
 
-  // push new delivery
-  this.services.push(
+  const delivery =
     sum < FREE_DELIVERY_THRESHOLD
       ? { type: ServiceTypes.PaidDelivery, price: PAID_DELIVERY_PRICE }
-      : { type: ServiceTypes.FreeDelivery, price: 0 },
-  );
+      : { type: ServiceTypes.FreeDelivery, price: 0 };
+
+  // push new delivery
+  this.services.push(delivery);
+
+  return sum + delivery.price;
 });

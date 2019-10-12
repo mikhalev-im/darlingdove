@@ -1,4 +1,6 @@
 import * as mongoose from 'mongoose';
+import { ServiceTypes } from 'carts/interfaces/cart.interface';
+import { DiscountType } from 'promocodes/interfaces/promocode.interface';
 
 export const OrderSchema = new mongoose.Schema({
   items: [
@@ -18,6 +20,55 @@ export const OrderSchema = new mongoose.Schema({
       },
     },
   ],
+  services: [
+    {
+      type: {
+        type: String,
+        required: true,
+        enum: [ServiceTypes.PaidDelivery, ServiceTypes.FreeDelivery],
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  promocodes: [
+    {
+      promocode: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'Promocode',
+      },
+      code: {
+        type: String,
+        required: true,
+      },
+      discount: {
+        type: {
+          type: String,
+          required: true,
+          enum: [DiscountType.fixed, DiscountType.percent],
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+        total: {
+          type: Number,
+          required: true,
+        },
+      },
+      minSum: {
+        type: Number,
+        required: false,
+      },
+    },
+  ],
+  total: {
+    type: Number,
+    required: true,
+  },
   user: {
     _id: {
       type: mongoose.Types.ObjectId,

@@ -22,6 +22,7 @@ import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 import { RemoveFromCartParams } from './dto/remove-from-cart.dto';
 import { PromocodesService } from 'promocodes/promocodes.service';
 import { AddPromocodeDto } from './dto/add-promocode.dto';
+import { Types } from 'mongoose';
 
 @ApiUseTags('carts')
 @Controller('carts')
@@ -76,7 +77,10 @@ export class CartsController {
     if (item) {
       item.qty += data.qty;
     } else {
-      cart.items.push({ product: data.productId, qty: data.qty });
+      cart.items.push({
+        product: Types.ObjectId(data.productId),
+        qty: data.qty,
+      });
     }
 
     cart.updatedTime = new Date();

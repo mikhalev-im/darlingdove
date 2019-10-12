@@ -1,16 +1,13 @@
 import { call, put, takeEvery, all, select } from 'redux-saga/effects';
 
-// import * as api from '../shared/utils/api';
+import { createOrder } from '../shared/utils/api';
 import Actions from './actions';
 import RootActions from '../root/actions';
+import CartActions from '../cart/actions';
 import { CHECKOUT_STEPS } from './constants';
 import { saveUserData } from '../user/sagas';
 import { getUserId } from '../user/selectors';
-import { getCartItems } from '../cart/selectors';
-// import CartActions from '../cart/actions';
-// import { getCartId } from '../cart/selectors';
-// import { getToken } from '../user/selectors';
-// import { redirect } from '../root/sagas';
+import { getCartItems, getCartId } from '../cart/selectors';
 
 export function* loadCheckoutPage({ res }) {
   const userId = yield select(getUserId);
@@ -40,13 +37,14 @@ export function* saveUserAndChangeStep({ data }) {
 
 // eslint-disable-next-line
 export function* createOrderAndPay({ comment }) {
-  // const cartId = yield select(getCartId);
-  // const token = yield select(getToken);
-  // const order = yield call(api.createOrder, cartId);
-  // console.log(order);
+  const cartId = yield select(getCartId);
+  yield call(createOrder, cartId, comment);
+  // reset cart items
+  yield put(CartActions.Creators.resetCartItems());
+  // redirect to orders page for now
+  yield put(RootActions.Creators.redirect('/profile'));
+
   // TODO: redirect to pay
-  // yield call(redirect, { redirectTo: "/profile" });
-  // yield put(CartActions.Creators.resetCartItems());
   // yield call(api.payForOrder, comment);
 }
 

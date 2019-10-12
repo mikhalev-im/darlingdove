@@ -1,4 +1,4 @@
 export interface MailTemplatesMap {
-  readonly order: Function;
-  readonly register: Function;
+  readonly order: (data) => string;
+  readonly register: (data?) => string;
 }

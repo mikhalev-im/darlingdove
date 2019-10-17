@@ -49,7 +49,7 @@ const menu = [
     href: '/category?category=envelopes',
     hrefAs: '/category/envelopes'
   },
-  { title: 'О нас', href: '/' }
+  { title: 'О нас', href: '/page?slug=about', hrefAs: '/page/about' }
 ];
 
 class Header extends Component {

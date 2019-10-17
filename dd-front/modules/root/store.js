@@ -18,9 +18,9 @@ import category from '../categories/reducer';
 import notifications from '../notifications/reducer';
 
 import rootSagas from './sagas';
-import homeSagas from '../home/sagas';
 import cartSagas from '../cart/sagas';
 import userSagas from '../user/sagas';
+import pageSagas from '../page/sagas';
 import loginSagas from '../login/sagas';
 import orderSagas from '../order/sagas';
 import prodcutSagas from '../product/sagas';
@@ -46,7 +46,7 @@ function* sagas() {
     fork(cartSagas),
     fork(userSagas),
     fork(rootSagas),
-    fork(homeSagas),
+    fork(pageSagas),
     fork(loginSagas),
     fork(orderSagas),
     fork(prodcutSagas),

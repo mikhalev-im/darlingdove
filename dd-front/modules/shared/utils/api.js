@@ -86,8 +86,8 @@ export const patchUser = async (userId, body) => {
   return api.patch(`/users/${userId}`, { body });
 };
 
-export const getHomePage = async () => {
-  return api.get('/pages/home');
+export const getPage = async slug => {
+  return api.get(`/pages/${slug}`);
 };
 
 export const getProduct = async productId => {

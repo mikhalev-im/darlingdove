@@ -1,4 +1,4 @@
-import Page from '../modules/Page';
+import Page from '../modules/page';
 
 const Home = props => {
   return <Page {...props} />;

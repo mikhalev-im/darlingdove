@@ -7,11 +7,11 @@ import renderBlock from '../shared/components/page-blocks';
 
 const Page = ({ blocks }) => <>{blocks.map(renderBlock)}</>;
 
-Page.getInitialProps = async ({ reduxStore, query }) => {
+Page.getInitialProps = async ({ reduxStore, query, res }) => {
   const { PAGE_LOADED } = PageActions.Types;
   const action = RootActions.Creators.waitFor(PAGE_LOADED);
   const promise = reduxStore.dispatch(action);
-  reduxStore.dispatch(PageActions.Creators.loadPage(query));
+  reduxStore.dispatch(PageActions.Creators.loadPage(query, res));
   return promise;
 };
 

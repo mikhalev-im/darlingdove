@@ -112,7 +112,7 @@ CartSchema.method('calcDelivery', async function() {
 
     promo.discount.total = result >= discount ? discount : result;
 
-    return result - discount;
+    return result - promo.discount.total;
   }, sum);
 
   this.services = this.services || [];

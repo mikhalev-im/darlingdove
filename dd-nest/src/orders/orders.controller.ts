@@ -115,35 +115,44 @@ export class OrdersController {
       .execPopulate();
 
     // validate promocodes
-    const promocodes = cart.promocodes.map(async promo => {
-      const promocode = promo.promocode as Promocode;
+    const promocodes = await Promise.all(
+      cart.promocodes.map(async promo => {
+        const promocode = promo.promocode as Promocode;
 
-      if (!promocode) {
-        // remove promocode from cart
-        cart.promocodes = [];
-        await cart.calcDelivery();
-        await cart.save();
-        // throw an error
-        throw new HttpException(
-          'Promocode does not exist',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      await this.promocodesService
-        .validate(promocode, user._id)
-        .catch(async err => {
+        if (!promocode) {
           // remove promocode from cart
           cart.promocodes = [];
           await cart.calcDelivery();
           await cart.save();
-          // throw custom error
+          // throw an error
           throw new HttpException(
-            { message: 'Promocode validation error', code: err.code },
-            HttpStatus.BAD_REQUEST,
+            'Promocode does not exist',
+            HttpStatus.NOT_FOUND,
           );
-        });
-    });
+        }
+
+        await this.promocodesService
+          .validate(promocode, user._id)
+          .catch(async err => {
+            // remove promocode from cart
+            cart.promocodes = [];
+            await cart.calcDelivery();
+            await cart.save();
+            // throw custom error
+            throw new HttpException(
+              { message: 'Promocode validation error', code: err.code },
+              HttpStatus.BAD_REQUEST,
+            );
+          });
+
+        return {
+          promocode: promocode._id,
+          code: promocode.code,
+          discount: promo.discount,
+          minSum: promo.minSum,
+        };
+      }),
+    );
 
     // subtract product qty
     // and validate that all products are enough in stock

@@ -32,10 +32,8 @@ export class MailService {
   }
 
   async sendNewOrderMail(user: User, order: Order) {
-    let total = 0;
     const items = order.items.map(({ product, qty, price }) => {
       const sum = qty * price;
-      total += sum;
       return { product, sum, price, qty };
     });
 
@@ -46,7 +44,7 @@ export class MailService {
 
     const data = {
       _id: order._id,
-      total,
+      total: order.total,
       user: {
         email: user.email,
         name: `${firstName} ${lastName}`,
@@ -56,6 +54,8 @@ export class MailService {
       status: ORDER_STATUS_TRANSLATION_MAP[order.status],
       createdTime: `${day}.${month}.${order.createdTime.getFullYear()}`,
       items,
+      services: order.services,
+      promocodes: order.promocodes,
     };
 
     // need to send 2 mails - one to customer and one to admin

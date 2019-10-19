@@ -82,12 +82,30 @@ const orderTemplate = `
         {{/each}}
       </tbody>
       <tfoot>
+        {{#each promocodes}}
+        <tr>
+          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="4"><b>Промокод {{code}}:</b></td>
+          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{#if discount.total}}-{{/if}}{{discount.total}}</td>
+        </tr>
+        {{/each}}
+        {{#each services}}
+        <tr>
+          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="4"><b>Доставка:</b></td>
+          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{price}}</td>
+        </tr>
+        {{/each}}
         <tr>
           <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="4"><b>Итого:</b></td>
           <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{total}}</td>
         </tr>
       </tfoot>
     </table>
+
+    <p>Если у Вас есть какие-либо вопросы, просто ответьте на это письмо.</p>
+
+    <a href="https://darlingdove.ru" target="_blank">https://darlingdove.ru</a>
+    <br/>
+    <a href="https://vk.com/darlingdove" target="_blank">https://vk.com/darlingdove</a>
   </div>
 </body>
 </html>

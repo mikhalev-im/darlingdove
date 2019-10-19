@@ -5,5 +5,5 @@ export default createActions({
   createOrderAndPay: ['comment'],
   saveUserAndChangeStep: ['data'],
   loadCheckoutPage: ['res'],
-  checkoutPageLoaded: null
+  checkoutPageLoaded: ['error']
 });

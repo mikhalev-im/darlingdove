@@ -5,21 +5,25 @@ import Actions from './actions';
 import RootActions from '../root/actions';
 
 export function* loadProductPage({ sku, res }) {
-  // load and set product
-  const product = yield call(getProductBySku, sku);
-  if (!product) {
-    // redirect to login if there is no user
-    yield put(RootActions.Creators.redirect('/404', res));
-  } else {
-    yield put(Actions.Creators.setProduct(product));
+  try {
+    // load and set product
+    const product = yield call(getProductBySku, sku);
+    if (!product) {
+      // redirect to login if there is no user
+      yield put(RootActions.Creators.redirect('/404', res));
+    } else {
+      yield put(Actions.Creators.setProduct(product));
 
-    // load and set related products
-    const relatedProducts = yield call(getRandomProducts, 4);
-    yield put(Actions.Creators.setRelatedProducts(relatedProducts));
+      // load and set related products
+      const relatedProducts = yield call(getRandomProducts, 4);
+      yield put(Actions.Creators.setRelatedProducts(relatedProducts));
+    }
+
+    // emit page is loaded
+    yield put(Actions.Creators.productPageLoaded());
+  } catch (err) {
+    yield put(Actions.Creators.productPageLoaded(err));
   }
-
-  // emit page is loaded
-  yield put(Actions.Creators.productPageLoaded());
 }
 
 export default function* productSagas() {

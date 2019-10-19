@@ -13,19 +13,25 @@ export function* loadCheckoutPage({ res }) {
   const userId = yield select(getUserId);
   const items = yield select(getCartItems);
 
-  if (!userId) {
-    // redirect to login if no user
-    yield put(RootActions.Creators.redirect('/login?redirect=/checkout', res));
-  } else if (!items.length) {
-    // redirect back to cart if no items
-    yield put(RootActions.Creators.redirect('/cart', res));
-  } else {
-    // set step to address information
-    yield put(Actions.Creators.changeStep(CHECKOUT_STEPS.ADDRESS_STEP_INTEX));
-  }
+  try {
+    if (!userId) {
+      // redirect to login if no user
+      yield put(
+        RootActions.Creators.redirect('/login?redirect=/checkout', res)
+      );
+    } else if (!items.length) {
+      // redirect back to cart if no items
+      yield put(RootActions.Creators.redirect('/cart', res));
+    } else {
+      // set step to address information
+      yield put(Actions.Creators.changeStep(CHECKOUT_STEPS.ADDRESS_STEP_INTEX));
+    }
 
-  // resolve waitFor promise
-  yield put(Actions.Creators.checkoutPageLoaded());
+    // resolve waitFor promise
+    yield put(Actions.Creators.checkoutPageLoaded());
+  } catch (err) {
+    yield put(Actions.Creators.checkoutPageLoaded(err));
+  }
 }
 
 export function* saveUserAndChangeStep({ data }) {

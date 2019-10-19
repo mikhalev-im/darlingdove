@@ -16,7 +16,7 @@ export function* loadLoginPage({ res, query }) {
   }
 
   // resolve waitFor promise
-  yield put(Actions.Creators.loginPageLoaded(redirectDestination));
+  yield put(Actions.Creators.loginPageLoaded(null, redirectDestination));
 }
 
 export default function* loginSagas() {

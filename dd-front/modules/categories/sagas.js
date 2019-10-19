@@ -6,20 +6,24 @@ import Actions from './actions';
 import { buildProductFilters } from './helpers';
 
 export function* loadCategoryPage({ query }) {
-  // build and set filters
-  const filters = yield call(buildProductFilters, query);
-  yield put(Actions.Creators.setFilters(filters));
+  try {
+    // build and set filters
+    const filters = yield call(buildProductFilters, query);
+    yield put(Actions.Creators.setFilters(filters));
 
-  // load products
-  const products = yield call(getProducts, filters);
-  yield put(Actions.Creators.setProducts(products));
+    // load products
+    const products = yield call(getProducts, filters);
+    yield put(Actions.Creators.setProducts(products));
 
-  // load tags
-  const tags = yield call(getTags, query.category);
-  yield put(Actions.Creators.setTags(tags));
+    // load tags
+    const tags = yield call(getTags, query.category);
+    yield put(Actions.Creators.setTags(tags));
 
-  // emit page is loaded
-  yield put(Actions.Creators.categoryPageLoaded(query));
+    // emit page is loaded
+    yield put(Actions.Creators.categoryPageLoaded(null, query));
+  } catch (err) {
+    yield put(Actions.Creators.categoryPageLoaded(err));
+  }
 }
 
 export default function* categorySagas() {

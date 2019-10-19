@@ -8,16 +8,20 @@ import { getOrder } from '../shared/utils/api';
 export function* loadOrderPage({ res, query }) {
   const userId = yield select(getUserId);
 
-  if (!userId) {
-    // redirect if user alredy logged in
-    yield put(RootActions.Creators.redirect('/login', res));
-  } else {
-    const order = yield call(getOrder, query.id);
-    yield put(Actions.Creators.setOrder(order));
-  }
+  try {
+    if (!userId) {
+      // redirect if user alredy logged in
+      yield put(RootActions.Creators.redirect('/login', res));
+    } else {
+      const order = yield call(getOrder, query.id);
+      yield put(Actions.Creators.setOrder(order));
+    }
 
-  // resolve waitFor promise
-  yield put(Actions.Creators.orderPageLoaded());
+    // resolve waitFor promise
+    yield put(Actions.Creators.orderPageLoaded());
+  } catch (err) {
+    yield put(Actions.Creators.orderPageLoaded(err));
+  }
 }
 
 export default function* orderSagas() {

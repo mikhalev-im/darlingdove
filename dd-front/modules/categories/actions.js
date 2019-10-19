@@ -5,5 +5,5 @@ export default createActions({
   setTags: ['tags'],
   setProducts: ['products'],
   setFilters: ['filters'],
-  categoryPageLoaded: ['query']
+  categoryPageLoaded: ['error', 'query']
 });

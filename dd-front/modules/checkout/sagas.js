@@ -4,7 +4,9 @@ import { createOrder } from '../shared/utils/api';
 import Actions from './actions';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
-import { CHECKOUT_STEPS } from './constants';
+import NotificationsActions from '../notifications/actions';
+import { CHECKOUT_STEPS, ERROR_CODE_MESSAGES } from './constants';
+import { PROMO_ERROR_CODE_MESSAGES } from '../shared/constants';
 import { saveUserData } from '../user/sagas';
 import { getUserId } from '../user/selectors';
 import { getCartItems, getCartId } from '../cart/selectors';
@@ -41,10 +43,34 @@ export function* saveUserAndChangeStep({ data }) {
   );
 }
 
-// eslint-disable-next-line
 export function* createOrderAndPay({ comment }) {
   const cartId = yield select(getCartId);
-  yield call(createOrder, cartId, comment);
+
+  try {
+    yield call(createOrder, cartId, comment);
+  } catch (err) {
+    let redirect;
+    let message =
+      ERROR_CODE_MESSAGES[err.code] || PROMO_ERROR_CODE_MESSAGES[err.code];
+
+    if (message) {
+      redirect = '/cart';
+    } else {
+      message = `Неизвестная ошибка: ${err.message}`;
+    }
+
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'orderCreationError',
+        message
+      })
+    );
+
+    if (redirect) yield put(RootActions.Creators.redirect(redirect));
+
+    return;
+  }
+
   // reset cart items
   yield put(CartActions.Creators.resetCartItems());
   // redirect to orders page for now

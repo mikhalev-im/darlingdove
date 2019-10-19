@@ -14,6 +14,7 @@ import Actions from './actions';
 import NotificationsActions from '../notifications/actions';
 import { getCartId, getCartItems } from './selectors';
 import { COOKIE_CART } from '../root/constants';
+import { PROMO_ERROR_CODE_MESSAGES } from '../shared/constants';
 
 const CART_UPDATE_DEBOUNCE = 2000;
 
@@ -48,7 +49,16 @@ export function* addPromocode({ code }) {
     // update cart in store
     yield put(Actions.Creators.setCart(cart));
   } catch (err) {
-    console.log(err);
+    const message =
+      PROMO_ERROR_CODE_MESSAGES[err.code] ||
+      `Неизвестная ошибка: ${err.message}`;
+
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'promocodeError',
+        message
+      })
+    );
   }
 }
 

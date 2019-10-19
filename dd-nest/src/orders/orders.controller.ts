@@ -119,21 +119,30 @@ export class OrdersController {
       const promocode = promo.promocode as Promocode;
 
       if (!promocode) {
+        // remove promocode from cart
         cart.promocodes = [];
         await cart.calcDelivery();
         await cart.save();
+        // throw an error
         throw new HttpException(
-          'Promocode does not exits',
+          'Promocode does not exist',
           HttpStatus.NOT_FOUND,
         );
       }
 
-      await this.promocodesService.validate(promocode, user._id).catch(err => {
-        throw new HttpException(
-          { message: 'Promocode validation error', code: err.code },
-          HttpStatus.BAD_REQUEST,
-        );
-      });
+      await this.promocodesService
+        .validate(promocode, user._id)
+        .catch(async err => {
+          // remove promocode from cart
+          cart.promocodes = [];
+          await cart.calcDelivery();
+          await cart.save();
+          // throw custom error
+          throw new HttpException(
+            { message: 'Promocode validation error', code: err.code },
+            HttpStatus.BAD_REQUEST,
+          );
+        });
     });
 
     // subtract product qty
@@ -150,7 +159,10 @@ export class OrdersController {
       const newQty = product.qty - item.qty;
       if (newQty < 0)
         throw new HttpException(
-          'Not enough product qty in stock',
+          {
+            message: 'Not enough product qty in stock',
+            code: 'PRODUCT_QTY_NOT_ENOUGH',
+          },
           HttpStatus.BAD_REQUEST,
         );
 

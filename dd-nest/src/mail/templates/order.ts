@@ -35,7 +35,7 @@ const orderTemplate = `
         </tr>
       </tbody>
     </table>
-    <!-- if order.comment -->
+    <#if comment>
     <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
       <thead>
         <tr>
@@ -48,6 +48,7 @@ const orderTemplate = `
         </tr>
       </tbody>
     </table>
+    </if>
     <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
       <thead>
         <tr>

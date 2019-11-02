@@ -3,7 +3,7 @@ import { all, call, takeEvery, put, select } from 'redux-saga/effects';
 import Actions from './actions';
 import RootActions from '../root/actions';
 import { getUserId } from '../user/selectors';
-import { getOrder } from '../shared/utils/api';
+import { getOrder, payForOrder } from '../shared/utils/api';
 
 export function* loadOrderPage({ res, query }) {
   const userId = yield select(getUserId);
@@ -24,6 +24,14 @@ export function* loadOrderPage({ res, query }) {
   }
 }
 
+export function* onPay({ orderId }) {
+  const { url } = yield call(payForOrder, orderId);
+  window.location.href = url;
+}
+
 export default function* orderSagas() {
-  yield all([takeEvery(Actions.Types.LOAD_ORDER_PAGE, loadOrderPage)]);
+  yield all([
+    takeEvery(Actions.Types.LOAD_ORDER_PAGE, loadOrderPage),
+    takeEvery(Actions.Types.ON_PAY, onPay)
+  ]);
 }

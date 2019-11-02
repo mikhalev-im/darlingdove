@@ -26,7 +26,11 @@ class Order extends Component {
     return promise;
   }
 
-  onPayClick = () => {};
+  onPayClick = () => {
+    const { order, onPay } = this.props;
+    onPay(order._id);
+  };
+
   onBackClick = () => this.props.redirect('/profile');
 
   renderSummary() {
@@ -73,7 +77,8 @@ const mapState = state => ({
   order: getOrder(state)
 });
 const mapDispatch = {
-  redirect: RootActions.Creators.redirect
+  redirect: RootActions.Creators.redirect,
+  onPay: OrderActions.Creators.onPay
 };
 
 export default withStyles(styles)(

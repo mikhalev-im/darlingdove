@@ -1,6 +1,6 @@
-import { Document } from 'mongoose';
-import { PaymentProcessStatus } from './yandex.interface';
+import { Document, Types } from 'mongoose';
 import { CartPromocode, Service } from 'carts/interfaces/cart.interface';
+import { Product } from 'products/interfaces/product.interface';
 
 export enum OrderStatusTypes {
   NotPaid = 'notPaid',
@@ -10,7 +10,7 @@ export enum OrderStatusTypes {
 }
 
 interface OrderItem {
-  readonly product: string;
+  readonly product: Types.ObjectId | Product;
   readonly qty: number;
   readonly price: number;
 }
@@ -24,13 +24,6 @@ interface User {
   readonly address: string;
 }
 
-interface PaymentRequest {
-  requestId: string;
-  status: PaymentProcessStatus;
-  updatedTime?: Date;
-  createdTime: Date;
-}
-
 export interface Order extends Document {
   readonly items: OrderItem[];
   readonly services: Service[];
@@ -41,6 +34,5 @@ export interface Order extends Document {
   comment: string;
   trackingNumber: string;
   updatedTime?: Date;
-  paymentRequests: PaymentRequest[];
   readonly createdTime?: Date;
 }

@@ -81,13 +81,6 @@ export const OrderSchema = new mongoose.Schema({
     country: String,
     postalCode: String,
   },
-  paymentRequests: [
-    {
-      status: String,
-      requestId: String,
-      createdTime: Date,
-    },
-  ],
   comment: {
     type: String,
     required: false,

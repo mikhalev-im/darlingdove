@@ -1,4 +1,4 @@
-import qs from 'querystring';
+import * as crypto from 'crypto';
 import {
   Controller,
   Param,
@@ -15,7 +15,6 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ProductsService } from '../products/products.service';
-import { YandexService } from './yandex.service';
 import {
   ApiUseTags,
   ApiOkResponse,
@@ -28,27 +27,12 @@ import { User } from '../shared/decorators/user.decorator';
 import { User as UserInterface } from '../users/interfaces/user.interface';
 import { CreateFromCartDto } from './dto/create-from-cart.dto';
 import { OrderStatusTypes } from './interfaces/order.interface';
-import {
-  PaymentProcess,
-  PaymentProcessStatus,
-} from './interfaces/yandex.interface';
 import { MailService } from '../mail/mail.service';
 import { MongoIdParams } from 'shared/dto/mongo-id.dto';
 import { Product } from 'products/interfaces/product.interface';
 import { Promocode } from 'promocodes/interfaces/promocode.interface';
 import { PromocodesService } from 'promocodes/promocodes.service';
-
-// Helper function to build payment success/failure redirect urls
-const getRedirectUrl = (
-  orderId: string,
-  requestId: string,
-  paymentStatus: string,
-): string => {
-  return `https://darlingdove.ru/orders/${orderId}?${qs.stringify({
-    requestId,
-    paymentStatus,
-  })}`;
-};
+import { YANDEX_PAYMENT_NOTIFICATION_SECRET } from './constants';
 
 @ApiUseTags('orders')
 @Controller('orders')
@@ -60,7 +44,6 @@ export class OrdersController {
     @Inject(PromocodesService)
     private readonly promocodesService: PromocodesService,
     private readonly ordersService: OrdersService,
-    private readonly yandexService: YandexService,
   ) {}
 
   @Get(':id')
@@ -234,14 +217,10 @@ export class OrdersController {
   @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ description: 'Process order payment' })
   @UseGuards(AuthGuard())
-  async pay(
-    @Param() params: MongoIdParams,
-    @User() user: UserInterface,
-    @Res() res,
-  ) {
+  async pay(@Param() params: MongoIdParams, @User() user: UserInterface) {
     // find order by id and check user id
     const order = await this.ordersService.findById(params.id);
-    if (!order || order.user._id !== user._id) {
+    if (!order || order.user._id.toString() !== user._id.toString()) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
 
@@ -250,103 +229,70 @@ export class OrdersController {
       throw new HttpException('Order is already paid', HttpStatus.BAD_REQUEST);
     }
 
-    let url: string;
-    try {
-      const amount = order.items.reduce((sum, item) => item.price + sum, 0);
-      const paymentData = await this.yandexService.requestPayment(amount);
+    // populate items
+    await order
+      .populate('items.product')
+      .populate('promocodes.promocode')
+      .execPopulate();
 
-      // build callback urls
-      const requestId = paymentData.request_id;
-      const successUrl = getRedirectUrl(order._id, requestId, 'success');
-      const failureUrl = getRedirectUrl(order._id, requestId, 'failure');
+    // validate promocodes
+    await Promise.all(
+      order.promocodes.map(async promo => {
+        const promocode = promo.promocode as Promocode;
 
-      const processData = await this.yandexService.processPayment(
-        requestId,
-        successUrl,
-        failureUrl,
-      );
+        if (!promocode) {
+          // throw an error
+          throw new HttpException(
+            'Promocode does not exist',
+            HttpStatus.NOT_FOUND,
+          );
+        }
 
-      // TODO:
-      // status should be `ext_auth_required` (add a check)
+        await this.promocodesService
+          .validate(promocode, user._id)
+          .catch(async err => {
+            // throw custom error
+            throw new HttpException(
+              { message: 'Promocode validation error', code: err.code },
+              HttpStatus.BAD_REQUEST,
+            );
+          });
+      }),
+    );
 
-      // save request_id to check payment later
-      // also need to store some debug data like
-      // - current date and time
-      // - full response?
-      order.paymentRequests.push({
-        requestId,
-        status: processData.status,
-        createdTime: new Date(),
-      });
-      await order.save();
+    const url = await this.ordersService.createPayment(order._id, order.total);
 
-      url = `${processData.acs_uri}?${qs.stringify(processData.acs_params)}`;
-    } catch (err) {
-      // log error for debugging
-      console.error(err);
-      // return internal server error
-      throw new HttpException(
-        'Error occured while processing order payment',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    res.redirect(url);
+    return { url };
   }
 
-  // TODO
-  @Get('/:orderId/payment/:requestId')
-  @ApiBearerAuth()
-  @ApiCreatedResponse({ description: 'Checks order payment by request id' })
-  @UseGuards(AuthGuard())
-  async checkPaymentStatus(
-    @Param('orderId') orderId: string,
-    @Param('requestId') requestId: string,
-    @User() user: UserInterface,
-  ) {
-    // find order by id and check user id
-    const order = await this.ordersService.findById(orderId);
-    if (!order || order.user._id !== user._id) {
-      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
-    }
+  @Post('/paymentNotification')
+  async paymentNotification(@Body() body) {
+    // nothing to do if there is no body
+    if (!body) return;
+    // check hash
+    if (!body.sha1_hash) return;
 
-    // check if order contains payment request id
-    const paymentRequest = order.paymentRequests.find(
-      pr => pr.requestId === requestId,
-    );
-    if (!paymentRequest)
-      throw new HttpException(
-        'Payment request does not exist on this order',
-        HttpStatus.BAD_REQUEST,
-      );
+    const hashStr = `${body.notification_type}&${body.operation_id}&${body.amount}&${body.currency}&${body.datetime}&${body.sender}&${body.codepro}&${YANDEX_PAYMENT_NOTIFICATION_SECRET}&${body.label}`;
+    const myHash = crypto.createHash('sha1');
+    myHash.update(hashStr);
+    if (myHash.digest('hex') !== body.sha1_hash) return;
 
-    const successUrl = getRedirectUrl(order._id, requestId, 'success');
-    const failureUrl = getRedirectUrl(order._id, requestId, 'failure');
+    // payment not accepted
+    if (body.unaccepted === 'true') return;
+    // payment is protected with code
+    if (body.codepro === 'true') return;
+    // payment not from this store
+    if (!body.label) return;
 
-    let data: PaymentProcess;
-    do {
-      data = await this.yandexService.processPayment(
-        requestId,
-        successUrl,
-        failureUrl,
-      );
-      if (data.status === 'in_progress') {
-        await new Promise(resolve => setTimeout(resolve, data.next_retry));
-      }
-    } while (data.status === 'in_progress');
+    const order = await this.ordersService.findById(body.label);
+    // order does not exist
+    if (!order) return;
+    // order already paid
+    if (order.status === OrderStatusTypes.Paid) return;
 
-    // process `success` / `refused` / `ext_auth_required`
-
-    // update paymentRequest
-    paymentRequest.status = data.status;
-    paymentRequest.updatedTime = new Date();
+    // update order status
+    order.status = OrderStatusTypes.Paid;
     order.updatedTime = new Date();
-
-    if (data.status === PaymentProcessStatus.Success) {
-      order.status = OrderStatusTypes.Paid;
-    }
-
     await order.save();
-    return order.toObject();
   }
 }

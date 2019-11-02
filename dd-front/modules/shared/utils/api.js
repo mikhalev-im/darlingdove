@@ -152,37 +152,6 @@ export const cartBulkQtyUpdate = async (cartId = '', items) => {
   return api.patch(`/carts/${cartId}`, { body });
 };
 
-export const payForOrder = async () => {
-  const body = {
-    receiver: 41001697476019,
-    'quickpay-form': 'shop',
-    targets: 'order #123',
-    paymentType: 'PC',
-    sum: 10
-  };
-
-  const options = {
-    body: stringify(body),
-    method: 'POST',
-    mode: 'no-cors',
-    redirect: 'follow',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  };
-
-  const response = await fetch(
-    `https://money.yandex.ru/quickpay/confirm.xml`,
-    options
-  );
-
-  // we can't parse json if there is no content
-  let data = null;
-  if (response.status !== 204) {
-    data = await response.json();
-  }
-
-  if (!response.ok && !response.redirected) throw data;
-
-  return data;
+export const payForOrder = async orderId => {
+  return api.post(`/orders/${orderId}/pay`, { body: {} });
 };

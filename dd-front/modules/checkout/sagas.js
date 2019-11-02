@@ -1,6 +1,6 @@
 import { call, put, takeEvery, all, select } from 'redux-saga/effects';
 
-import { createOrder } from '../shared/utils/api';
+import { createOrder, payForOrder } from '../shared/utils/api';
 import Actions from './actions';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
@@ -46,8 +46,9 @@ export function* saveUserAndChangeStep({ data }) {
 export function* createOrderAndPay({ comment }) {
   const cartId = yield select(getCartId);
 
+  let order;
   try {
-    yield call(createOrder, cartId, comment);
+    order = yield call(createOrder, cartId, comment);
   } catch (err) {
     let redirect;
     let message =
@@ -73,11 +74,9 @@ export function* createOrderAndPay({ comment }) {
 
   // reset cart items
   yield put(CartActions.Creators.resetCartItems());
-  // redirect to orders page for now
-  yield put(RootActions.Creators.redirect('/profile'));
-
-  // TODO: redirect to pay
-  // yield call(api.payForOrder, comment);
+  // pay for order
+  const { url } = yield call(payForOrder, order._id);
+  window.location.href = url;
 }
 
 export default function* checkoutSagas() {

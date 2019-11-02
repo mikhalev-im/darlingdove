@@ -2,7 +2,6 @@ import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
-import { YandexService } from './yandex.service';
 import { OrderSchema } from './schemas/order.schema';
 import { CartsModule } from '../carts/carts.module';
 import { ProductsModule } from '../products/products.module';
@@ -20,7 +19,7 @@ import { PromocodesModule } from 'promocodes/promocodes.module';
     forwardRef(() => PromocodesModule),
   ],
   controllers: [OrdersController],
-  providers: [OrdersService, YandexService],
+  providers: [OrdersService],
   exports: [OrdersService],
 })
 export class OrdersModule {}

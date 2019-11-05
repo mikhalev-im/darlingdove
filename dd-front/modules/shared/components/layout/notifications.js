@@ -19,7 +19,7 @@ class Notifications extends PureComponent {
 
   showDebugData = () => {
     const {
-      messageInfo: { debug },
+      messageData: { debug },
       showDebugData
     } = this.props;
     showDebugData(debug);

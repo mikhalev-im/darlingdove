@@ -18,8 +18,6 @@ import { PROMO_ERROR_CODE_MESSAGES } from '../shared/constants';
 
 const CART_UPDATE_DEBOUNCE = 2000;
 
-// error handling
-// loading indicator
 export function* addToCart({ productId, qty = 1 }) {
   // get cartId from store
   const cartId = yield select(getCartId);

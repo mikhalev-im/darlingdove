@@ -5,6 +5,7 @@ import Actions from './actions';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
 import NotificationsActions from '../notifications/actions';
+import OrderActions from '../order/actions';
 import { CHECKOUT_STEPS, ERROR_CODE_MESSAGES } from './constants';
 import { PROMO_ERROR_CODE_MESSAGES } from '../shared/constants';
 import { saveUserData } from '../user/sagas';
@@ -37,10 +38,20 @@ export function* loadCheckoutPage({ res }) {
 }
 
 export function* saveUserAndChangeStep({ data }) {
-  yield call(saveUserData, { data });
-  yield put(
-    Actions.Creators.changeStep(CHECKOUT_STEPS.ORDER_SUMMARY_STEP_INDEX)
-  );
+  try {
+    yield call(saveUserData, { data });
+    yield put(
+      Actions.Creators.changeStep(CHECKOUT_STEPS.ORDER_SUMMARY_STEP_INDEX)
+    );
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'saveUserAndChangeStepError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export function* createOrderAndPay({ comment }) {
@@ -75,8 +86,7 @@ export function* createOrderAndPay({ comment }) {
   // reset cart items
   yield put(CartActions.Creators.resetCartItems());
   // pay for order
-  const { url } = yield call(payForOrder, order._id);
-  window.location.href = url;
+  yield put(OrderActions.Creators.onPay(order._id));
 }
 
 export default function* checkoutSagas() {

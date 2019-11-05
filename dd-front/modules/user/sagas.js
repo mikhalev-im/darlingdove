@@ -17,12 +17,22 @@ const updateToken = token => {
 };
 
 export function* saveUserData({ data }) {
-  // get user id from store
-  const userId = yield select(getUserId);
-  // make api request
-  const user = yield call(api.patchUser, userId, data);
-  // set user in store
-  yield put(Actions.Creators.setUser(user));
+  try {
+    // get user id from store
+    const userId = yield select(getUserId);
+    // make api request
+    const user = yield call(api.patchUser, userId, data);
+    // set user in store
+    yield put(Actions.Creators.setUser(user));
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'saveUserError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export function* login({
@@ -30,45 +40,83 @@ export function* login({
   password,
   redirectTo = DEFAULT_LOGIN_REDIRECT
 }) {
-  const user = yield call(api.login, email, password);
-  yield put(Actions.Creators.setUser(user));
-  yield call(updateToken, user.jwt);
-  yield call(redirect, { redirectTo });
+  try {
+    const user = yield call(api.login, email, password);
+    yield put(Actions.Creators.setUser(user));
+    yield call(updateToken, user.jwt);
+    yield call(redirect, { redirectTo });
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'loginError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
-// with error handling
-// with loading indicator
 export function* register({
   email,
   password,
   redirectTo = DEFAULT_LOGIN_REDIRECT
 }) {
-  const user = yield call(api.register, email, password);
-  yield put(Actions.Creators.setUser(user));
-  yield call(updateToken, user.jwt);
-  yield call(redirect, { redirectTo });
+  try {
+    const user = yield call(api.register, email, password);
+    yield put(Actions.Creators.setUser(user));
+    yield call(updateToken, user.jwt);
+    yield call(redirect, { redirectTo });
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'registerError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export function* logout() {
-  yield put(Actions.Creators.resetUser());
-  yield call(updateToken, null);
-  yield call(redirect, { redirectTo: DEFAULT_LOGOUT_REDIRECT });
+  try {
+    yield put(Actions.Creators.resetUser());
+    yield call(updateToken, null);
+    yield call(redirect, { redirectTo: DEFAULT_LOGOUT_REDIRECT });
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'logoutError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export function* changePassword({ passwordOld, passwordNew }) {
-  const userId = yield select(getUserId);
+  try {
+    const userId = yield select(getUserId);
 
-  yield call(api.changePassword, userId, {
-    passwordOld,
-    passwordNew
-  });
+    yield call(api.changePassword, userId, {
+      passwordOld,
+      passwordNew
+    });
 
-  yield put(
-    NotificationsActions.Creators.addNotification({
-      key: 'userPasswordChanged',
-      message: `Пароль изменен`
-    })
-  );
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'userPasswordChanged',
+        message: `Пароль изменен`
+      })
+    );
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'changePasswordError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export default function* userSagas() {

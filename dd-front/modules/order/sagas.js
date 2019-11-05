@@ -4,6 +4,7 @@ import Actions from './actions';
 import RootActions from '../root/actions';
 import { getUserId } from '../user/selectors';
 import { getOrder, payForOrder } from '../shared/utils/api';
+import NotificationsActions from '../notifications/actions';
 
 export function* loadOrderPage({ res, query }) {
   const userId = yield select(getUserId);
@@ -25,8 +26,18 @@ export function* loadOrderPage({ res, query }) {
 }
 
 export function* onPay({ orderId }) {
-  const { url } = yield call(payForOrder, orderId);
-  window.location.href = url;
+  try {
+    const { url } = yield call(payForOrder, orderId);
+    window.location.href = url;
+  } catch (err) {
+    yield put(
+      NotificationsActions.Creators.addNotification({
+        key: 'onPayError',
+        message: `Ошибка!`,
+        debug: err
+      })
+    );
+  }
 }
 
 export default function* orderSagas() {

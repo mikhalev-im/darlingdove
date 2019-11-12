@@ -85,6 +85,9 @@ export const OrderSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  shortId: {
+    type: String,
+  },
   status: {
     type: String,
     enum: ['notPaid', 'paid', 'shipped', 'done'],

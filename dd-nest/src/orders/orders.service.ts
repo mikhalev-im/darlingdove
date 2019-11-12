@@ -1,6 +1,7 @@
 import * as https from 'https';
 import { stringify } from 'querystring';
 import { Types } from 'mongoose';
+import * as shortid from 'shortid';
 
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -26,7 +27,7 @@ export class OrdersService {
   }
 
   async create(order: object): Promise<Order> {
-    return this.orderModel.create(order);
+    return this.orderModel.create({ ...order, shortId: shortid.generate() });
   }
 
   async countTotalPromocodeUsage(promocodeId: string): Promise<number> {

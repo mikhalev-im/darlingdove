@@ -5,7 +5,7 @@ const orderTemplate = `
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Заказ №{{_id}}</title>
+  <title>Заказ ID {{shortId}}</title>
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
   <div style="width: 680px; margin: 0 auto;">
@@ -23,7 +23,7 @@ const orderTemplate = `
       <tbody>
         <tr>
           <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-            <b>№ заказа:</b> {{_id}}<br />
+            <b>ID заказа:</b> {{shortId}}<br />
             <b>Дата заказа:</b> {{createdTime}}<br />
             <b>Способ оплаты:</b> Онлайн<br />
             <b>Способ доставки:</b> Бесплатная доставка
@@ -35,7 +35,7 @@ const orderTemplate = `
         </tr>
       </tbody>
     </table>
-    <#if comment>
+    {{#if comment}}
     <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
       <thead>
         <tr>
@@ -48,7 +48,7 @@ const orderTemplate = `
         </tr>
       </tbody>
     </table>
-    </if>
+    {{/if}}
     <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
       <thead>
         <tr>

@@ -41,6 +41,7 @@
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3",
+    "shortid": "^2.2.15",
     "sitemap": "^4.1.1",
     "typescript": "^3.6.3",
     "yandex-money-sdk": "^0.1.7"

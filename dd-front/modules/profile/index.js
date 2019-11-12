@@ -88,7 +88,7 @@ class Profile extends Component {
     return (
       <TableHead>
         <TableRow>
-          <TableCell>№ п/п</TableCell>
+          <TableCell>ID</TableCell>
           <TableCell align="right">Дата</TableCell>
           <TableCell align="right">Количество товаров</TableCell>
           <TableCell align="right">Сумма</TableCell>
@@ -109,14 +109,14 @@ class Profile extends Component {
             <TableCell>Нет заказов</TableCell>
           </TableRow>
         )}
-        {orders.map((order, index) => {
+        {orders.map(order => {
           const qty = order.items.reduce((acc, item) => acc + item.qty, 0);
 
           const date = new Date(order.createdTime);
           return (
             <TableRow hover key={order._id}>
               <TableCell component="th" scope="row">
-                {index + 1}
+                {order.shortId}
               </TableCell>
               <TableCell align="right">{date.toLocaleString()}</TableCell>
               <TableCell align="right">{qty}</TableCell>

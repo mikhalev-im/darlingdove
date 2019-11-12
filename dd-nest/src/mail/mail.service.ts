@@ -44,6 +44,7 @@ export class MailService {
 
     const data = {
       _id: order._id,
+      shortId: order.shortId,
       total: order.total,
       user: {
         email: user.email,
@@ -61,7 +62,7 @@ export class MailService {
     // need to send 2 mails - one to customer and one to admin
     await this.sendMail({
       to: `${user.email} ${ADMIN_EMAIL}`,
-      subject: `Заказ от ${data.createdTime}`,
+      subject: `Заказ от ${data.createdTime} (${order.shortId})`,
       html: this.templates.order(data),
     });
   }

@@ -64,6 +64,7 @@ const styles = theme => ({
 const OrderSummary = ({
   classes,
   order: {
+    shortId,
     user,
     items,
     services,
@@ -78,12 +79,13 @@ const OrderSummary = ({
   const ref = useRef(null);
 
   const total = calcOrderSum(items, promocodes, services);
+  const title = shortId ? `Ваш заказ (ID: ${shortId})` : 'Ваш заказ';
 
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.paper}>
         <Typography align="left" variant="h6">
-          Ваш заказ
+          {title}
         </Typography>
         <Grid container className={classes.shipping} spacing={2}>
           <Grid item>

@@ -30,6 +30,7 @@ export interface Order extends Document {
   readonly promocodes: CartPromocode[];
   readonly user: User;
   readonly total: number;
+  shortId: string;
   status: OrderStatusTypes;
   comment: string;
   trackingNumber: string;

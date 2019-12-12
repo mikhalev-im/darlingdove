@@ -7,7 +7,7 @@ import { CartsModule } from '../carts/carts.module';
 import { ProductsModule } from '../products/products.module';
 import { AuthModule } from '../auth/auth.module';
 import { MailModule } from '../mail/mail.module';
-import { PromocodesModule } from 'promocodes/promocodes.module';
+import { PromocodesModule } from '../promocodes/promocodes.module';
 
 @Module({
   imports: [

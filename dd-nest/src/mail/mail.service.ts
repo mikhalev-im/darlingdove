@@ -14,8 +14,8 @@ import {
 } from './constants';
 import { compileTemplates } from './templates';
 import { MailTemplatesMap } from './interfaces/mailTemplatesMap.interace';
-import { User } from 'users/interfaces/user.interface';
-import { Order } from 'orders/interfaces/order.interface';
+import { User } from '../users/interfaces/user.interface';
+import { Order } from '../orders/interfaces/order.interface';
 
 @Injectable()
 export class MailService {
@@ -23,6 +23,7 @@ export class MailService {
   private templates: MailTemplatesMap;
 
   constructor() {
+    console.log(MAIL_TRANSPORT);
     this.transporter = createTransport(MAIL_TRANSPORT, { from: MAIL_FROM });
     this.templates = compileTemplates();
   }

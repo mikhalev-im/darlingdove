@@ -6,7 +6,7 @@ import {
   ServiceTypes,
   CartPromocode,
 } from '../interfaces/cart.interface';
-import { DiscountType } from 'promocodes/interfaces/promocode.interface';
+import { DiscountType } from '../../promocodes/interfaces/promocode.interface';
 
 export const CartSchema = new mongoose.Schema({
   items: [

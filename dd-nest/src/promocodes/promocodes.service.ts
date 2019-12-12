@@ -2,8 +2,8 @@ import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Promocode } from './interfaces/promocode.interface';
-import { OrdersService } from 'orders/orders.service';
-import { CustomError } from 'shared/errors';
+import { OrdersService } from '../orders/orders.service';
+import { CustomError } from '../shared/errors';
 
 @Injectable()
 export class PromocodesService {

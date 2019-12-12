@@ -13,6 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { OrdersService } from './orders.service';
 import { ProductsService } from '../products/products.service';
 import {
@@ -22,16 +23,15 @@ import {
   ApiCreatedResponse,
 } from '@nestjs/swagger';
 import { CartsService } from '../carts/carts.service';
-import { AuthGuard } from '@nestjs/passport';
 import { User } from '../shared/decorators/user.decorator';
 import { User as UserInterface } from '../users/interfaces/user.interface';
 import { CreateFromCartDto } from './dto/create-from-cart.dto';
 import { OrderStatusTypes } from './interfaces/order.interface';
 import { MailService } from '../mail/mail.service';
-import { MongoIdParams } from 'shared/dto/mongo-id.dto';
-import { Product } from 'products/interfaces/product.interface';
-import { Promocode } from 'promocodes/interfaces/promocode.interface';
-import { PromocodesService } from 'promocodes/promocodes.service';
+import { MongoIdParams } from '../shared/dto/mongo-id.dto';
+import { Product } from '../products/interfaces/product.interface';
+import { Promocode } from '../promocodes/interfaces/promocode.interface';
+import { PromocodesService } from '../promocodes/promocodes.service';
 import { YANDEX_PAYMENT_NOTIFICATION_SECRET } from './constants';
 
 @ApiUseTags('orders')

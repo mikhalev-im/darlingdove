@@ -18,9 +18,9 @@ import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 import { DefaultValuesPipe } from '../shared/pipes/default-values.pipe';
 import { ProductsService } from '../products/products.service';
 import { BulkQtyUpdateDto } from './dto/bulk-qty-update.dto';
-import { MongoIdParams } from 'shared/dto/mongo-id.dto';
+import { MongoIdParams } from '../shared/dto/mongo-id.dto';
 import { RemoveFromCartParams } from './dto/remove-from-cart.dto';
-import { PromocodesService } from 'promocodes/promocodes.service';
+import { PromocodesService } from '../promocodes/promocodes.service';
 import { AddPromocodeDto } from './dto/add-promocode.dto';
 import { Types } from 'mongoose';
 

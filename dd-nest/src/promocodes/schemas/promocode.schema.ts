@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { DiscountType } from 'promocodes/interfaces/promocode.interface';
+import { DiscountType } from '../../promocodes/interfaces/promocode.interface';
 
 export const PromocodeSchema = new mongoose.Schema({
   code: {

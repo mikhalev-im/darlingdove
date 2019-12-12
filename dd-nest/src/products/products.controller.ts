@@ -8,15 +8,14 @@ import {
   ParseIntPipe,
   UsePipes,
   ValidationPipe,
-  Inject,
 } from '@nestjs/common';
+import { ApiUseTags, ApiOkResponse, ApiImplicitQuery } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { ParseIntValuesPipe } from '../shared/pipes/parse-int-values.pipe';
 import { ParseBoolValuesPipe } from '../shared/pipes/parse-bool-values.pipe';
 import { DefaultValuesPipe } from '../shared/pipes/default-values.pipe';
-import { ApiUseTags, ApiOkResponse, ApiImplicitQuery } from '@nestjs/swagger';
 import { GetProductsDto } from './dto/get-products.dto';
-import { MongoIdParams } from 'shared/dto/mongo-id.dto';
+import { MongoIdParams } from '../shared/dto/mongo-id.dto';
 
 @ApiUseTags('products')
 @Controller('products')

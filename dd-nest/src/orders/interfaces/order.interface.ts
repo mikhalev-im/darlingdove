@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose';
-import { CartPromocode, Service } from 'carts/interfaces/cart.interface';
-import { Product } from 'products/interfaces/product.interface';
+import { CartPromocode, Service } from '../../carts/interfaces/cart.interface';
+import { Product } from '../../products/interfaces/product.interface';
 
 export enum OrderStatusTypes {
   NotPaid = 'notPaid',

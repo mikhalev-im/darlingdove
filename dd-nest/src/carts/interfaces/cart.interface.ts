@@ -1,6 +1,9 @@
 import { Document, Types } from 'mongoose';
-import { Discount, Promocode } from 'promocodes/interfaces/promocode.interface';
-import { Product } from 'products/interfaces/product.interface';
+import {
+  Discount,
+  Promocode,
+} from '../../promocodes/interfaces/promocode.interface';
+import { Product } from '../../products/interfaces/product.interface';
 
 export interface CartItem {
   product: Types.ObjectId | Product;

@@ -29,7 +29,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../shared/decorators/user.decorator';
 import { MailService } from '../mail/mail.service';
-import { MongoIdParams } from 'shared/dto/mongo-id.dto';
+import { MongoIdParams } from '../shared/dto/mongo-id.dto';
 
 @ApiUseTags('users')
 @Controller('users')

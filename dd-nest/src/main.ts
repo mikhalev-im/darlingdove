@@ -6,7 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'shared/exception.filter';
+import { HttpExceptionFilter } from './shared/exception.filter';
 
 declare const module: any;
 

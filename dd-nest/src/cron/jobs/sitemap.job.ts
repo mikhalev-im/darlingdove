@@ -7,9 +7,9 @@ import {
 } from 'sitemap';
 import { writeFile, existsSync } from 'fs';
 import { join } from 'path';
-import { ProductsService } from 'products/products.service';
-import { PagesService } from 'pages/pages.service';
-import { BASE_URL, STATIC_DIR } from 'cron/constants';
+import { ProductsService } from '../../products/products.service';
+import { PagesService } from '../../pages/pages.service';
+import { BASE_URL, STATIC_DIR } from '../constants';
 
 @Injectable()
 export class SitemapJob extends NestSchedule {

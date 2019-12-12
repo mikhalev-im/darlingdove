@@ -6,7 +6,7 @@ import { CartsModule } from './carts/carts.module';
 import { PagesModule } from './pages/pages.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrdersModule } from './orders/orders.module';
-import { CronModule } from 'cron/cron.module';
+import { CronModule } from './cron/cron.module';
 
 @Module({
   imports: [

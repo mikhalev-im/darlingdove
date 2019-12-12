@@ -5,7 +5,7 @@ import { CartsService } from './carts.service';
 import { CartSchema } from './schemas/cart.schema';
 import { ProductsModule } from '../products/products.module';
 import { AuthModule } from '../auth/auth.module';
-import { PromocodesModule } from 'promocodes/promocodes.module';
+import { PromocodesModule } from '../promocodes/promocodes.module';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-import { ServiceTypes } from 'carts/interfaces/cart.interface';
-import { DiscountType } from 'promocodes/interfaces/promocode.interface';
+import { ServiceTypes } from '../../carts/interfaces/cart.interface';
+import { DiscountType } from '../../promocodes/interfaces/promocode.interface';
 
 export const OrderSchema = new mongoose.Schema({
   items: [

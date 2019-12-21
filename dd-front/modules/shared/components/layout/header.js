@@ -41,15 +41,15 @@ const styles = theme => ({
 const menu = [
   {
     title: 'Открытки',
-    href: '/category?category=postcards',
+    href: '/category/[category]',
     hrefAs: '/category/postcards'
   },
   {
     title: 'Конверты',
-    href: '/category?category=envelopes',
+    href: '/category/[category]',
     hrefAs: '/category/envelopes'
   },
-  { title: 'О нас', href: '/page?slug=about', hrefAs: '/page/about' }
+  { title: 'О нас', href: '/page/[slug]', hrefAs: '/page/about' }
 ];
 
 class Header extends Component {

@@ -123,10 +123,7 @@ class Profile extends Component {
               <TableCell align="right">{`${order.total} руб.`}</TableCell>
               <TableCell>{MAP_STATUS[order.status]}</TableCell>
               <TableCell>
-                <Link
-                  href={`/order?id=${order._id}`}
-                  as={`/order/${order._id}`}
-                >
+                <Link href={`/order/[is]`} as={`/order/${order._id}`}>
                   <a>Просмотр</a>
                 </Link>
               </TableCell>
@@ -199,9 +196,4 @@ const mapDispatch = {
   changePassword: UserActions.Creators.changePassword
 };
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Profile)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Profile));

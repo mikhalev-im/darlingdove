@@ -40,7 +40,7 @@ class Product extends React.PureComponent {
         <ProductCard
           img={coverImg}
           title={priceStr}
-          href={`/product?sku=${sku}`}
+          href={`/product/[sku]`}
           hrefAs={`/product/${sku}`}
         />
         <CardActions disableSpacing className={classes.actionsBar}>

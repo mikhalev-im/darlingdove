@@ -33,12 +33,12 @@ class Product extends React.PureComponent {
   render() {
     const { classes, price, name, images, sku } = this.props;
     const priceStr = `${price} руб`;
-    const coverImg = images[0];
+    const image = images.find(img => img.type === 'card');
 
     return (
       <Card className={classes.card}>
         <ProductCard
-          img={coverImg}
+          img={image.url}
           title={priceStr}
           href={`/product/[sku]`}
           hrefAs={`/product/${sku}`}
@@ -66,7 +66,14 @@ Product.propTypes = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired,
+      url: PropTypes.string.isRequired
+    })
+  ).isRequired,
   addToCart: PropTypes.func.isRequired
 };
 

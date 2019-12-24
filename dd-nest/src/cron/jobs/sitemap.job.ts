@@ -69,7 +69,7 @@ export class SitemapJob extends NestSchedule {
       if (product.images.length) {
         productData.img = [
           {
-            url: product.images[0],
+            url: product.images[0].url,
             title: product.name,
             caption: product.description,
           },

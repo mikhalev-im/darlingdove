@@ -38,14 +38,14 @@ const styles = () => ({
 const ItemRow = ({ item, classes, onChange, onDelete }) => {
   const { product, qty } = item;
 
-  const [image] = product.images;
+  const image = product.images.find(img => img.type === 'card');
 
   return (
     <TableRow key={product._id}>
       <TableCell className={classes.imageCell}>
         <Link href={`/product/[sku]`} as={`/product/${product.sku}`}>
           <a className={classes.link}>
-            <CardMedia image={image} className={classes.image} />
+            <CardMedia image={image.url} className={classes.image} />
           </a>
         </Link>
       </TableCell>

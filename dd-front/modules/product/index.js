@@ -78,6 +78,10 @@ class Product extends Component {
     const { lightboxIsOpen } = this.state;
     const { classes, product, relatedProducts } = this.props;
 
+    const images = product.images
+      .filter(({ type }) => type === 'big')
+      .map(img => ({ src: img.url }));
+
     return (
       <>
         <Head>
@@ -101,12 +105,12 @@ class Product extends Component {
                   itemProp="image"
                   onClick={this.openLightBox}
                   className={classes.img}
-                  src={product.images[0]}
+                  src={images[0].src}
                 />
                 <Lightbox
                   isOpen={lightboxIsOpen}
                   onClose={this.closeLightBox}
-                  images={product.images.map(src => ({ src }))}
+                  images={images}
                 />
               </Grid>
             </Grid>
@@ -200,9 +204,4 @@ const mapDispatch = {
   addToCart: CartActions.Creators.addToCart
 };
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Product)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Product));

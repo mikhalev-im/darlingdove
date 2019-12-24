@@ -25,7 +25,23 @@ export const ProductSchema = new mongoose.Schema({
     required: false,
     min: 0,
   },
-  images: [String],
+  images: [
+    {
+      type: {
+        type: String,
+        enum: ['card', 'big'],
+      },
+      width: {
+        type: Number,
+      },
+      height: {
+        type: Number,
+      },
+      url: {
+        type: String,
+      },
+    },
+  ],
   ordersCount: {
     type: Number,
     required: true,

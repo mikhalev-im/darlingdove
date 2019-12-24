@@ -121,11 +121,13 @@ class Cart extends Component {
             </TableHead>
             <TableBody>
               {cartItems.map(item => {
-                const [imageSrc] = item.product.images;
+                const image = item.product.images.find(
+                  img => img.type === 'card'
+                );
                 return (
                   <TableRow key={item.product._id}>
                     <TableCell className={classes.imageCell}>
-                      <CardMedia image={imageSrc} className={classes.image} />
+                      <CardMedia image={image.url} className={classes.image} />
                     </TableCell>
                     <TableCell>{item.product.name}</TableCell>
                     <TableCell numeric>
@@ -200,9 +202,4 @@ const mapDispatch = {
   onQtyChange: CartActions.Creators.debouncedCartQtyUpdate
 };
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Cart)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Cart));

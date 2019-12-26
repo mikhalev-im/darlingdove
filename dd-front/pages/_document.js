@@ -35,6 +35,11 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <link
+            rel="shortcut icon"
+            href="https://storage.yandexcloud.net/darlingdove/fav.png"
+            type="image/png"
+          ></link>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

@@ -44,11 +44,6 @@ const menu = [
     href: '/category/[category]',
     hrefAs: '/category/postcards'
   },
-  {
-    title: 'Конверты',
-    href: '/category/[category]',
-    hrefAs: '/category/envelopes'
-  },
   { title: 'О нас', href: '/page/[slug]', hrefAs: '/page/about' }
 ];
 

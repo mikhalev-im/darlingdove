@@ -2,6 +2,9 @@ version: "3"
 
 services:
   nginx:
+    build:
+      args:
+        CONFIG_PATH: /etc/nginx/sites-available/dd-dev.conf
     ports:
       - "8080:80"
   mongo:

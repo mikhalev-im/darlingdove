@@ -59,7 +59,10 @@ export class OrdersController {
 
     const order = await this.ordersService.findById(params.id);
 
-    if (!order || order.user._id.toString() !== user._id.toString())
+    if (!order)
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+
+    if (order.user._id.toString() !== user._id.toString() && !user.isAdmin)
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
 
     await order.populate('items.product').execPopulate();

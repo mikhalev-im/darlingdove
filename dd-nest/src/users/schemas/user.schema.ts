@@ -36,6 +36,9 @@ export const UserSchema = new mongoose.Schema({
   updatedTime: {
     type: Date,
   },
+  isAdmin: {
+    type: Boolean,
+  },
 });
 
 UserSchema.set('toObject', {

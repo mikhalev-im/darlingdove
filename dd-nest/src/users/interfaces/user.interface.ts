@@ -8,4 +8,5 @@ export interface User extends Document {
   readonly country: string;
   readonly postalCode: string;
   readonly address: string;
+  readonly isAdmin: boolean;
 }

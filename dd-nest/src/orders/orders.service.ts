@@ -48,7 +48,7 @@ export class OrdersService {
   async createPayment(orderId: Types.ObjectId, sum: number): Promise<string> {
     const data = stringify({
       sum,
-      label: orderId,
+      label: orderId.toString(),
       receiver: YANDEX_WALLET,
       'quickpay-form': 'shop',
       paymentType: 'AC',

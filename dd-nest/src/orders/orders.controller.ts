@@ -12,6 +12,7 @@ import {
   Res,
   UsePipes,
   ValidationPipe,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { OrdersService } from './orders.service';
@@ -269,13 +270,24 @@ export class OrdersController {
   async paymentNotification(@Body() body) {
     // nothing to do if there is no body
     if (!body) return;
+
+    Logger.log(`Incoming payment notification: ${JSON.stringify(body)}`);
+
     // check hash
     if (!body.sha1_hash) return;
 
     const hashStr = `${body.notification_type}&${body.operation_id}&${body.amount}&${body.currency}&${body.datetime}&${body.sender}&${body.codepro}&${YANDEX_PAYMENT_NOTIFICATION_SECRET}&${body.label}`;
     const myHash = crypto.createHash('sha1');
     myHash.update(hashStr);
-    if (myHash.digest('hex') !== body.sha1_hash) return;
+
+    const hashResult = myHash.digest('hex');
+
+    Logger.log(`Payment notification hash result: ${hashResult}`);
+
+    if (hashResult !== body.sha1_hash) {
+      Logger.log('Payment notification hash does not match');
+      return;
+    }
 
     // payment not accepted
     if (body.unaccepted === 'true') return;
@@ -286,7 +298,10 @@ export class OrdersController {
 
     const order = await this.ordersService.findById(body.label);
     // order does not exist
-    if (!order) return;
+    if (!order) {
+      Logger.log(`Payment notification order was not found: ${body.label}`);
+      return;
+    }
     // order already paid
     if (order.status === OrderStatusTypes.Paid) return;
 

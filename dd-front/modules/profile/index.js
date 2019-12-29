@@ -20,14 +20,7 @@ import PasswordModal from './components/password-change';
 import OrderType from '../order/types/order';
 import UserType from './types/user';
 import { getOrders } from './selectors';
-
-const MAP_STATUS = {
-  notPaid: 'Ожидает оплаты',
-  paid: 'Оплачен',
-  sent: 'Отправлен',
-  completed: 'Завершен',
-  cancelled: 'Отменен'
-};
+import { ORDER_STATUS_MAP } from '../shared/constants';
 
 const MAX_WIDTH_MULTIPLIER = 125;
 const MIN_WIDTH_MULTIPLIER = 87.5;
@@ -121,7 +114,7 @@ class Profile extends Component {
               <TableCell align="right">{date.toLocaleString()}</TableCell>
               <TableCell align="right">{qty}</TableCell>
               <TableCell align="right">{`${order.total} руб.`}</TableCell>
-              <TableCell>{MAP_STATUS[order.status]}</TableCell>
+              <TableCell>{ORDER_STATUS_MAP[order.status]}</TableCell>
               <TableCell>
                 <Link href={`/order/[is]`} as={`/order/${order._id}`}>
                   <a>Просмотр</a>

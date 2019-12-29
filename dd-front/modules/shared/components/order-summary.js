@@ -18,6 +18,7 @@ import {
   getServiceTypeTranslation,
   calcOrderSum
 } from '../../shared/utils/cart';
+import { ORDER_STATUS_MAP } from '../constants';
 
 const MAX_WIDTH_MULTIPLIER = 125;
 const MIN_WIDTH_MULTIPLIER = 87.5;
@@ -71,7 +72,8 @@ const OrderSummary = ({
     promocodes,
     trackingNumber,
     comment,
-    createdTime
+    createdTime,
+    status
   },
   onPay,
   onBack
@@ -90,7 +92,7 @@ const OrderSummary = ({
         <Grid container className={classes.shipping} spacing={2}>
           <Grid item>
             <Typography align="left" gutterBottom>
-              <b>Статус:</b> Не оплачено
+              <b>Статус:</b> {ORDER_STATUS_MAP[status]}
             </Typography>
             <Typography align="left" gutterBottom>
               <b>Клиент:</b> {`${user.firstName} ${user.lastName}`}

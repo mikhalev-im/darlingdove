@@ -13,6 +13,9 @@ import {
   UsePipes,
   ValidationPipe,
   Logger,
+  Query,
+  Patch,
+  ForbiddenException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { OrdersService } from './orders.service';
@@ -34,6 +37,8 @@ import { Product } from '../products/interfaces/product.interface';
 import { Promocode } from '../promocodes/interfaces/promocode.interface';
 import { PromocodesService } from '../promocodes/promocodes.service';
 import { YANDEX_PAYMENT_NOTIFICATION_SECRET } from './constants';
+import { GetOrdersDto } from './dto/get-orders.dto';
+import { PatchOrderDto } from './dto/patch-order.dto';
 
 @ApiUseTags('orders')
 @Controller('orders')
@@ -74,8 +79,16 @@ export class OrdersController {
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Retruns user orders' })
   @UseGuards(AuthGuard())
-  async getByUserId(@User() user: UserInterface) {
-    const orders = await this.ordersService.findByUserAndPopulate(user._id);
+  async getByUserId(
+    @Query() filters: GetOrdersDto,
+    @User() user: UserInterface,
+  ) {
+    // return all orders for admin
+    if (!user.isAdmin) {
+      filters.user = user._id;
+    }
+
+    const orders = await this.ordersService.find(filters);
     return orders.map(order => order.toObject());
   }
 
@@ -212,6 +225,36 @@ export class OrdersController {
 
     // send email
     await this.mailService.sendNewOrderMail(user, order);
+
+    return order.toObject();
+  }
+
+  @Patch('/:id')
+  @ApiBearerAuth()
+  @UsePipes(new ValidationPipe())
+  @ApiCreatedResponse({ description: 'Updates order' })
+  @UseGuards(AuthGuard())
+  async updateOrder(
+    @Param() params: MongoIdParams,
+    @Body() data: PatchOrderDto,
+    @User() user: UserInterface,
+  ) {
+    if (!user.isAdmin) {
+      throw new ForbiddenException();
+    }
+
+    const order = await this.ordersService.findById(params.id);
+    if (!order)
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+
+    order.set(data);
+    await order.save();
+
+    // populate items
+    await order
+      .populate('items.product')
+      .populate('promocodes.promocode')
+      .execPopulate();
 
     return order.toObject();
   }

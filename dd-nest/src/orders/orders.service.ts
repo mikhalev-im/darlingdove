@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Order } from './interfaces/order.interface';
 import { YANDEX_WALLET } from './constants';
+import { GetOrdersDto } from './dto/get-orders.dto';
 
 @Injectable()
 export class OrdersService {
@@ -24,6 +25,31 @@ export class OrdersService {
       .find({ 'user._id': userId })
       .populate('items.product')
       .exec();
+  }
+
+  async find(filters: GetOrdersDto): Promise<Order[]> {
+    const match = {};
+
+    if (filters.user) {
+      match['user._id'] = filters.user;
+    }
+
+    const query = this.orderModel.find(match);
+
+    if (filters.skip) {
+      query.skip(filters.skip);
+    }
+
+    if (filters.limit) {
+      query.limit(filters.limit);
+    }
+
+    if (filters.orderBy) {
+      const sortOrder = filters.order === 'asc' ? 1 : -1;
+      query.sort({ [filters.orderBy]: sortOrder });
+    }
+
+    return query.populate('items.product').exec();
   }
 
   async create(order: object): Promise<Order> {

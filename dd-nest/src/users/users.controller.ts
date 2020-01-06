@@ -5,6 +5,7 @@ import {
   Post,
   Body,
   Param,
+  Query,
   HttpException,
   HttpStatus,
   Inject,
@@ -30,6 +31,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '../shared/decorators/user.decorator';
 import { MailService } from '../mail/mail.service';
 import { MongoIdParams } from '../shared/dto/mongo-id.dto';
+import { GetUsersDto } from './dto/get-users.dto';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -160,5 +162,44 @@ export class UsersController {
     await user.save();
 
     return user.toObject();
+  }
+
+  @Get('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Returns users' })
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard())
+  async getUsers(@User() user: UserInterface, @Query() filters: GetUsersDto) {
+    if (!user.isAdmin) {
+      return {
+        data: [user.toObject()],
+        count: 1,
+      };
+    }
+
+    const users = await this.usersService.find(filters);
+
+    return {
+      data: users.map(u => u.toObject()),
+      count: users.length,
+    };
+  }
+
+  @Get(':id')
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Returns user by id' })
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard())
+  async getUser(@User() user: UserInterface, @Param() params: MongoIdParams) {
+    if (user._id.toString() === params.id) {
+      return user.toObject();
+    }
+
+    if (!user.isAdmin) {
+      throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    const u = await this.usersService.findById(params.id);
+    return u.toObject();
   }
 }

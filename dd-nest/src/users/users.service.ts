@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
 import { UserAuthDto } from './dto/user-auth.dto';
 import { AuthService } from '../auth/auth.service';
+import { GetUsersDto } from './dto/get-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -28,5 +29,28 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  async find(filters: GetUsersDto): Promise<User[]> {
+    const query = this.userModel.find({});
+
+    if (filters.skip) {
+      query.skip(filters.skip);
+    }
+
+    if (filters.limit) {
+      query.limit(filters.limit);
+    }
+
+    if (filters.orderBy) {
+      const sortOrder = filters.order === 'asc' ? 1 : -1;
+      query.sort({ [filters.orderBy]: sortOrder });
+    }
+
+    return query.exec();
+  }
+
+  async findById(userId: string): Promise<User> {
+    return this.userModel.findById(userId).exec();
   }
 }

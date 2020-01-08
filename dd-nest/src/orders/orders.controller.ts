@@ -176,6 +176,7 @@ export class OrdersController {
         );
 
       product.qty = newQty;
+      product.ordersCount = (product.ordersCount || 0) + 1;
 
       return {
         product: product._id,

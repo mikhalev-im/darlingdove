@@ -10,7 +10,7 @@ const orderTemplate = `
 <body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
   <div style="width: 680px; margin: 0 auto;">
     <a href="https://darlingdove.ru" title="Darlingdove" style="display: block; text-align: center;">
-      <img src="http://darlingdove.ru/image/catalog/head.png" alt="Darlingdove" style="margin-bottom: 20px; border: none;" />
+      <img src="https://storage.yandexcloud.net/darlingdove/head.png" alt="Darlingdove" style="margin-bottom: 20px; border: none;" />
     </a>
     <p style="margin-top: 0px; margin-bottom: 20px;">Вы получили заказ.</p>
 
@@ -26,7 +26,6 @@ const orderTemplate = `
             <b>ID заказа:</b> {{shortId}}<br />
             <b>Дата заказа:</b> {{createdTime}}<br />
             <b>Способ оплаты:</b> Онлайн<br />
-            <b>Способ доставки:</b> Бесплатная доставка
           </td>
           <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
             <b>E-mail:</b> {{user.email}}<br />

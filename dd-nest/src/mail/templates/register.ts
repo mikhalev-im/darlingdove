@@ -10,7 +10,7 @@ const registerTemplate = `
 <body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
   <div style="width: 680px; margin: 0 auto;">
     <a href="https://darlingdove.ru" title="Darlingdove" style="display: block; text-align: center;">
-      <img src="http://darlingdove.ru/image/catalog/head.png" alt="Darlingdove" style="margin-bottom: 20px; border: none;" />
+      <img src="https://storage.yandexcloud.net/darlingdove/head.png" alt="Darlingdove" style="margin-bottom: 20px; border: none;" />
     </a>
     <div style="text-align: left;">
       <p>Добро пожаловать в DarlingDove и благодарим Вас за регистрацию!</p>

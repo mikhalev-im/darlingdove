@@ -66,7 +66,12 @@ class Category extends Component {
 
     newQuery[event.target.name] = event.target.value;
 
-    redirect(`${BASE_URL}/${category}?${stringify(newQuery)}`);
+    const querystring = stringify(newQuery);
+
+    redirect({
+      url: `${BASE_URL}/[category]?${querystring}`,
+      as: `${BASE_URL}/${category}?${querystring}`
+    });
   };
 
   onPageChange = (event, offset) => {
@@ -183,9 +188,4 @@ const mapDispatch = {
   addToCart: CartActions.Creators.addToCart
 };
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Category)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Category));

@@ -44,6 +44,10 @@ const menu = [
     href: '/category/[category]',
     hrefAs: '/category/postcards'
   },
+  {
+    title: 'Поиск',
+    href: '/search'
+  },
   { title: 'О нас', href: '/page/[slug]', hrefAs: '/page/about' }
 ];
 

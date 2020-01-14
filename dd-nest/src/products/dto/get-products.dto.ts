@@ -56,4 +56,8 @@ export class GetProductsDto {
   @IsString()
   @IsOptional()
   readonly sku?: string;
+
+  @IsString()
+  @IsOptional()
+  readonly search?: string;
 }

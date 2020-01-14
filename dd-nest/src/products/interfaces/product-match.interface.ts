@@ -8,4 +8,5 @@ export interface ProductMatch {
   };
   category?: string;
   sku?: string;
+  $or?: [{ name: RegExp }, { sku: RegExp }];
 }

@@ -16,7 +16,6 @@ export interface Product extends Document {
   readonly price: number;
   readonly oldPrice: number;
   readonly images: ProductImage[];
-  readonly ordersNumber: number;
   readonly tags: string[];
   readonly category: string;
   readonly createdTime: Date;

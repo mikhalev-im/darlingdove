@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-export const getCategory = state => state.category;
+export const getSearch = state => state.search;
 
 export const getProducts = createSelector(
-  getCategory,
+  getSearch,
   category => category.products
 );
 
@@ -16,5 +16,3 @@ export const getProductsData = createSelector(
   getProducts,
   products => products.data
 );
-
-export const getTags = createSelector(getCategory, category => category.tags);

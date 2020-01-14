@@ -15,7 +15,10 @@ const serverSideRedirect = (res, redirectTo) => {
 
 export function* redirect({ redirectTo, res = null }) {
   if (!res) {
-    yield call([Router, 'push'], redirectTo);
+    typeof redirectTo === 'string'
+      ? yield call([Router, 'push'], redirectTo)
+      : yield call([Router, 'push'], redirectTo.url, redirectTo.as);
+
     return;
   }
 

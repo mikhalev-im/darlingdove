@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import * as escapeRegExp from 'escape-string-regexp';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './interfaces/product.interface';
@@ -50,6 +51,11 @@ export class ProductsService {
       match.tags.$all = Array.isArray(filters.tagsRequired)
         ? filters.tagsRequired
         : [filters.tagsRequired];
+    }
+
+    if (filters.search) {
+      const escapedRegExp = new RegExp(escapeRegExp(filters.search), 'i');
+      match.$or = [{ name: escapedRegExp }, { sku: escapedRegExp }];
     }
 
     if (filters.inStock) match.qty = { $gt: 0 };

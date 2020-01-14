@@ -9,15 +9,15 @@ export function* loadCategoryPage({ query }) {
   try {
     // build and set filters
     const filters = yield call(buildProductFilters, query);
-    yield put(Actions.Creators.setFilters(filters));
+    yield put(Actions.Creators.setCategoryFilters(filters));
 
     // load products
     const products = yield call(getProducts, filters);
-    yield put(Actions.Creators.setProducts(products));
+    yield put(Actions.Creators.setCategoryProducts(products));
 
     // load tags
     const tags = yield call(getTags, query.category);
-    yield put(Actions.Creators.setTags(tags));
+    yield put(Actions.Creators.setCategoryTags(tags));
 
     // emit page is loaded
     yield put(Actions.Creators.categoryPageLoaded(null, query));

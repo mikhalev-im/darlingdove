@@ -2,19 +2,22 @@ import { createSelector } from 'reselect';
 
 export const getCategory = state => state.category;
 
-export const getProducts = createSelector(
+export const getCategoryProducts = createSelector(
   getCategory,
   category => category.products
 );
 
-export const getProductsCount = createSelector(
-  getProducts,
+export const getCategoryProductsCount = createSelector(
+  getCategoryProducts,
   products => products.count
 );
 
-export const getProductsData = createSelector(
-  getProducts,
+export const getCategoryProductsData = createSelector(
+  getCategoryProducts,
   products => products.data
 );
 
-export const getTags = createSelector(getCategory, category => category.tags);
+export const getCategoryTags = createSelector(
+  getCategory,
+  category => category.tags
+);

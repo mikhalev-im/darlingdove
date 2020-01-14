@@ -22,7 +22,11 @@ import {
 import Filters from './components/filters';
 import ProductList from '../shared/components/product-list';
 import ProductType from './types/product';
-import { getProductsData, getProductsCount, getTags } from './selectors';
+import {
+  getCategoryProductsData,
+  getCategoryProductsCount,
+  getCategoryTags
+} from './selectors';
 import Sorting from './components/sorting';
 
 const SORT_OPTIONS = [
@@ -178,9 +182,9 @@ Category.propTypes = {
 };
 
 const mapState = state => ({
-  products: getProductsData(state),
-  count: getProductsCount(state),
-  tags: getTags(state)
+  products: getCategoryProductsData(state),
+  count: getCategoryProductsCount(state),
+  tags: getCategoryTags(state)
 });
 
 const mapDispatch = {

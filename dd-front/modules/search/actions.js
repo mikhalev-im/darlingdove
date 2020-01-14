@@ -2,6 +2,6 @@ import { createActions } from 'reduxsauce';
 
 export default createActions({
   loadSearchPage: ['query'],
-  setProducts: ['products'],
+  setSearchProducts: ['products'],
   searchPageLoaded: ['error', 'query']
 });

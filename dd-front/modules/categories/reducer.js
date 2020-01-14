@@ -20,14 +20,16 @@ export const INITIAL_STATE = Immutable({
   }
 });
 
-const setTags = (state, { tags }) => state.set('tags', tags);
-const setProducts = (state, { products }) => state.set('products', products);
-const setFilters = (state, { filters }) => state.set('filters', filters);
+const setCategoryTags = (state, { tags }) => state.set('tags', tags);
+const setCategoryProducts = (state, { products }) =>
+  state.set('products', products);
+const setCategoryFilters = (state, { filters }) =>
+  state.set('filters', filters);
 
 export const HANDLERS = {
-  [Actions.Types.SET_TAGS]: setTags,
-  [Actions.Types.SET_PRODUCTS]: setProducts,
-  [Actions.Types.SET_FILTERS]: setFilters
+  [Actions.Types.SET_CATEGORY_TAGS]: setCategoryTags,
+  [Actions.Types.SET_CATEGORY_PRODUCTS]: setCategoryProducts,
+  [Actions.Types.SET_CATEGORY_FILTERS]: setCategoryFilters
 };
 
 export default createReducer(INITIAL_STATE, HANDLERS);

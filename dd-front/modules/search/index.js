@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import RootActions from '../root/actions';
 import CartActions from '../cart/actions';
 import SearchActions from './actions';
-import { getProductsCount, getProductsData } from './selectors';
+import { getSearchProductsCount, getSearchProductsData } from './selectors';
 import ProductList from '../shared/components/product-list';
 import { Typography } from '@material-ui/core';
 
@@ -114,8 +114,8 @@ Search.getInitialProps = async ({ query, reduxStore }) => {
 };
 
 const mapState = state => ({
-  count: getProductsCount(state),
-  products: getProductsData(state)
+  count: getSearchProductsCount(state),
+  products: getSearchProductsData(state)
 });
 
 const mapDispatch = {

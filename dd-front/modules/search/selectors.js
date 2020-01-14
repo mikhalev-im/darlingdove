@@ -2,17 +2,17 @@ import { createSelector } from 'reselect';
 
 export const getSearch = state => state.search;
 
-export const getProducts = createSelector(
+export const getSearchProducts = createSelector(
   getSearch,
   category => category.products
 );
 
-export const getProductsCount = createSelector(
-  getProducts,
+export const getSearchProductsCount = createSelector(
+  getSearchProducts,
   products => products.count
 );
 
-export const getProductsData = createSelector(
-  getProducts,
+export const getSearchProductsData = createSelector(
+  getSearchProducts,
   products => products.data
 );

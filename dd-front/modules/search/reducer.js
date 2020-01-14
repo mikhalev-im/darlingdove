@@ -10,10 +10,11 @@ export const INITIAL_STATE = Immutable({
   }
 });
 
-const setProducts = (state, { products }) => state.set('products', products);
+const setSearchProducts = (state, { products }) =>
+  state.set('products', products);
 
 export const HANDLERS = {
-  [Actions.Types.SET_PRODUCTS]: setProducts
+  [Actions.Types.SET_SEARCH_PRODUCTS]: setSearchProducts
 };
 
 export default createReducer(INITIAL_STATE, HANDLERS);

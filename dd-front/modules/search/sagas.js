@@ -7,7 +7,7 @@ export function* loadSearchPage({ query }) {
   try {
     // no need to load products
     if (!query.search) {
-      yield put(Actions.Creators.setProducts({ count: 0, products: [] }));
+      yield put(Actions.Creators.setSearchProducts({ count: 0, products: [] }));
       yield put(Actions.Creators.searchPageLoaded(null, query));
       return;
     }
@@ -18,7 +18,7 @@ export function* loadSearchPage({ query }) {
 
     // load products
     const products = yield call(getProducts, filters);
-    yield put(Actions.Creators.setProducts(products));
+    yield put(Actions.Creators.setSearchProducts(products));
 
     // emit page is loaded
     yield put(Actions.Creators.searchPageLoaded(null, query));

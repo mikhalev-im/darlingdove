@@ -3,6 +3,7 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
 import getConfig from 'next/config';
 import theme from '../modules/shared/utils/theme';
+import { GA_TRACKING_ID } from '../modules/shared/constants';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -44,6 +45,21 @@ class MyDocument extends Document {
             type="application/ld+json"
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(SCHEMA_ORG_ORGANIZATION)
+            }}
+          />
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}');
+          `
             }}
           />
           <base href={publicRuntimeConfig.CLIENT_BASE_URL} />

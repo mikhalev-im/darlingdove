@@ -12,3 +12,5 @@ export const ORDER_STATUS_MAP = {
   shipped: 'Отправлен',
   done: 'Завершен'
 };
+
+export const GA_TRACKING_ID = 'UA-58325205-4';

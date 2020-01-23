@@ -23,7 +23,6 @@ export class MailService {
   private templates: MailTemplatesMap;
 
   constructor() {
-    console.log(MAIL_TRANSPORT);
     this.transporter = createTransport(MAIL_TRANSPORT, { from: MAIL_FROM });
     this.templates = compileTemplates();
   }
@@ -64,7 +63,7 @@ export class MailService {
     await this.sendMail({
       to: `${user.email} ${ADMIN_EMAIL}`,
       subject: `Заказ от ${data.createdTime} (${order.shortId})`,
-      html: this.templates.order(data),
+      html: this.templates.order(data, { allowProtoPropertiesByDefault: true }),
     });
   }
 

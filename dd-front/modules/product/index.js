@@ -132,6 +132,11 @@ class Product extends Component {
               itemScope
               itemType="http://schema.org/Offer"
             >
+              {!!product.oldPrice && (
+                <Typography variant="body2" component="span">
+                  <strike>{`${product.oldPrice} руб`}</strike>{' '}
+                </Typography>
+              )}
               <span itemProp="price">{product.price}</span>{' '}
               <span itemProp="priceCurrency" content="RUB">
                 руб

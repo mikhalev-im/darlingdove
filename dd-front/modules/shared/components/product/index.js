@@ -6,8 +6,10 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
 
-import ProductCard from './product-card';
+import Price from './price';
+import ProductCard from './card';
 
 const styles = {
   card: {
@@ -17,8 +19,15 @@ const styles = {
     height: 0,
     paddingTop: '56.25%'
   },
-  actionsBar: {
-    justifyContent: 'space-between'
+  text: {
+    flexGrow: 1,
+    textAlign: 'left'
+  },
+  sale: {
+    padding: '3px',
+    borderRadius: '3px',
+    color: '#fff',
+    backgroundColor: '#1bc586'
   }
 };
 
@@ -31,29 +40,31 @@ class Product extends React.PureComponent {
   };
 
   render() {
-    const { classes, price, name, images, sku } = this.props;
-    const priceStr = `${price} руб`;
+    const { classes, price, oldPrice, name, images, sku } = this.props;
     const image = images.find(img => img.type === 'card');
 
     return (
       <Card className={classes.card}>
         <ProductCard
           img={image.url}
-          title={priceStr}
           href={`/product/[sku]`}
           hrefAs={`/product/${sku}`}
         />
         <CardActions disableSpacing className={classes.actionsBar}>
-          <Typography>{priceStr}</Typography>
-          <Typography>{name}</Typography>
-          <Fab
-            color="primary"
-            size="small"
-            aria-label="add"
-            onClick={this.addToCart}
-          >
-            <AddIcon />
-          </Fab>
+          <Grid item className={classes.text}>
+            <Typography>{name}</Typography>
+            <Price price={price} oldPrice={oldPrice} />
+          </Grid>
+          <Grid item>
+            <Fab
+              color="primary"
+              size="small"
+              aria-label="add"
+              onClick={this.addToCart}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
         </CardActions>
       </Card>
     );

@@ -177,9 +177,4 @@ const mapDispatch = {
   register: UserActions.Creators.register
 };
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Login)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Login));

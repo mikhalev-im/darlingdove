@@ -18,6 +18,7 @@ services:
       - mongo
     build:
       context: ./dd-nest
+    image: mikhalevim/dd_be:latest
     volumes:
       - static:/var/www/static
     environment:
@@ -29,6 +30,7 @@ services:
       - backend
     build:
       context: ./dd-front
+    image: mikhalevim/dd_fe:latest
     environment:
       - PORT=3000
       - SERVER_BASE_URL=http://backend:8000

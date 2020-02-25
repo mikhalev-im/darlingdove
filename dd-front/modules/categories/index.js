@@ -62,7 +62,7 @@ const styles = theme => ({
 });
 
 class Category extends Component {
-  onFilterChange = event => {
+  onFilterChange = (event, merge) => {
     const {
       redirect,
       query: { category, ...newQuery }
@@ -70,7 +70,7 @@ class Category extends Component {
 
     newQuery[event.target.name] = event.target.value;
 
-    const querystring = stringify(newQuery);
+    const querystring = stringify({ ...newQuery, ...merge });
 
     redirect({
       url: `${BASE_URL}/[category]?${querystring}`,
@@ -83,7 +83,7 @@ class Category extends Component {
   };
 
   onTagChange = value => {
-    this.onFilterChange({ target: { name: 'tags', value } });
+    this.onFilterChange({ target: { name: 'tags', value } }, { skip: 0 });
   };
 
   onSortChange = value => {
@@ -96,6 +96,7 @@ class Category extends Component {
 
     newQuery.orderBy = orderBy;
     newQuery.order = order;
+    newQuery.skip = 0;
 
     redirect(`${BASE_URL}/${category}?${stringify(newQuery)}`);
   };

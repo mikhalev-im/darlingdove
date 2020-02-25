@@ -19,6 +19,7 @@ services:
       - BASE_URL=http://darlingdove.test:8080
       - YANDEX_WALLET=test_yandex_wallet
       - YANDEX_PAYMENT_NOTIFICATION_SECRET=test_yandex_notification_secret
+      - JWT_SECRET=jwt_secret
   frontend:
     command: ["npm", "run", "start:dev"]
     volumes:

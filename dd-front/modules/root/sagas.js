@@ -15,9 +15,13 @@ const serverSideRedirect = (res, redirectTo) => {
 
 export function* redirect({ redirectTo, res = null }) {
   if (!res) {
+    // client-side
     typeof redirectTo === 'string'
       ? yield call([Router, 'push'], redirectTo)
       : yield call([Router, 'push'], redirectTo.url, redirectTo.as);
+
+    // by default next router doesn't scroll to top
+    yield call([window, 'scroll'], { top: 0, left: 0 });
 
     return;
   }

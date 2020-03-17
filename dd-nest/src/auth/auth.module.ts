@@ -14,7 +14,8 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
     JwtModule.register({
       secretOrPrivateKey: CONFIG_JWT_SECRET,
       signOptions: {
-        expiresIn: 360000,
+        // 15 days in seconds
+        expiresIn: 1296000,
       },
     }),
     forwardRef(() => UsersModule),

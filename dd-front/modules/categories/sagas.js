@@ -2,22 +2,29 @@ import { all, takeEvery, call, put } from 'redux-saga/effects';
 
 import { getProducts, getTags } from '../shared/utils/api';
 import Actions from './actions';
+import RootActions from '../root/actions';
+import { CATEGORY_META_MAPPING } from './constants';
 
 import { buildProductFilters } from './helpers';
 
-export function* loadCategoryPage({ query }) {
+export function* loadCategoryPage({ res, query }) {
   try {
     // build and set filters
     const filters = yield call(buildProductFilters, query);
-    yield put(Actions.Creators.setCategoryFilters(filters));
 
-    // load products
-    const products = yield call(getProducts, filters);
-    yield put(Actions.Creators.setCategoryProducts(products));
+    if (!CATEGORY_META_MAPPING[filters.category]) {
+      yield put(RootActions.Creators.redirect('/404', res));
+    } else {
+      yield put(Actions.Creators.setCategoryFilters(filters));
 
-    // load tags
-    const tags = yield call(getTags, query.category);
-    yield put(Actions.Creators.setCategoryTags(tags));
+      // load products
+      const products = yield call(getProducts, filters);
+      yield put(Actions.Creators.setCategoryProducts(products));
+
+      // load tags
+      const tags = yield call(getTags, query.category);
+      yield put(Actions.Creators.setCategoryTags(tags));
+    }
 
     // emit page is loaded
     yield put(Actions.Creators.categoryPageLoaded(null, query));

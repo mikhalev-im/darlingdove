@@ -1,7 +1,7 @@
 import { createActions } from 'reduxsauce';
 
 export default createActions({
-  loadCategoryPage: ['query'],
+  loadCategoryPage: ['query', 'res'],
   setCategoryTags: ['tags'],
   setCategoryProducts: ['products'],
   setCategoryFilters: ['filters'],

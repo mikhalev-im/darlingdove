@@ -164,11 +164,11 @@ class Category extends Component {
   }
 }
 
-Category.getInitialProps = async ({ query, reduxStore }) => {
+Category.getInitialProps = async ({ query, reduxStore, res }) => {
   const { CATEGORY_PAGE_LOADED } = CategoryActions.Types;
   const action = RootActions.Creators.waitFor(CATEGORY_PAGE_LOADED);
   const promise = reduxStore.dispatch(action);
-  reduxStore.dispatch(CategoryActions.Creators.loadCategoryPage(query));
+  reduxStore.dispatch(CategoryActions.Creators.loadCategoryPage(query, res));
   return promise;
 };
 

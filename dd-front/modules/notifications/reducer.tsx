@@ -14,9 +14,10 @@ export interface NotificationsState {
   messageData: NotificationData | {};
 }
 
-type Actions = AddNotificationAction &
-  CloseNotificationAction &
-  ProcessNotificationsAction;
+type NotificationActions =
+  | AddNotificationAction
+  | CloseNotificationAction
+  | ProcessNotificationsAction;
 
 export type ImmutableNotificationsState = ImmutableObject<NotificationsState>;
 
@@ -49,7 +50,7 @@ export const HANDLERS = {
   [Actions.Types.PROCESS_NOTIFICATIONS]: processNotifications
 };
 
-export default createReducer<ImmutableNotificationsState, Actions>(
+export default createReducer<ImmutableNotificationsState, NotificationActions>(
   INITIAL_STATE,
   HANDLERS
 );

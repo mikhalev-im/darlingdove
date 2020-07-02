@@ -42,9 +42,10 @@ export const INITIAL_STATE = Immutable({
   }
 });
 
-type Actions = SetCategoryTagsAction &
-  SetCategoryProductsAction &
-  SetCategoryFiltersAction;
+type Actions =
+  | SetCategoryTagsAction
+  | SetCategoryProductsAction
+  | SetCategoryFiltersAction;
 
 const setCategoryTags = (
   state: ImmutableCategoryState,

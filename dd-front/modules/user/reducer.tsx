@@ -43,7 +43,7 @@ const setToken = (state: ImmutableUserState, { token }: SetTokenAction) =>
 
 const resetUser = () => INITIAL_STATE;
 
-type Actions = SetUserAction & SetTokenAction;
+type Actions = SetUserAction | SetTokenAction;
 
 export const HANDLERS = {
   [Actions.Types.SET_USER]: setUser,

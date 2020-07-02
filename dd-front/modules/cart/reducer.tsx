@@ -54,7 +54,7 @@ const changeQty = (
     })
   );
 
-type Actions = SetCartIdAction & SetCartAction & DebouncedCartQtyUpdate;
+type Actions = SetCartIdAction | SetCartAction | DebouncedCartQtyUpdate;
 
 export const HANDLERS = {
   [Actions.Types.SET_CART]: setCart,

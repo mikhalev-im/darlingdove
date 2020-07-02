@@ -2,9 +2,9 @@ import { createActions } from 'reduxsauce';
 import { NotificationData } from '../shared/components/layout/notifications';
 
 interface NotificationTypes {
-  readonly CLOSE_NOTIFICATION: string;
-  readonly PROCESS_NOTIFICATIONS: string;
-  readonly ADD_NOTIFICATION: string;
+  readonly CLOSE_NOTIFICATION: 'CLOSE_NOTIFICATION';
+  readonly PROCESS_NOTIFICATIONS: 'PROCESS_NOTIFICATIONS';
+  readonly ADD_NOTIFICATION: 'ADD_NOTIFICATION';
 }
 
 export interface CloseNotificationAction {

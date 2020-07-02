@@ -32,7 +32,7 @@ const setIsLoading = (
   { value }: SetIsLoadingAction
 ) => state.set('isLoading', !!value);
 
-type Actions = ShowModalAction & SetIsLoadingAction;
+type Actions = ShowModalAction | SetIsLoadingAction;
 
 export const HANDLERS = {
   [Actions.Types.SHOW_MODAL]: showModal,

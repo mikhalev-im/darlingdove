@@ -9,7 +9,7 @@ export interface ProductState {
   relatedProducts: Product[];
 }
 
-type Actions = SetProductAction & SetRealtedProductsAction;
+type Actions = SetProductAction | SetRealtedProductsAction;
 
 export type ImmutableProductState = ImmutableObject<ProductState>;
 

@@ -1,0 +1,93 @@
+import Immutable from 'seamless-immutable';
+import { createStore, combineReducers, applyMiddleware, Store } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { fork, all } from 'redux-saga/effects';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import waitForActionMiddleware from './middlewares/wait-for';
+import bindEvents from './events';
+
+import cart from '../cart/reducer';
+import user from '../user/reducer';
+import root from './reducer';
+import order from '../order/reducer';
+import search from '../search/reducer';
+import product from '../product/reducer';
+import profile from '../profile/reducer';
+import checkout from '../checkout/reducer';
+import category from '../categories/reducer';
+import notifications from '../notifications/reducer';
+
+import rootSagas from './sagas';
+import cartSagas from '../cart/sagas';
+import userSagas from '../user/sagas';
+import pageSagas from '../page/sagas';
+import loginSagas from '../login/sagas';
+import orderSagas from '../order/sagas';
+import searchSagas from '../search/sagas';
+import prodcutSagas from '../product/sagas';
+import profileSagas from '../profile/sagas';
+import checkoutSagas from '../checkout/sagas';
+import categorySagas from '../categories/sagas';
+import notificationsSagas from '../notifications/sagas';
+
+const reducer = combineReducers({
+  cart,
+  user,
+  root,
+  order,
+  search,
+  product,
+  profile,
+  category,
+  checkout,
+  notifications
+});
+
+function* sagas() {
+  yield all([
+    fork(cartSagas),
+    fork(userSagas),
+    fork(rootSagas),
+    fork(pageSagas),
+    fork(loginSagas),
+    fork(orderSagas),
+    fork(searchSagas),
+    fork(prodcutSagas),
+    fork(profileSagas),
+    fork(categorySagas),
+    fork(checkoutSagas),
+    fork(notificationsSagas)
+  ]);
+}
+
+// export interface AppState {
+//   cart: ImmutableCartState;
+//   user: ImmutableUser
+//   root
+//   order
+//   search
+//   product
+//   profile
+//   category
+//   checkout
+//   notifications
+// }
+
+export function initializeStore(initialState = {}) {
+  const sagaMiddleware = createSagaMiddleware();
+
+  const store = createStore(
+    reducer,
+    Immutable(initialState),
+    composeWithDevTools(
+      applyMiddleware(waitForActionMiddleware, sagaMiddleware)
+    )
+  );
+
+  sagaMiddleware.run(sagas);
+
+  bindEvents(store);
+
+  return store;
+}

@@ -1,0 +1,2 @@
+export const MAX_WIDTH_MULTIPLIER = 125;
+export const MIN_WIDTH_MULTIPLIER = 87.5;

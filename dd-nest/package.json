@@ -28,7 +28,7 @@
     "@nestjs/platform-fastify": "^6.10.14",
     "@nestjs/swagger": "^3.1.0",
     "@types/nodemailer": "^4.6.8",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.9.1",
     "dotenv": "^7.0.0",

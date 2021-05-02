@@ -83,7 +83,7 @@ export class OrdersService {
     });
 
     const options = {
-      host: 'money.yandex.ru',
+      host: 'yoomoney.ru',
       port: 443,
       path: '/quickpay/confirm.xml',
       method: 'POST',

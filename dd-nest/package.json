@@ -37,7 +37,7 @@
     "handlebars": "^4.7.0",
     "mongoose": "^5.8.7",
     "nest-schedule": "^0.6.4",
-    "nodemailer": "^5.1.1",
+    "nodemailer": "^6.4.16",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",

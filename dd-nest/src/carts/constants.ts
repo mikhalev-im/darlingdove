@@ -1,2 +1,2 @@
-export const FREE_DELIVERY_THRESHOLD = 500;
+export const FREE_DELIVERY_THRESHOLD = 800;
 export const PAID_DELIVERY_PRICE = 100;

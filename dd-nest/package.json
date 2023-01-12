@@ -30,7 +30,7 @@
     "@types/nodemailer": "^4.6.8",
     "bcrypt": "^3.0.7",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.9.1",
+    "class-validator": "^0.14.0",
     "dotenv": "^7.0.0",
     "escape-string-regexp": "^2.0.0",
     "fastify-swagger": "^2.5.0",

@@ -35,7 +35,7 @@
     "escape-string-regexp": "^2.0.0",
     "fastify-swagger": "^2.5.0",
     "handlebars": "^4.7.0",
-    "mongoose": "^5.8.7",
+    "mongoose": "^5.13.15",
     "nest-schedule": "^0.6.4",
     "nodemailer": "^5.1.1",
     "passport": "^0.4.1",

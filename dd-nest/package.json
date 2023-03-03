@@ -34,7 +34,7 @@
     "dotenv": "^7.0.0",
     "escape-string-regexp": "^2.0.0",
     "fastify-swagger": "^2.5.0",
-    "handlebars": "^4.7.0",
+    "handlebars": "^4.7.7",
     "mongoose": "^5.8.7",
     "nest-schedule": "^0.6.4",
     "nodemailer": "^5.1.1",
